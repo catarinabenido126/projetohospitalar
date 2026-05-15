@@ -1,0 +1,76 @@
+/* estilos*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: 'Titillium Web', Arial, Helvetica, sans-serif;
+    background-color: #f4f8fc;
+}
+
+/* Barra de navegação */
+.bng-navbar {
+    background-color: #062b4f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+}
+
+/* Blocos internos da navbar */
+.bng-navbar div {
+    display: flex;
+    align-items: center;
+}
+
+/* Logo */
+.bng-navbar img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* Nome MediSync */
+.bng-navbar h3 {
+    color: #ffffff;
+    font-size: 1.5em;
+}
+
+/* Container navegação */
+.container-navegacao {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Links centrais */
+.container-navegacao a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0px 30px;
+    font-size: 1.2em;
+}
+
+/* Hover links */
+.container-navegacao a:hover {
+    color: #6bbcff;
+}
+
+/* Área Interna */
+.nav-cliente a {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0d6efd;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+
+/* Hover botão */
+.nav-cliente a:hover {
+    background-color: #084db3;
+}
