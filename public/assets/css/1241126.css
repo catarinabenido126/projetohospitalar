@@ -7,7 +7,7 @@
 
 /* Corpo da página */
 body {
-    font-family: 'Titillium Web', Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: #f4f8fc;
 }
 
@@ -17,9 +17,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
+    padding: 0px 20px;
+    height: 85px;
 }
 
 /* Blocos internos da navbar */
@@ -30,7 +29,7 @@ body {
 
 /* Logo */
 .bng-navbar img {
-    height: 95px;
+    height: 170px;
 }
 
 /* Nome MediSync */
