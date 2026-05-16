@@ -178,6 +178,10 @@ section {
 /* Secção Contactos */
 #contacto {
     background-color: #f4f8fc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 #contacto p {
     color: #314b6b;
@@ -187,7 +191,8 @@ section {
 #contactForm {
     display: flex;
     flex-direction: column;
-    max-width: 500px;
+    width: 500px;
+    max-width: 90%;
     margin: 0 auto;
     text-align: left;
 }
