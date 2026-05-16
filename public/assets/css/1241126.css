@@ -106,6 +106,10 @@ section {
 /* Secção Sobre Nós */
 #sobre {
     background-color: #eaf3fb;
+        min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 #sobre h2,
 #servicos h2,
