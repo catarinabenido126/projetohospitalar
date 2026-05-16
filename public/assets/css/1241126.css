@@ -60,6 +60,9 @@ body {
     font-size: 1.2em;
     transition: background 0.3s;
 }
+.nav-cliente a i {
+    margin-right: 8px;
+}
 /* Hover botão */
 .nav-cliente a:hover {
     background-color: #084db3;
