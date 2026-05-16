@@ -147,9 +147,11 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 .servico {
-    width: 300px;
+    width: 320px;
     margin: 20px;
     padding: 25px;
     background-color: #f4f8fc;
