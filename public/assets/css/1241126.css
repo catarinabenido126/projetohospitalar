@@ -82,21 +82,21 @@ section {
     gap: 20px;
     background-color: #f4f8fc;
 }
-.quem-somos-content {
+.inicio-content {
     max-width: 900px;
     margin: 0 auto;
 }
-.quem-somos-content h1 {
+.inicio-content h1 {
     font-size: 3em;
     color: #062b4f;
     margin-bottom: 20px;
 }
-.quem-somos-content p {
+.inicio-content p {
     font-size: 1.2em;
     color: #314b6b;
     margin-bottom: 30px;
 }
-.quem-somos-content img {
+.inicio-content img {
     width: 800px;
     max-width: 100%;
     height: 300px;
