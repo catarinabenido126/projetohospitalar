@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,12 @@
     <!-- estilos -->
     <link rel="stylesheet" href="../../../assets/css/1241126.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
 </head>
+
 <body>
     <header class="container-fluid bg-dark text-white">
         <div class="row align-items-center">
@@ -32,7 +35,9 @@
 
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Alterar password</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="../../../login.html">Sair</a></li>
                     </ul>
                 </div>
@@ -64,6 +69,64 @@
                     </a>
                 </nav>
             </aside>
-    
+            <div class="col-md-9 col-lg-10 p-4">
+                <h2>Novo Equipamento</h2>
+                <hr>
+                <form action="lista.html" method="post">
+                    <div class="mb-3">
+                        <label for="codigo">Código interno</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="designacao">Designação</label>
+                        <input type="text" class="form-control" id="designacao" name="designacao">
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria">Categoria</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option>Monitorização</option>
+                            <option>Diagnóstico</option>
+                            <option>Laboratório</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="marca">Marca</label>
+                        <input type="text" class="form-control" id="marca" name="marca">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado">Estado</label>
+                        <select class="form-select" id="estado" name="estado">
+                            <option>Ativo</option>
+                            <option>Em manutenção</option>
+                            <option>Inativo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="criticidade">Criticidade</label>
+                        <select class="form-select" id="criticidade" name="criticidade">
+                            <option>Baixa</option>
+                            <option>Média</option>
+                            <option>Alta</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="localizacao">Localização</label>
+                        <select class="form-select" id="localizacao" name="localizacao">
+                            <option>Urgência</option>
+                            <option>UCI</option>
+                            <option>Cardiologia</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                </form>
+            </div>
+            </select>
+        </div>
+        </form>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
