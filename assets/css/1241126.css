@@ -1,0 +1,250 @@
+/* estilos*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Corpo da página */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f8fc;
+}
+/* Barra de navegação */
+.bng-navbar {
+    background-color: #062b4f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+    position: sticky;
+    height: 85px;
+    top: 0;
+}
+/* Blocos internos da navbar */
+.bng-navbar div {
+    display: flex;
+    align-items: center;
+}
+/* Logo */
+.bng-navbar img {
+    height: 170px;
+}
+/* Nome MediSync */
+.bng-navbar h3 {
+    color: #ffffff;
+    font-size: 1.5em;
+}
+/* Container navegação */
+.container-navegacao {
+    text-align: center;
+    padding: 20px;
+}
+/* Links centrais */
+.container-navegacao a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0px 30px;
+    font-size: 1.2em;
+}
+/* Hover links */
+.container-navegacao a:hover {
+    color: #6bbcff;
+}
+/* Área Interna */
+.nav-cliente a {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0d6efd;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+.nav-cliente a i {
+    margin-right: 8px;
+}
+/* Hover botão */
+.nav-cliente a:hover {
+    background-color: #084db3;
+}
+/* Estilo geral das secções */
+section {
+    padding: 100px 40px;
+    text-align: center;
+    min-height: 100vh;
+}
+/* Secção Início */
+.container-texto-generico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #f4f8fc;
+}
+.inicio-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+.inicio-content h1 {
+    font-size: 3em;
+    color: #062b4f;
+    margin-bottom: 20px;
+}
+.inicio-content p {
+    font-size: 1.2em;
+    color: #314b6b;
+    margin-bottom: 30px;
+}
+.inicio-content img {
+    width: 800px;
+    max-width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+/* Secção Sobre Nós */
+#sobre {
+    background-color: #eaf3fb;
+        min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#sobre h2,
+#servicos h2,
+#contacto h2 {
+    font-size: 3em;
+    color: #062b4f;
+    margin-bottom: 30px;
+}
+.sobre-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.sobre-texto {
+    flex: 1;
+    text-align: left;
+}
+.sobre-texto p {
+    font-size: 1.1em;
+    color: #314b6b;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+.sobre-imagem {
+    flex: 1;
+}
+.sobre-imagem img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+/* Secção Serviços */
+#servicos {
+    background-color: #ffffff;
+}
+.servicos-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.servico {
+    width: 320px;
+    margin: 20px;
+    padding: 25px;
+    background-color: #f4f8fc;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #d6e4f0;
+}
+.servico i {
+    color: #0d6efd;
+    margin-bottom: 15px;
+    display: block;
+}
+.servico h3 {
+    color: #062b4f;
+    margin-bottom: 10px;
+}
+.servico p {
+    color: #314b6b;
+    line-height: 1.5;
+}
+/* Secção Contactos */
+#contacto {
+    background-color: #f4f8fc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#contacto p {
+    color: #314b6b;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+#contactForm {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: left;
+}
+#contactForm label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #062b4f;
+    font-weight: 600;
+}
+#contactForm input,
+#contactForm textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #d6e4f0;
+    border-radius: 5px;
+}
+#contactForm button {
+    background-color: #0d6efd;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#contactForm button:hover {
+    background-color: #084db3;
+}
+/* Rodapé */
+.footer-container {
+    display: flex;
+    background-color: #062b4f;
+    color: white;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+}
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+    text-align: center;
+}
+.footer-section strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+.footer-section p {
+    font-size: 1rem;
+    color: #d6e4f0;
+}
