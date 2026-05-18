@@ -1,18 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediSync</title>
     <!-- favicon -->
     <link rel="shortcut icon" href="../assets/img/logo.png" type="image/png">
-      <!-- Font Awesome -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="../assets/fontawesome/all.min.css">
     <!-- estilos da página -->
     <link rel="stylesheet" href="../assets/css/1241126.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
 </head>
+
+<body>
+    <header class="container-fluid bg-dark text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-3">
+                <a href="index.html">
+                    <img src="../assets/img/logo.png" alt="Logo da MediSync" height="60" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end p-3">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Alterar password
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../login.html">
+                                Sair
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 bg-secondary text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        <i class="fa-solid fa-chart-column me-2"></i> Dashboard
+                    </a>
+                    <a href="views/equipamentos/equipamentos.html" class="nav-link text-white px-0 mb-2 d-block">
+                        <i class="fa-solid fa-laptop-medical me-2"></i> Equipamentos
+                    </a>
+                </nav>
+            </aside>
+            <main class="col-md-9 col-lg-10 p-4">
+                <section>
+                    <h2>MediSync</h2>
+                    <p>Escolhe uma opção no menu lateral para continuar.</p>
+                </section>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="card p-3">
+                            <i class="fas fa-laptop-medical"></i>
+                            <h5>Total de Equipamentos</h5>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card p-3">
+                            <i class="fas fa-circle-check"></i>
+                            <h5>Ativos</h5>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card p-3">
+                            <i class="fas fa-tools"></i>
+                            <h5>Em Manutenção</h5>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card p-3">
+                            <i class="fas fa-truck"></i>
+                            <h5>Fornecedores</h5>
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
