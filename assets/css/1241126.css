@@ -278,3 +278,28 @@ section {
     top: 20px;
     left: 20px;
 }
+/* Área privada */
+.menu-lateral {
+    background-color: #062b4f;
+}
+.menu-lateral h4 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+.menu-lateral .nav-link {
+    color: #ffffff;
+    padding: 8px;
+    text-decoration: none;
+}
+.menu-lateral .nav-link:hover {
+    background-color: #084db3;
+}
+.area-conteudo {
+    background-color: #f4f8fc;
+}
+.area-conteudo h2 {
+    color: #062b4f;
+}
+.area-conteudo p {
+    color: #314b6b;
+}
