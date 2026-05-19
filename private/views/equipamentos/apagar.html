@@ -43,3 +43,50 @@
             </div>
         </div>
     </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 bg-secondary text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Dashboard
+                    </a>
+                    <a href="lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/fornecedores.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Documentação
+                    </a>
+                    <a href="../localizacao/localizacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
+            <div class="col-md-9 col-lg-10 p-4">
+                <h2>Apagar Equipamento</h2>
+                <hr>
+                <p>Tem a certeza que pretende apagar este equipamento?</p>
+                <p><strong>Código interno:</strong> EQ-0001</p>
+                <p><strong>Designação:</strong> Monitor Multiparamétrico</p>
+                <p><strong>Categoria:</strong> Monitorização</p>
+                <p><strong>Estado:</strong> Ativo</p>
+                <form action="lista.html" method="post">
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar eliminação
+                    </button>
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
