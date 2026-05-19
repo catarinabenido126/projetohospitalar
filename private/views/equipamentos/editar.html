@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Equipamento</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <!-- estilos -->
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+</head>
+<body>
+    <header class="container-fluid bg-dark text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-3">
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" height="60" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end p-3">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Alterar password</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="../../../login.html">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 bg-secondary text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Dashboard
+                    </a>
+                    <a href="lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/fornecedores.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Documentação
+                    </a>
+                    <a href="../localizacao/localizacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
+            <div class="col-md-9 col-lg-10 p-4">
+                <h2>Novo Equipamento</h2>
+                <hr>
+                <form action="lista.html" method="post">
+                    <h4>Informação principal</h4>
+                    <div class="mb-3">
+                        <label for="codigo">Código interno</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="designacao">Designação</label>
+                        <input type="text" class="form-control" id="designacao" name="designacao" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="categoria" name="categoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option>Monitorização</option>
+                            <option>Suporte de Vida</option>
+                            <option>Diagnóstico</option>
+                            <option>Laboratório</option>
+                            <option>Imagiologia</option>
+                        </select>
+                    </div>
+                    <h4>Informação principal</h4>
+                    <div class="mb-3">
+                        <label for="marca">Marca</label>
+                        <input type="text" class="form-control" id="marca" name="marca">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modelo" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="modelo" name="modelo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroSerie" class="form-label">Número de série</label>
+                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fabricante" class="form-label">Fabricante</label>
+                        <input type="text" class="form-control" id="fabricante" name="fabricante">
+                    </div>
+                    <div class="mb-3">
+                        <label for="anoFabrico" class="form-label">Ano de fabrico</label>
+                        <input type="number" class="form-control" id="anoFabrico" name="anoFabrico">
+                    </div>
+                    <h4>Dados administrativos</h4>
+                            <div class="mb-3">
+            <label for="dataAquisicao" class="form-label">Data de aquisição</label>
+            <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao">
+        </div>
+        <div class="mb-3">
+            <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
+            <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao">
+        </div>
+        <div class="mb-3">
+            <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
+            <select class="form-select" id="tipoEntrada" name="tipoEntrada">
+                <option value="">Selecione o tipo de entrada</option>
+                <option>Compra</option>
+                <option>Doação</option>
+                <option>Aluguer</option>
+                <option>Empréstimo</option>
+            </select>
+        </div>
+        <h4>Estado e criticidade</h4>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="">Selecione o estado</option>
+                            <option>Ativo</option>
+                            <option>Em manutenção</option>
+                            <option>Em calibração</option>
+                            <option>Inativo</option>
+                            <option>Abatido</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="criticidade" class="form-label">Criticidade</label>
+                        <select class="form-select" id="criticidade" name="criticidade" required>
+                            <option value="">Selecione a criticidade</option>
+                            <option>Baixa</option>
+                            <option>Média</option>
+                            <option>Alta</option>
+                            <option>Suporte de vida</option>
+                        </select>
+                    </div>
+                     <h4>Localização</h4>
+                    <div class="mb-3">
+            <label for="edificio" class="form-label">Edifício</label>
+            <input type="text" class="form-control" id="edificio" name="edificio">
+        </div>
+        <div class="mb-3">
+            <label for="piso" class="form-label">Piso</label>
+            <input type="text" class="form-control" id="piso" name="piso">
+        </div>
+        <div class="mb-3">
+            <label for="servico" class="form-label">Serviço</label>
+            <select class="form-select" id="servico" name="servico" required>
+                <option value="">Selecione o serviço</option>
+                <option>Urgência</option>
+                <option>UCI</option>
+                <option>Bloco Operatório</option>
+                <option>Consultas</option>
+                <option>Laboratório</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="sala" class="form-label">Sala</label>
+            <input type="text" class="form-control" id="sala" name="sala">
+        </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
