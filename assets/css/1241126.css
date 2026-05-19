@@ -250,6 +250,7 @@ section {
 }
 /* Login */
 .card {
+    background-color: #062b4f;
     border: 1px solid #d6e4f0;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -258,7 +259,7 @@ section {
     max-height: 90px;
 }
 .form-label {
-    color: #062b4f;
+    color: #ffffff;
     font-weight: 600;
 }
 .btn-primary {
