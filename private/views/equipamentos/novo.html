@@ -26,13 +26,11 @@
                     <img src="../../../assets/img/logo.png" alt="Logo da MediSync" height="60" class="me-3">
                 </a>
             </div>
-
             <div class="col-6 text-end p-3">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         Utilizador
                     </button>
-
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Alterar password</a></li>
                         <li>
@@ -82,11 +80,14 @@
                         <input type="text" class="form-control" id="designacao" name="designacao">
                     </div>
                     <div class="mb-3">
-                        <label for="categoria">Categoria</label>
-                        <select class="form-select" id="categoria" name="categoria">
+                        <label for="categoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="categoria" name="categoria" required>
+                            <option value="">Selecione uma categoria</option>
                             <option>Monitorização</option>
+                            <option>Suporte de Vida</option>
                             <option>Diagnóstico</option>
                             <option>Laboratório</option>
+                            <option>Imagiologia</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -94,32 +95,55 @@
                         <input type="text" class="form-control" id="marca" name="marca">
                     </div>
                     <div class="mb-3">
-                        <label for="estado">Estado</label>
-                        <select class="form-select" id="estado" name="estado">
+                        <label for="modelo" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="modelo" name="modelo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroSerie" class="form-label">Número de série</label>
+                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="">Selecione o estado</option>
                             <option>Ativo</option>
                             <option>Em manutenção</option>
+                            <option>Em calibração</option>
                             <option>Inativo</option>
+                            <option>Abatido</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="criticidade">Criticidade</label>
-                        <select class="form-select" id="criticidade" name="criticidade">
+                        <label for="criticidade" class="form-label">Criticidade</label>
+                        <select class="form-select" id="criticidade" name="criticidade" required>
+                            <option value="">Selecione a criticidade</option>
                             <option>Baixa</option>
                             <option>Média</option>
                             <option>Alta</option>
+                            <option>Suporte de vida</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="localizacao">Localização</label>
-                        <select class="form-select" id="localizacao" name="localizacao">
+                        <label for="localizacao" class="form-label">Localização</label>
+                        <select class="form-select" id="localizacao" name="localizacao" required>
+                            <option value="">Selecione a localização</option>
                             <option>Urgência</option>
                             <option>UCI</option>
-                            <option>Cardiologia</option>
+                            <option>Bloco Operatório</option>
+                            <option>Consultas</option>
+                            <option>Laboratório</option>
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success">
                         Guardar
                     </button>
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
                 </form>
             </div>
             </select>
