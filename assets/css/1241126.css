@@ -329,4 +329,8 @@ header .col-6.text-end {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 70px;
+}
+header .dropdown {
+    margin-top: -30px;
 }
