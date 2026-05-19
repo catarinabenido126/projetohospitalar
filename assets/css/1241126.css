@@ -273,3 +273,8 @@ section {
     margin-top: 20px;
     font-size: 14px;
 }
+.voltar-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
