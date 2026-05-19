@@ -296,6 +296,7 @@ section {
 }
 .area-conteudo {
     background-color: #f4f8fc;
+    padding-top: 0;
 }
 .area-conteudo h2 {
     color: #062b4f;
@@ -305,10 +306,11 @@ section {
 }
 header.bg-dark {
     background-color: #062b4f;
-    height: 80px;
+    height: 70px;
 }
 header img {
-    height: 130px;
+    height: 120px;
+    margin-top: -30px;
 }
 header .btn-secondary {
     background-color: #0d6efd;
@@ -316,10 +318,15 @@ header .btn-secondary {
 }
 header .btn-secondary:hover {
     background-color: #084db3;
+    border: none;
+    margin-top: -30px;
 }
 header .row {
-    min-height: 70px;
+    height: 70px;
+    align-items: center;
 }
-header {
-    overflow: hidden;
+header .col-6.text-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
