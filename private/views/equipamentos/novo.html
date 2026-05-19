@@ -16,7 +16,6 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
 </head>
-
 <body>
     <header class="container-fluid bg-dark text-white">
         <div class="row align-items-center">
@@ -70,13 +69,14 @@
                 <h2>Novo Equipamento</h2>
                 <hr>
                 <form action="lista.html" method="post">
+                    <h4>Informação principal</h4>
                     <div class="mb-3">
                         <label for="codigo">Código interno</label>
-                        <input type="text" class="form-control" id="codigo" name="codigo">
+                        <input type="text" class="form-control" id="codigo" name="codigo" required>
                     </div>
                     <div class="mb-3">
                         <label for="designacao">Designação</label>
-                        <input type="text" class="form-control" id="designacao" name="designacao">
+                        <input type="text" class="form-control" id="designacao" name="designacao" required>
                     </div>
                     <div class="mb-3">
                         <label for="categoria" class="form-label">Categoria</label>
@@ -89,6 +89,7 @@
                             <option>Imagiologia</option>
                         </select>
                     </div>
+                    <h4>Informação principal</h4>
                     <div class="mb-3">
                         <label for="marca">Marca</label>
                         <input type="text" class="form-control" id="marca" name="marca">
@@ -101,6 +102,34 @@
                         <label for="numeroSerie" class="form-label">Número de série</label>
                         <input type="text" class="form-control" id="numeroSerie" name="numeroSerie">
                     </div>
+                    <div class="mb-3">
+                        <label for="fabricante" class="form-label">Fabricante</label>
+                        <input type="text" class="form-control" id="fabricante" name="fabricante">
+                    </div>
+                    <div class="mb-3">
+                        <label for="anoFabrico" class="form-label">Ano de fabrico</label>
+                        <input type="number" class="form-control" id="anoFabrico" name="anoFabrico">
+                    </div>
+                    <h4>Dados administrativos</h4>
+                            <div class="mb-3">
+            <label for="dataAquisicao" class="form-label">Data de aquisição</label>
+            <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao">
+        </div>
+        <div class="mb-3">
+            <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
+            <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao">
+        </div>
+        <div class="mb-3">
+            <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
+            <select class="form-select" id="tipoEntrada" name="tipoEntrada">
+                <option value="">Selecione o tipo de entrada</option>
+                <option>Compra</option>
+                <option>Doação</option>
+                <option>Aluguer</option>
+                <option>Empréstimo</option>
+            </select>
+        </div>
+        <h4>Estado e criticidade</h4>
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select class="form-select" id="estado" name="estado" required>
@@ -122,17 +151,30 @@
                             <option>Suporte de vida</option>
                         </select>
                     </div>
+                     <h4>Localização</h4>
                     <div class="mb-3">
-                        <label for="localizacao" class="form-label">Localização</label>
-                        <select class="form-select" id="localizacao" name="localizacao" required>
-                            <option value="">Selecione a localização</option>
-                            <option>Urgência</option>
-                            <option>UCI</option>
-                            <option>Bloco Operatório</option>
-                            <option>Consultas</option>
-                            <option>Laboratório</option>
-                        </select>
-                    </div>
+            <label for="edificio" class="form-label">Edifício</label>
+            <input type="text" class="form-control" id="edificio" name="edificio">
+        </div>
+        <div class="mb-3">
+            <label for="piso" class="form-label">Piso</label>
+            <input type="text" class="form-control" id="piso" name="piso">
+        </div>
+        <div class="mb-3">
+            <label for="servico" class="form-label">Serviço</label>
+            <select class="form-select" id="servico" name="servico" required>
+                <option value="">Selecione o serviço</option>
+                <option>Urgência</option>
+                <option>UCI</option>
+                <option>Bloco Operatório</option>
+                <option>Consultas</option>
+                <option>Laboratório</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="sala" class="form-label">Sala</label>
+            <input type="text" class="form-control" id="sala" name="sala">
+        </div>
                     <div class="mb-3">
                         <label for="observacoes" class="form-label">Observações</label>
                         <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
@@ -149,4 +191,5 @@
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
