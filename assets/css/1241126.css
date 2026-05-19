@@ -303,3 +303,23 @@ section {
 .area-conteudo p {
     color: #314b6b;
 }
+header.bg-dark {
+    background-color: #062b4f;
+    height: 80px;
+}
+header img {
+    height: 130px;
+}
+header .btn-secondary {
+    background-color: #0d6efd;
+    border: none;
+}
+header .btn-secondary:hover {
+    background-color: #084db3;
+}
+header .row {
+    min-height: 70px;
+}
+header {
+    overflow: hidden;
+}
