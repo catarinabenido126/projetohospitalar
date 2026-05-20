@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Localização - MediSync</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+    <!-- estilos -->
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+</head>
+<body>
+    <header class="container-fluid barra-superior text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-2">
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Alterar password
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../../../login.html">
+                                Sair
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Dashboard
+                    </a>
+                    <a href="../equipamentos/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Documentação
+                    </a>
+                    <a href="../localizacao/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <h2>Nova Localização</h2>
+                <hr>
+                <form action="../localizacao/lista.html" method="post">
+                    <h4>Estrutura física</h4>
+                    <div class="mb-3">
+                        <label for="edificio" class="form-label">
+                            Edifício
+                        </label>
+                        <input type="text" class="form-control" id="edificio" name="edificio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="piso" class="form-label">
+                            Piso
+                        </label>
+                        <input type="text" class="form-control" id="piso" name="piso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sala" class="form-label">
+                            Sala
+                        </label>
+                        <input type="text" class="form-control" id="sala" name="sala" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servico" class="form-label">
+                            Serviço
+                        </label>
+                        <select class="form-select" id="servico" name="servico" required>
+                            <option value="">
+                                Selecione um serviço
+                            </option>
+                            <option>UCI</option>
+                            <option>Urgência</option>
+                            <option>Bloco Operatório</option>
+                            <option>Consultas</option>
+                            <option>Laboratório</option>
+                            <option>Pediatria</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">
+                            Tipo de localização
+                        </label>
+                        <select class="form-select" id="tipo" name="tipo" required>
+                            <option value="">
+                                Selecione um tipo
+                            </option>
+                            <option>Internamento</option>
+                            <option>Bloco Operatório</option>
+                            <option>Laboratório</option>
+                            <option>Consultas</option>
+                            <option>Armazém</option>
+                        </select>
+                    </div>
+                    <h4>Responsável</h4>
+                    <div class="mb-3">
+                        <label for="responsavel" class="form-label">
+                            Responsável pela área
+                        </label>
+                        <input type="text" class="form-control" id="responsavel" name="responsavel">
+                    </div>
+                    <div class="mb-3">
+                        <label for="contacto" class="form-label">
+                            Contacto
+                        </label>
+                        <input type="tel" class="form-control" id="contacto" name="contacto">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            Email
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <h4>Observações</h4>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">
+                            Observações
+                        </label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                    <a href="../localizacao/lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
