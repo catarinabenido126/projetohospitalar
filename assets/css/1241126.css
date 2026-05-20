@@ -295,12 +295,18 @@ section {
     background-color: #084db3;
 }
 .area-conteudo {
-    background-color: #f4f8fc;
+    background-image: url("../img/fundoindex.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 40px;
 }
 .area-conteudo section {
     margin-top: 80px;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 40px;
+    border-radius: 15px;
 }
 .area-conteudo h2 {
     color: #062b4f;
