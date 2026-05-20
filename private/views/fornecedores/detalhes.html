@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Fornecedor</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+    <!-- estilos -->
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+</head>
+<body>
+    <header class="container-fluid barra-superior text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-2">
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">Alterar password</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../../../login.html">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Dashboard
+                    </a>
+                    <a href="../equipamentos/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Documentação
+                    </a>
+                    <a href="../localizacao/localizacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <h2>Detalhes do Fornecedor</h2>
+                <hr>
+                <h4>Informação principal</h4>
+                <p><strong>Nome da empresa:</strong> Philips Healthcare</p>
+                <p><strong>NIF:</strong> 501234567</p>
+                <p><strong>Tipo de fornecedor:</strong> Fabricante</p>
+                <hr>
+                <h4>Contactos</h4>
+                <p><strong>Telefone:</strong> 222 000 100</p>
+                <p><strong>Email:</strong> geral@philips-healthcare.pt</p>
+                <p><strong>Website:</strong> https://www.philips.pt</p>
+                <hr>
+                <h4>Pessoa de contacto</h4>
+                <p><strong>Nome:</strong> Ana Martins</p>
+                <p><strong>Telefone:</strong> 912 345 678</p>
+                <p><strong>Email:</strong> ana.martins@philips-healthcare.pt</p>
+                <hr>
+                <h4>Morada</h4>
+                <p><strong>Morada:</strong> Rua da Saúde, 120</p>
+                <p><strong>Código postal:</strong> 4200-300</p>
+                <p><strong>Cidade:</strong> Porto</p>
+                <p><strong>País:</strong> Portugal</p>
+                <hr>
+                <h4>Observações</h4>
+                <p>
+                    Fornecedor associado a equipamentos de monitorização hospitalar.
+                </p>
+                <a href="../fornecedores/lista.html" class="btn btn-secondary">
+                    Voltar
+                </a>
+                <a href="../fornecedores/editar.html" class="btn btn-warning">
+                    Editar
+                </a>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
