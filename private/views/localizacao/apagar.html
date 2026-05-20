@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apagar Localização - MediSync</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+    <!-- estilos -->
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+</head>
+<body>
+    <header class="container-fluid barra-superior text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-2">
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Alterar password
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../../../login.html">
+                                Sair
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+                <h4>Menu</h4>
+                <nav>
+                    <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Dashboard
+                    </a>
+                    <a href="../equipamentos/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Documentação
+                    </a>
+                    <a href="lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <h2>Apagar Localização</h2>
+                <hr>
+                <p>
+                    Tem a certeza que pretende apagar esta localização?
+                </p>
+                <div class="mb-3">
+                    <strong>Edifício:</strong>
+                    Edifício A
+                </div>
+                <div class="mb-3">
+                    <strong>Piso:</strong>
+                    Piso 1
+                </div>
+                <div class="mb-3">
+                    <strong>Sala:</strong>
+                    Sala 101
+                </div>
+                <div class="mb-3">
+                    <strong>Serviço:</strong>
+                    UCI
+                </div>
+                <div class="mb-3">
+                    <strong>Responsável:</strong>
+                    Enf. Marta Silva
+                </div>
+                <div class="mb-3">
+                    <strong>Contacto:</strong>
+                    912 345 678
+                </div>
+                <form action="lista.html" method="post">
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar eliminação
+                    </button>
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
