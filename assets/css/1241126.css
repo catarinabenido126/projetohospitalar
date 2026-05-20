@@ -258,7 +258,7 @@ section {
 .card img {
     max-height: 150px;
 }
-.form-label {
+.card .form-label {
     color: #ffffff;
     font-weight: 600;
 }
@@ -315,6 +315,12 @@ section {
     color: #314b6b;
     font-size: 1.2em;
     margin-bottom: 15px;
+}
+.area-conteudo label {
+    display: block;
+    margin-bottom: 5px;
+    color: #062b4f;
+    font-weight: 600;
 }
 .barra-superior {
     background-color: #062b4f;
