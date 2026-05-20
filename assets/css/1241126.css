@@ -280,7 +280,7 @@ section {
 }
 /* Área privada */
 .menu-lateral {
-    background-color: #7d9fc2;
+    background-color: #062b4f;
 }
 .menu-lateral h4 {
     color: #ffffff;
@@ -294,7 +294,7 @@ section {
 .menu-lateral .nav-link:hover {
     background-color: #084db3;
 }
-.area-conteudo {
+.area-conteudo.pagina-inicial {
     background-image: url("../img/fundoindex.png");
     background-size: cover;
     background-position: center;
