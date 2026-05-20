@@ -316,33 +316,32 @@ section {
     font-size: 1.2em;
     margin-bottom: 15px;
 }
-header.barra-superior {
+.barra-superior {
     background-color: #062b4f;
     height: 70px;
 }
-header img {
+.barra-superior img {
     height: 120px;
     margin-top: -30px;
 }
-header .btn-secondary {
+.barra-superior .btn-secondary {
     background-color: #0d6efd;
     border: none;
 }
-header .btn-secondary:hover {
+.barra-superior .btn-secondary:hover {
     background-color: #084db3;
     border: none;
-    margin-top: -30px;
 }
-header .row {
+.barra-superior .row {
     height: 70px;
     align-items: center;
 }
-header .col-6.text-end {
+.barra-superior .col-6.text-end {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 70px;
 }
-header .dropdown {
+.barra-superior .dropdown {
     margin-top: -30px;
 }
