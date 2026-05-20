@@ -11,7 +11,8 @@
     <!-- estilos -->
     <link rel="stylesheet" href="../../../assets/css/1241126.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
 </head>
@@ -19,9 +20,9 @@
     <header class="container-fluid barra-superior text-white">
         <div class="row align-items-center">
             <div class="col-6 d-flex align-items-center p-2">
-                 <a href="../../index.html">
-                     <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
-                 </a>
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+                </a>
             </div>
             <div class="col-6 text-end">
                 <div class="dropdown">
@@ -79,10 +80,10 @@
                 </div>
                 <hr>
                 <p class="text-muted">
-                    Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos detalhes.
+                    Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos
+                    detalhes.
                 </p>
-                <div class="mb-4">
-    <h4>Pesquisa e filtros</h4>
+    <div class="mb-4">
     <form action="lista.html" method="get">
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -131,63 +132,83 @@
                     <option>Consultas</option>
                     <option>Laboratório</option>
                 </select>
-                </div>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    Filtrar
-                </button>
-                <a href="lista.html" class="btn btn-secondary">
-                    Limpar
-                </a>
-                </form>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Código</th>
-                                <th>Designação</th>
-                                <th>Categoria</th>
-                                <th>Estado</th>
-                                <th>Criticidade</th>
-                                <th>Localização</th>
-                                <th class="text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>EQ-0001</td>
-                                <td>Monitor Multiparamétrico</td>
-                                <td>Monitorização</td>
-                                <td>Ativo</td>
-                                <td>Alta</td>
-                                <td>UCI - Sala 101</td>
-                                <td class="text-center">
-                                    <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">Ver</a>
-                                    <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">Editar</a>
-                                    <a href="apagar.html" class="btn btn-sm btn-outline-danger">Apagar</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EQ-0002</td>
-                                <td>Ventilador Pulmonar</td>
-                                <td>Suporte de Vida</td>
-                                <td>Em manutenção</td>
-                                <td>Suporte de vida</td>
-                                <td>UCI - Sala 102</td>
-                                <td class="text-center">
-                                    <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">Ver</a>
-                                    <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">Editar</a>
-                                    <a href="apagar.html" class="btn btn-sm btn-outline-danger">Apagar</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-                </div>
-                </div>
-                <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
-                </body>
-                
-                </html>
+            </div>
+        </div>
+        <div class="d-flex gap-2 mb-4">
+            <button type="submit" class="btn btn-primary">
+                Filtrar
+            </button>
+            <a href="lista.html" class="btn btn-secondary">
+                Limpar
+            </a>
+        </div>
+        <!-- Ordenação -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="ordenacao" class="form-label">Critério de ordenação</label>
+                <select class="form-select" id="ordenacao" name="ordenacao">
+                    <option value="">Selecione uma opção</option>
+                    <option>Código interno (ascendente)</option>
+                    <option>Código interno (descendente)</option>
+                    <option>Designação (A-Z)</option>
+                    <option>Designação (Z-A)</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                Ordenar
+            </button>
+
+            <a href="lista.html" class="btn btn-secondary">
+                Limpar
+            </a>
+        </div>
+    </form>
+</div>            
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Designação</th>
+                    <th>Categoria</th>
+                    <th>Estado</th>
+                    <th>Criticidade</th>
+                    <th>Localização</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EQ-0001</td>
+                    <td>Monitor Multiparamétrico</td>
+                    <td>Monitorização</td>
+                    <td>Ativo</td>
+                    <td>Alta</td>
+                    <td>UCI - Sala 101</td>
+                    <td class="text-center">
+                        <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">Ver</a>
+                        <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                        <a href="apagar.html" class="btn btn-sm btn-outline-danger">Apagar</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>EQ-0002</td>
+                    <td>Ventilador Pulmonar</td>
+                    <td>Suporte de Vida</td>
+                    <td>Em manutenção</td>
+                    <td>Suporte de vida</td>
+                    <td>UCI - Sala 102</td>
+                    <td class="text-center">
+                        <a href="detalhes.html" class="btn btn-sm btn-outline-primary me-1">Ver</a>
+                        <a href="editar.html" class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                        <a href="apagar.html" class="btn btn-sm btn-outline-danger">Apagar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
