@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Fornecedor - MediSync</title>
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+</head>
+<body>
+<header class="container-fluid barra-superior text-white">
+    <div class="row align-items-center">
+        <div class="col-6 d-flex align-items-center p-2">
+            <a href="../../index.html">
+                <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+            </a>
+        </div>
+        <div class="col-6 text-end">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Utilizador
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">Alterar password</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="../../../login.html">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+            <h4>Menu</h4>
+            <nav>
+                <a href="../../index.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Página Inicial
+                </a>
+                <a href="../dashboard/dashboard.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Dashboard
+                </a>
+                <a href="../equipamentos/lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Equipamentos
+                </a>
+                <a href="lista.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Fornecedores
+                </a>
+                <a href="../documentacao/documentacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Documentação
+                </a>
+                <a href="../localizacao/localizacao.html" class="nav-link text-white px-0 mb-2 d-block">
+                    Localizações
+                </a>
+            </nav>
+        </aside>
+        <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+            <h2>Editar Fornecedor</h2>
+            <hr>
+            <form action="lista.html" method="post">
+                <h4>Informação principal</h4>
+                <div class="mb-3">
+                    <label for="nomeEmpresa" class="form-label">Nome da empresa</label>
+                    <input type="text" class="form-control" id="nomeEmpresa" name="nomeEmpresa" value="Philips Healthcare" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nif" class="form-label">NIF</label>
+                    <input type="text" class="form-control" id="nif" name="nif" value="501234567" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tipoFornecedor" class="form-label">Tipo de fornecedor</label>
+                    <select class="form-select" id="tipoFornecedor" name="tipoFornecedor" required>
+                        <option value="">Selecione um tipo</option>
+                        <option selected>Fabricante</option>
+                        <option>Distribuidor</option>
+                        <option>Assistência técnica</option>
+                        <option>Consumíveis ou acessórios</option>
+                    </select>
+                </div>
+                <h4>Contactos</h4>
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="tel" class="form-control" id="telefone" name="telefone" value="222 000 100">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="geral@philips.pt">
+                </div>
+                <div class="mb-3">
+                    <label for="website" class="form-label">Website</label>
+                    <input type="url" class="form-control" id="website" name="website" value="https://www.philips.pt">
+                </div>
+                <h4>Pessoa de contacto</h4>
+                <div class="mb-3">
+                    <label for="pessoaContacto" class="form-label">Pessoa de contacto</label>
+                    <input type="text" class="form-control" id="pessoaContacto" name="pessoaContacto" value="Ana Martins">
+                </div>
+                <div class="mb-3">
+                    <label for="telefoneContacto" class="form-label">Telefone da pessoa de contacto</label>
+                    <input type="tel" class="form-control" id="telefoneContacto" name="telefoneContacto" value="912 345 678">
+                </div>
+                <div class="mb-3">
+                    <label for="emailContacto" class="form-label">Email da pessoa de contacto</label>
+                    <input type="email" class="form-control" id="emailContacto" name="emailContacto" value="ana.martins@philips.pt">
+                </div>
+                <h4>Morada</h4>
+                <div class="mb-3">
+                    <label for="morada" class="form-label">Morada</label>
+                    <input type="text" class="form-control" id="morada" name="morada" value="Rua da Saúde, 120">
+                </div>
+                <div class="mb-3">
+                    <label for="codigoPostal" class="form-label">Código postal</label>
+                    <input type="text" class="form-control" id="codigoPostal" name="codigoPostal" value="4200-300">
+                </div>
+                <div class="mb-3">
+                    <label for="cidade" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="cidade" name="cidade" value="Porto">
+                </div>
+                <div class="mb-3">
+                    <label for="pais" class="form-label">País</label>
+                    <input type="text" class="form-control" id="pais" name="pais" value="Portugal">
+                </div>
+                <h4>Observações</h4>
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4">Fornecedor associado a equipamentos de monitorização hospitalar.</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    Guardar
+                </button>
+                <a href="lista.html" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
+        </main>
+    </div>
+</div>
+<script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
