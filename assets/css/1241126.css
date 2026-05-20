@@ -296,13 +296,21 @@ section {
 }
 .area-conteudo {
     background-color: #f4f8fc;
-    padding-top: 0;
+    padding: 40px;
+}
+.area-conteudo section {
+    margin-top: 80px;
+    text-align: center;
 }
 .area-conteudo h2 {
     color: #062b4f;
+    font-size: 2.5em;
+    margin-bottom: 20px;
 }
 .area-conteudo p {
     color: #314b6b;
+    font-size: 1.2em;
+    margin-bottom: 15px;
 }
 header.barra-superior {
     background-color: #062b4f;
