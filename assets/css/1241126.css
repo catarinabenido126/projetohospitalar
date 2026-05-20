@@ -280,7 +280,7 @@ section {
 }
 /* Área privada */
 .menu-lateral {
-    background-color: #7baddf;
+    background-color: #7d9fc2;
 }
 .menu-lateral h4 {
     color: #ffffff;
@@ -298,15 +298,13 @@ section {
     background-image: url("../img/fundoindex.png");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    height: 100vh;
     padding: 40px;
+    overflow: hidden;
 }
 .area-conteudo section {
     margin-top: 80px;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.75);
-    padding: 40px;
-    border-radius: 15px;
 }
 .area-conteudo h2 {
     color: #062b4f;
