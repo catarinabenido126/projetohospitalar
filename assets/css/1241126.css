@@ -280,7 +280,7 @@ section {
 }
 /* Área privada */
 .menu-lateral {
-    background-color: #062b4f;
+    background-color: #7baddf;
 }
 .menu-lateral h4 {
     color: #ffffff;
@@ -305,7 +305,7 @@ section {
     color: #314b6b;
 }
 header.barra-superior {
-    background-color: #bbd8f0;
+    background-color: #062b4f;
     height: 70px;
 }
 header img {
