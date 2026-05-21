@@ -416,7 +416,9 @@ section {
     margin-bottom: 8px;
     text-align: left;
 }
-.caixa-filtros,
+.caixa-filtros {
+    padding: 20px 0px;
+}
 .caixa-tabela {
     background-color: #ffffff;
     padding: 20px;
