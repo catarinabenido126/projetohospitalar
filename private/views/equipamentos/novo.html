@@ -137,7 +137,7 @@
                             <option>Empréstimo</option>
                         </select>
                     </div>
-        <h4>Estado e criticidade</h4>
+                    <h4>Estado e criticidade</h4>
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select class="form-select" id="estado" name="estado" required>
@@ -159,37 +159,91 @@
                             <option>Suporte de vida</option>
                         </select>
                     </div>
-                     <h4>Localização</h4>
+                    <h4>Localização</h4>
                     <div class="mb-3">
-            <label for="edificio" class="form-label">Edifício</label>
-            <input type="text" class="form-control" id="edificio" name="edificio">
-        </div>
-        <div class="mb-3">
-            <label for="piso" class="form-label">Piso</label>
-            <input type="text" class="form-control" id="piso" name="piso">
-        </div>
-        <div class="mb-3">
-            <label for="servico" class="form-label">Serviço</label>
-            <select class="form-select" id="servico" name="servico" required>
-                <option value="">Selecione o serviço onde se localiza</option>
-                <option>Urgência</option>
-                <option>UCI</option>
-                <option>Bloco Operatório</option>
-                <option>Consultas</option>
-                <option>Laboratório</option>
-                <option>Radiologia</option>
-                <option>Reabilitação</option>
-                <option>Armazém</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="sala" class="form-label">Sala</label>
-            <input type="text" class="form-control" id="sala" name="sala">
-        </div>
+                        <label for="edificio" class="form-label">Edifício</label>
+                        <input type="text" class="form-control" id="edificio" name="edificio">
+                    </div>
+                    <div class="mb-3">
+                        <label for="piso" class="form-label">Piso</label>
+                        <input type="text" class="form-control" id="piso" name="piso">
+                    </div>
+                    <div class="mb-3">
+                        <label for="servico" class="form-label">Serviço</label>
+                        <select class="form-select" id="servico" name="servico" required>
+                            <option value="">Selecione o serviço onde se localiza</option>
+                            <option>Urgência</option>
+                            <option>UCI</option>
+                            <option>Bloco Operatório</option>
+                            <option>Consultas</option>
+                            <option>Laboratório</option>
+                            <option>Radiologia</option>
+                            <option>Reabilitação</option>
+                            <option>Armazém</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sala" class="form-label">Sala</label>
+                        <input type="text" class="form-control" id="sala" name="sala">
+                    </div>
                     <div class="mb-3">
                         <label for="observacoes" class="form-label">Observações</label>
                         <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
                     </div>
+                    <h4>Componentes associados</h4>
+                    <p class="text-muted">
+                        Adicione os componentes ou acessórios associados ao equipamento.
+                    </p>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="codigo-componente-1" class="form-label">
+                                    Código do componente
+                                </label>
+                                <input type="text" class="form-control" id="codigo-componente-1"
+                                    name="codigo-componente-1" placeholder="Ex: EQ-0001.01">
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="nome-componente-1" class="form-label">
+                                    Nome do componente
+                                </label>
+                                <input type="text" class="form-control" id="nome-componente-1" name="nome-componente-1">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="notificacao-1" class="form-label">
+                                    Notificação
+                                </label>
+                                <input type="text" class="form-control" id="notificacao-1" name="notificacao-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded p-3 mb-4">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="codigo-componente-2" class="form-label">
+                                    Código do componente
+                                </label>
+                                <input type="text" class="form-control" id="codigo-componente-2"
+                                    name="codigo-componente-2" placeholder="Ex: EQ-0001.02">
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="nome-componente-2" class="form-label">
+                                    Nome do componente
+                                </label>
+                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="notificacao-2" class="form-label">
+                                    Notificação
+                                </label>
+                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary mb-4">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Adicionar componente
+                    </button>
                     <button type="submit" class="btn btn-success">
                         Guardar
                     </button>
@@ -197,8 +251,8 @@
                         Cancelar
                     </a>
                 </form>
-            </div>
         </div>
+    </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>

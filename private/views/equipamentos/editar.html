@@ -13,7 +13,7 @@
         rel="stylesheet">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
-<!-- estilos -->
+    <!-- estilos -->
     <link rel="stylesheet" href="../../../assets/css/1241126.css">
 </head>
 <body>
@@ -82,7 +82,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="designacao">Designação</label>
-                        <input type="text" class="form-control" id="designacao" name="designacao" value="Monitor Multiparamétrico" required>
+                        <input type="text" class="form-control" id="designacao" name="designacao"
+                            value="Monitor Multiparamétrico" required>
                     </div>
                     <div class="mb-3">
                         <label for="categoria" class="form-label">Categoria</label>
@@ -108,36 +109,40 @@
                     </div>
                     <div class="mb-3">
                         <label for="numeroSerie" class="form-label">Número de série</label>
-                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie" value="MP5-2022-45873">
+                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie"
+                            value="MP5-2022-45873">
                     </div>
                     <div class="mb-3">
                         <label for="fabricante" class="form-label">Fabricante</label>
-                        <input type="text" class="form-control" id="fabricante" name="fabricante" value="Philips Healthcare">
+                        <input type="text" class="form-control" id="fabricante" name="fabricante"
+                            value="Philips Healthcare">
                     </div>
                     <div class="mb-3">
                         <label for="anoFabrico" class="form-label">Ano de fabrico</label>
                         <input type="number" class="form-control" id="anoFabrico" name="anoFabrico" value="2022">
                     </div>
                     <h4>Dados administrativos</h4>
-                            <div class="mb-3">
-            <label for="dataAquisicao" class="form-label">Data de aquisição</label>
-            <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao" value="15/03/2023">
-        </div>
-        <div class="mb-3">
-            <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
-            <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao "value="3500">
-        </div>
-        <div class="mb-3">
-            <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
-            <select class="form-select" id="tipoEntrada" name="tipoEntrada">
-                <option value="">Selecione o tipo de entrada</option>
-                <option selected>Compra</option>
-                <option>Doação</option>
-                <option>Aluguer</option>
-                <option>Empréstimo</option>
-            </select>
-        </div>
-        <h4>Estado e criticidade</h4>
+                    <div class="mb-3">
+                        <label for="dataAquisicao" class="form-label">Data de aquisição</label>
+                        <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao"
+                            value="15/03/2023">
+                    </div>
+                    <div class="mb-3">
+                        <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
+                        <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao "
+                            value="3500">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
+                        <select class="form-select" id="tipoEntrada" name="tipoEntrada">
+                            <option value="">Selecione o tipo de entrada</option>
+                            <option selected>Compra</option>
+                            <option>Doação</option>
+                            <option>Aluguer</option>
+                            <option>Empréstimo</option>
+                        </select>
+                    </div>
+                    <h4>Estado e criticidade</h4>
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select class="form-select" id="estado" name="estado" required>
@@ -159,36 +164,91 @@
                             <option>Suporte de vida</option>
                         </select>
                     </div>
-                     <h4>Localização</h4>
+                    <h4>Localização</h4>
                     <div class="mb-3">
-            <label for="edificio" class="form-label">Edifício</label>
-            <input type="text" class="form-control" id="edificio" name="edificio" value="Edifício A">
-        </div>
-        <div class="mb-3">
-            <label for="piso" class="form-label">Piso</label>
-            <input type="text" class="form-control" id="piso" name="piso" value="1º Andar">
-        </div>
-        <div class="mb-3">
-            <label for="servico" class="form-label">Serviço</label>
-            <select class="form-select" id="servico" name="servico" required>
-                <option value="">Selecione o serviço onde se localiza</option>
-                <option>Urgência</option>
-                <option selected>UCI</option>
-                <option>Bloco Operatório</option>
-                <option>Consultas</option>
-                <option>Laboratório</option>
-                <option>Radiologia</option>
-                <option>Reabilitação</option>
-                <option>Armazém</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="sala" class="form-label">Sala</label>
-            <input type="text" class="form-control" id="sala" name="sala" value="Sala 1">
-        </div>
+                        <label for="edificio" class="form-label">Edifício</label>
+                        <input type="text" class="form-control" id="edificio" name="edificio" value="Edifício A">
+                    </div>
+                    <div class="mb-3">
+                        <label for="piso" class="form-label">Piso</label>
+                        <input type="text" class="form-control" id="piso" name="piso" value="1º Andar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="servico" class="form-label">Serviço</label>
+                        <select class="form-select" id="servico" name="servico" required>
+                            <option value="">Selecione o serviço onde se localiza</option>
+                            <option>Urgência</option>
+                            <option selected>UCI</option>
+                            <option>Bloco Operatório</option>
+                            <option>Consultas</option>
+                            <option>Laboratório</option>
+                            <option>Radiologia</option>
+                            <option>Reabilitação</option>
+                            <option>Armazém</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sala" class="form-label">Sala</label>
+                        <input type="text" class="form-control" id="sala" name="sala" value="Sala 1">
+                    </div>
+                    <h4>Componentes associados</h4>
+
+                    <p class="text-muted">
+                        Componentes atualmente associados ao equipamento.
+                    </p>
+
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="codigo-componente-1" class="form-label">Código do componente</label>
+                                <input type="text" class="form-control" id="codigo-componente-1"
+                                    name="codigo-componente-1" value="EQ-0001.01">
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="nome-componente-1" class="form-label">Nome do componente</label>
+                                <input type="text" class="form-control" id="nome-componente-1" name="nome-componente-1"
+                                    value="Sensor SpO₂">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="notificacao-1" class="form-label">Notificação</label>
+                                <input type="text" class="form-control" id="notificacao-1" name="notificacao-1"
+                                    value="Sem notificações">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="codigo-componente-2" class="form-label">Código do componente</label>
+                                <input type="text" class="form-control" id="codigo-componente-2"
+                                    name="codigo-componente-2" value="EQ-0001.02">
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="nome-componente-2" class="form-label">Nome do componente</label>
+                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2"
+                                    value="Cabo ECG">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="notificacao-2" class="form-label">Notificação</label>
+                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2"
+                                    value="Cabo com desgaste visível">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-outline-primary mb-4">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Adicionar componente
+                    </button>
                     <div class="mb-3">
                         <label for="observacoes" class="form-label">Observações</label>
-                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
+                        <textarea class="form-control" id="observacoes" name="observacoes"
+                            rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
                     </div>
                     <button type="submit" class="btn btn-success">
                         Guardar
@@ -197,10 +257,9 @@
                         Cancelar
                     </a>
                 </form>
-            </div>
         </div>
+    </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

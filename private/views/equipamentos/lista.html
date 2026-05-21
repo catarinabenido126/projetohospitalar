@@ -95,7 +95,8 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="pesquisa" class="form-label">Pesquisar equipamento</label>
-                                <input type="text" class="form-control" id="pesquisa" name="pesquisa" placeholder="Ex: EQ-0001">
+                                <input type="text" class="form-control" id="pesquisa" name="pesquisa"
+                                    placeholder="Ex: EQ-0001">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="categoria" class="form-label">Categoria</label>
@@ -145,39 +146,39 @@
                                     <option>Armazém</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="d-flex gap-2 mb-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-filter me-1"></i>
+                                Filtrar
+                            </button>
+                            <a href="../equipamentos/lista.html" class="btn btn-secondary">
+                                <i class="fa-solid fa-broom me-1"></i>
+                                Limpar
+                            </a>
+                        </div>
+                        <!-- Ordenação -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ordenacao" class="form-label">Critério de ordenação</label>
+                                <select class="form-select" id="ordenacao" name="ordenacao">
+                                    <option value="">Selecione uma opção</option>
+                                    <option>Código interno (ascendente)</option>
+                                    <option>Código interno (descendente)</option>
+                                    <option>Designação (A-Z)</option>
+                                    <option>Designação (Z-A)</option>
+                                </select>
                             </div>
-                            <div class="d-flex gap-2 mb-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-filter me-1"></i>
-                                    Filtrar
-                                </button>
-                                <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                                    <i class="fa-solid fa-broom me-1"></i>
-                                    Limpar
-                                </a>
-                            </div>
-                            <!-- Ordenação -->
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="ordenacao" class="form-label">Critério de ordenação</label>
-                                    <select class="form-select" id="ordenacao" name="ordenacao">
-                                        <option value="">Selecione uma opção</option>
-                                        <option>Código interno (ascendente)</option>
-                                        <option>Código interno (descendente)</option>
-                                        <option>Designação (A-Z)</option>
-                                        <option>Designação (Z-A)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-arrow-down-a-z me-1"></i>
-                                    Ordenar
-                                </button>
-                                <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                                    <i class="fa-solid fa-broom me-1"></i>
-                                    Limpar
-                                </a>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-arrow-down-a-z me-1"></i>
+                                Ordenar
+                            </button>
+                            <a href="../equipamentos/lista.html" class="btn btn-secondary">
+                                <i class="fa-solid fa-broom me-1"></i>
+                                Limpar
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -197,7 +198,9 @@
                         <tbody>
                             <tr>
                                 <td>EQ-0001</td>
-                                <td>Monitor Multiparamétrico</td>
+                                <td>Monitor Multiparamétrico
+                                    <br><small class="text-muted"> 3 componentes associados</small>
+                                </td>
                                 <td>Monitorização</td>
                                 <td><span class="badge bg-success">Ativo</span></td>
                                 <td><span class="badge bg-danger">Alta</span></td>
@@ -216,7 +219,9 @@
                             </tr>
                             <tr>
                                 <td>EQ-0002</td>
-                                <td>Ventilador Pulmonar</td>
+                                <td>Ventilador Pulmonar
+                                    <br> <small class="text-muted">2 componentes associados </small>
+                                </td>
                                 <td>Suporte de Vida</td>
                                 <td><span class="badge bg-warning text-dark">Em manutenção</span></td>
                                 <td><span class="badge bg-danger">Suporte de vida</span></td>
@@ -263,7 +268,7 @@
             </main>
         </div>
     </div>
-<script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
