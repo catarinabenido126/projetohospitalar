@@ -416,3 +416,21 @@ section {
     margin-bottom: 8px;
     text-align: left;
 }
+.caixa-filtros,
+.caixa-tabela {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #d6e4f0;
+}
+.caixa-tabela {
+    margin-top: 20px;
+}
+.caixa-tabela .table {
+    margin-bottom: 0;
+}
+.badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+}

@@ -89,7 +89,7 @@
                     Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos
                     detalhes.
                 </p>
-    <div class="mb-4">
+    <div class="caixa-filtros mb-4">
     <form action="../equipamentos/lista.html" method="get">
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -172,8 +172,8 @@
         </div>
     </form>
 </div>            
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
+    <div class="caixa-tabela table-responsive">
+    <table class="table table-bordered table-striped align-middle">
             <thead class="table-dark">
                 <tr>
                     <th>Código</th>
@@ -190,8 +190,8 @@
                             <td>EQ-0001</td>
                             <td>Monitor Multiparamétrico</td>
                             <td>Monitorização</td>
-                            <td>Ativo</td>
-                            <td>Alta</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td><span class="badge bg-danger">Alta</span></td>
                             <td>UCI - Sala 101</td>
                             <td class="text-center">
                                 <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-outline-primary me-1">
@@ -209,10 +209,10 @@
                                     <td>EQ-0002</td>
                                     <td>Ventilador Pulmonar</td>
                                     <td>Suporte de Vida</td>
-                                    <td>Em manutenção</td>
-                                    <td>Suporte de vida</td>
+                                    <td><span class="badge bg-warning text-dark">Em manutenção</span></td>
+                                    <td><span class="badge bg-danger">Suporte de vida</span></td>
                                     <td>UCI - Sala 102</td>
-                                    <td class="text-center">
+                                    <td class="text-center">    
                                         <a href="../equipamentos/detalhes.html" class="btn btn-sm btn-outline-primary me-1">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
