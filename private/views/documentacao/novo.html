@@ -69,3 +69,67 @@
                     </a>
                 </nav>
             </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <h2>Novo Documento</h2>
+                <hr>
+                <form action="lista.html" method="post">
+                    <h4>Informação do documento</h4>
+                    <div class="mb-3">
+                        <label for="equipamento" class="form-label">Equipamento associado</label>
+                        <input type="text" class="form-control" id="equipamento" name="equipamento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipoDocumento" class="form-label">Tipo de documento</label>
+                        <select class="form-select" id="tipoDocumento" name="tipoDocumento" required>
+                            <option value="">Selecione o tipo de documento</option>
+                            <option>Manual técnico</option>
+                            <option>Certificado</option>
+                            <option>Contrato de manutenção</option>
+                            <option>Relatório técnico</option>
+                            <option>Fatura</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nomeDocumento" class="form-label">Nome do documento</label>
+                        <input type="text" class="form-control" id="nomeDocumento" name="nomeDocumento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fornecedor" class="form-label">Fornecedor associado</label>
+                        <input type="text" class="form-control" id="fornecedor" name="fornecedor">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dataDocumento" class="form-label">Data</label>
+                        <input type="date" class="form-control" id="dataDocumento" name="dataDocumento">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado">
+                            <option value="">Selecione o estado</option>
+                            <option>Ativo</option>
+                            <option>Válido</option>
+                            <option>Expirado</option>
+                            <option>Concluído</option>
+                        </select>
+                    </div>
+                    <h4>Ficheiro</h4>
+                    <div class="mb-3">
+                        <label for="ficheiro" class="form-label">Carregar ficheiro PDF</label>
+                        <input type="file" class="form-control" id="ficheiro" name="ficheiro">
+                    </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                    <a href="lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
