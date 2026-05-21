@@ -434,3 +434,12 @@ section {
     font-size: 1em;
     font-weight: 400;
 }
+.caixa-filtros .btn {
+    font-size: 0.85em;
+}
+.pagination .page-link {
+    font-size: 0.8em;
+}
+.text-muted {
+    font-size: 0.85em;
+}
