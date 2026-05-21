@@ -281,6 +281,9 @@ section {
 /* Área privada */
 .menu-lateral {
     background-color: #062b4f;
+    padding-top: 25px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 .menu-lateral h4 {
     color: #ffffff;
@@ -288,11 +291,37 @@ section {
 }
 .menu-lateral .nav-link {
     color: #ffffff;
-    padding: 8px;
-    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 8px 2px;
 }
 .menu-lateral .nav-link:hover {
-    background-color: #084db3;
+    background-color: #0d6efd;
+    border-radius: 6px;
+}
+.menu-lateral .nav-link.active {
+    background-color: #0d6efd;
+    border-radius: 6px;
+}
+.menu-lateral nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.menu-nav .nav-link i {
+    width: 18px;
+    text-align: center;
+}
+.titulo-menu {
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
 }
 .area-conteudo.pagina-inicial {
     background-image: url("../img/fundoindex.png");
