@@ -442,3 +442,10 @@ section {
 .text-muted {
     font-size: 0.85em;
 }
+/* Cor das tabelas lista*/
+.table thead {
+    background-color: #cbddf3;
+}
+.table thead th {
+    color: #062b4f;
+}
