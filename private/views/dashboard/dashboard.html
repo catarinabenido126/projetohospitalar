@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MediSync</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
+    <!-- estilos -->
+    <link rel="stylesheet" href="../../../assets/css/1241126.css">
+</head>
+<body>
+    <header class="container-fluid barra-superior text-white">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center p-2">
+                <a href="../../index.html">
+                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Utilizador
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">Alterar password</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../../../login.html">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+                <h4 class="titulo-menu">Menu</h4>
+                <nav class="nav flex-column menu-nav">
+                    <a href="../../index.html" class="nav-link">
+                        <i class="fa-solid fa-house"></i>
+                        Página Inicial
+                    </a>
+                    <a href="../dashboard/dashboard.html" class="nav-link">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="../equipamentos/lista.html" class="nav-link">
+                        <i class="fa-solid fa-stethoscope"></i>
+                        Equipamentos
+                    </a>
+                    <a href="../fornecedores/lista.html" class="nav-link">
+                        <i class="fa-solid fa-truck"></i>
+                        Fornecedores
+                    </a>
+                    <a href="../documentacao/lista.html" class="nav-link">
+                        <i class="fa-solid fa-file-lines"></i>
+                        Documentação
+                    </a>
+                    <a href="../localizacao/lista.html" class="nav-link">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Localizações
+                    </a>
+                </nav>
+            </aside>
