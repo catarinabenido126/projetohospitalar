@@ -69,3 +69,160 @@
                     </a>
                 </nav>
             </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="mb-0">
+                        Listagem de Documentos
+                    </h2>
+                    <a href="../documentacao/novo.html" class="btn btn-success">
+                        Novo documento
+                    </a>
+                </div>
+                <hr>
+                <p class="text-muted">
+                    Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos
+                    detalhes.
+                </p>
+                <div class="mb-4">
+                    <form action="../documentacao/lista.html" method="get">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="pesquisa" class="form-label">Pesquisar documento ou equipamento</label>
+                                <input type="text" class="form-control" id="pesquisa" name="pesquisa">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="tipoDocumento" class="form-label">Tipo de documento</label>
+                                <select class="form-select" id="tipoDocumento" name="tipoDocumento">
+                                    <option value="">Todos</option>
+                                    <option>Manual do utilizador</option>
+                                    <option>Manual técnico</option>
+                                    <option>Certificado de calibração</option>
+                                    <option>Contrato de manutenção</option>
+                                    <option>Relatório técnico</option>
+                                    <option>Fatura</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mb-4">
+                            <button type="submit" class="btn btn-primary">
+                                Filtrar
+                            </button>
+                            <a href="lista.html" class="btn btn-secondary">
+                                Limpar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <section class="bloco-documento">
+                    <h4 class="titulo-equipamento-doc">
+                        EQ-0001 — Monitor Multiparamétrico
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Documento</th>
+                                    <th>Data</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Manual técnico</td>
+                                    <td>Manual IntelliVue MP5</td>
+                                    <td>15/03/2023</td>
+                                    <td>Ativo</td>
+                                    <td class="text-center">
+                                        <a href="../documentacao/detalhes.html"
+                                            class="btn btn-sm btn-outline-primary me-1">Ver</a>
+                                        <a href="../documentacao/editar.html"
+                                            class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                                        <a href="../documentacao/apagar.html"
+                                            class="btn btn-sm btn-outline-danger">Apagar</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Certificado</td>
+                                    <td>Certificado CE MP5</td>
+                                    <td>10/01/2026</td>
+                                    <td>Válido</td>
+                                    <td class="text-center">
+                                        <a href="../documentacao/detalhes.html"
+                                            class="btn btn-sm btn-outline-primary me-1">Ver</a>
+                                        <a href="../documentacao/editar.html"
+                                            class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                                        <a href="../documentacao/apagar.html"
+                                            class="btn btn-sm btn-outline-danger">Apagar</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section class="bloco-documento">
+                    <h4 class="titulo-equipamento-doc">
+                        EQ-0002 — Ventilador Pulmonar
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Documento</th>
+                                    <th>Data</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Contrato de manutenção</td>
+                                    <td>Contrato Dräger 2025</td>
+                                    <td>20/04/2025</td>
+                                    <td>Ativo</td>
+                                    <td class="text-center">
+                                        <a href="../documentacao/detalhes.html"
+                                            class="btn btn-sm btn-outline-primary me-1">
+                                            Ver
+                                        </a>
+                                        <a href="../documentacao/editar.html"
+                                            class="btn btn-sm btn-outline-warning me-1">
+                                            Editar
+                                        </a>
+                                        <a href="../documentacao/apagar.html" class="btn btn-sm btn-outline-danger">
+                                            Apagar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Relatório técnico</td>
+                                    <td>Relatório maio 2026</td>
+                                    <td>05/05/2026</td>
+                                    <td>Concluído</td>
+                                    <td class="text-center">
+                                        <a href="../documentacao/detalhes.html"
+                                            class="btn btn-sm btn-outline-primary me-1">
+                                            Ver
+                                        </a>
+                                        <a href="../documentacao/editar.html"
+                                            class="btn btn-sm btn-outline-warning me-1">
+                                            Editar
+                                        </a>
+                                        <a href="apagar.html" class="btn btn-sm btn-outline-danger">
+                                            Apagar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

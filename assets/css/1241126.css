@@ -302,7 +302,7 @@ section {
     padding: 40px;
     overflow: hidden;
 }
-.area-conteudo section {
+.area-conteudo.pagina-inicial section {
     margin-top: 80px;
     text-align: center;
 }
@@ -371,4 +371,19 @@ section {
 }
 .barra-superior .dropdown {
     margin-top: -30px;
+}
+.area-conteudo .bloco-documento {
+    padding: 0;
+    min-height: auto;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+.titulo-equipamento-doc {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #062b4f;
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-align: left;
 }
