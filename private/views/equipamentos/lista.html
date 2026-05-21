@@ -104,10 +104,10 @@
                                     <option>Monitorização</option>
                                     <option>Suporte de Vida</option>
                                     <option>Diagnóstico</option>
-                                    <option>Laboratório</option>
                                     <option>Imagiologia</option>
+                                    <option>Laboratório</option>
                                     <option>Terapia</option>
-                                    <option>Reabilitação</option>
+                                    <option>Cirurgia</option>
                                 </select>
                             </div>
                             <div class="col-md-2 mb-3">
@@ -135,46 +135,49 @@
                                 <label for="localizacao" class="form-label">Localização</label>
                                 <select class="form-select" id="localizacao" name="localizacao">
                                     <option value="">Todas</option>
-                                    <option>UCI</option>
                                     <option>Urgência</option>
+                                    <option>UCI</option>
                                     <option>Bloco Operatório</option>
                                     <option>Consultas</option>
                                     <option>Laboratório</option>
+                                    <option>Radiologia</option>
+                                    <option>Reabilitação</option>
+                                    <option>Armazém</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="d-flex gap-2 mb-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa-solid fa-filter me-1"></i>
-                                Filtrar
-                            </button>
-                            <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                                <i class="fa-solid fa-broom me-1"></i>
-                                Limpar
-                            </a>
-                        </div>
-                        <!-- Ordenação -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="ordenacao" class="form-label">Critério de ordenação</label>
-                                <select class="form-select" id="ordenacao" name="ordenacao">
-                                    <option value="">Selecione uma opção</option>
-                                    <option>Código interno (ascendente)</option>
-                                    <option>Código interno (descendente)</option>
-                                    <option>Designação (A-Z)</option>
-                                    <option>Designação (Z-A)</option>
-                                </select>
                             </div>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa-solid fa-arrow-down-a-z me-1"></i>
-                                Ordenar
-                            </button>
-                            <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                                <i class="fa-solid fa-broom me-1"></i>
-                                Limpar
-                            </a>
+                            <div class="d-flex gap-2 mb-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-filter me-1"></i>
+                                    Filtrar
+                                </button>
+                                <a href="../equipamentos/lista.html" class="btn btn-secondary">
+                                    <i class="fa-solid fa-broom me-1"></i>
+                                    Limpar
+                                </a>
+                            </div>
+                            <!-- Ordenação -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ordenacao" class="form-label">Critério de ordenação</label>
+                                    <select class="form-select" id="ordenacao" name="ordenacao">
+                                        <option value="">Selecione uma opção</option>
+                                        <option>Código interno (ascendente)</option>
+                                        <option>Código interno (descendente)</option>
+                                        <option>Designação (A-Z)</option>
+                                        <option>Designação (Z-A)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-arrow-down-a-z me-1"></i>
+                                    Ordenar
+                                </button>
+                                <a href="../equipamentos/lista.html" class="btn btn-secondary">
+                                    <i class="fa-solid fa-broom me-1"></i>
+                                    Limpar
+                                </a>
                         </div>
                     </form>
                 </div>
