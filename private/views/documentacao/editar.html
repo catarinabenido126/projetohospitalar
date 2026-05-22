@@ -112,6 +112,22 @@
                             value="2026-01-10">
                     </div>
                     <div class="mb-3">
+                        <label for="dataValidade" class="form-label">
+                            Data de validade / término
+                        </label>
+                        <input type="date" class="form-control" id="dataValidade" name="dataValidade">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado">
+                            <option>Ativo</option>
+                            <option selected>Válido</option>
+                            <option>Expirado</option>
+                            <option>Concluído</option>
+                        </select>
+                    </div>
+                    <h4>Ficheiro</h4>
+                    <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select class="form-select" id="estado" name="estado">
                             <option>Ativo</option>
@@ -125,22 +141,20 @@
                         <label for="ficheiro" class="form-label">Substituir ficheiro PDF</label>
                         <input type="file" class="form-control" id="ficheiro" name="ficheiro">
                     </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">
+                            Observações
+                        </label>
+                        <textarea class="form-control" id="observacoes" name="observacoes"
+                            rows="4">Documento válido até janeiro de 2027.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                    <a href="../documentacao/lista.html" class="btn btn-secondary">
+                        Cancelar
+                    </a>
                 </form>
-            </main>
-            <div class="mb-3">
-                <label for="observacoes" class="form-label">
-                    Observações
-                </label>
-                <textarea class="form-control" id="observacoes" name="observacoes"
-                    rows="4">Documento válido até janeiro de 2027.</textarea>
-            </div>
-            <button type="submit" class="btn btn-success">
-                Guardar
-            </button>
-            <a href="../documentacao/lista.html" class="btn btn-secondary">
-                Cancelar
-            </a>
-            </form>
             </main>
         </div>
     </div>
