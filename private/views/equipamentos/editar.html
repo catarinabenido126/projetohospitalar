@@ -113,11 +113,6 @@
                             value="MP5-2022-45873">
                     </div>
                     <div class="mb-3">
-                        <label for="fabricante" class="form-label">Fabricante</label>
-                        <input type="text" class="form-control" id="fabricante" name="fabricante"
-                            value="Philips Healthcare">
-                    </div>
-                    <div class="mb-3">
                         <label for="anoFabrico" class="form-label">Ano de fabrico</label>
                         <input type="number" class="form-control" id="anoFabrico" name="anoFabrico" value="2022">
                     </div>
@@ -191,12 +186,15 @@
                         <label for="sala" class="form-label">Sala</label>
                         <input type="text" class="form-control" id="sala" name="sala" value="Sala 1">
                     </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes"
+                            rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
+                    </div>
                     <h4>Componentes associados</h4>
-
                     <p class="text-muted">
                         Componentes atualmente associados ao equipamento.
                     </p>
-
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
                             <div class="col-md-4">
@@ -218,7 +216,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
                             <div class="col-md-4">
@@ -240,25 +237,76 @@
                             </div>
                         </div>
                     </div>
-
                     <button type="button" class="btn btn-outline-primary mb-4">
                         <i class="fa-solid fa-plus me-1"></i>
                         Adicionar componente
                     </button>
-                    <div class="mb-3">
-                        <label for="observacoes" class="form-label">Observações</label>
-                        <textarea class="form-control" id="observacoes" name="observacoes"
-                            rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
+                    <h4>Fornecedores associados</h4>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label for="fornecedor1" class="form-label">
+                                    Fornecedor
+                                </label>
+                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
+                                    value="Philips Healthcare">
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="tipoRelacao1" class="form-label">
+                                    Tipo de relação
+                                </label>
+                                <select class="form-select" id="tipoRelacao1" name="tipoRelacao1">
+                                    <option value="">
+                                        Selecione o tipo
+                                    </option>
+                                    <option>Fabricante</option>
+                                    <option selected>Fornecedor comercial</option>
+                                    <option>Assistência técnica</option>
+                                    <option>Consumíveis/acessórios</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-success">
-                        Guardar
-                    </button>
-                    <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                        Cancelar
-                    </a>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label for="fornecedor1" class="form-label">
+                                    Fornecedor
+                                </label>
+                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
+                                    value="Philips Healthcare">
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="tipoRelacao2" class="form-label">
+                                    Tipo de relação
+                                </label>
+                                <select class="form-select" id="tipoRelacao2" name="tipoRelacao2">
+                                    <option value="">
+                                        Selecione o tipo
+                                    </option>
+                                    <option selected>Fabricante</option>
+                                    <option>Fornecedor comercial</option>
+                                    <option>Assistência técnica</option>
+                                    <option>Consumíveis/acessórios</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 align-items-end mt-3">
+                        <button type="button" class="btn btn-outline-primary py-2">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Adicionar fornecedor
+                        </button>
+                        <button type="submit" class="btn btn-success py-2">
+                            Guardar
+                        </button>
+                        <a href="../equipamentos/lista.html" class="btn btn-secondary py-2">
+                            Cancelar
+                        </a>
+                    </div>
                 </form>
+            </main>
         </div>
-    </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
