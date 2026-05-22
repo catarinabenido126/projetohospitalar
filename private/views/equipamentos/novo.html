@@ -190,49 +190,59 @@
                     <p class="text-muted">
                         Adicione os componentes ou acessórios associados ao equipamento.
                     </p>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="codigo-componente-1" class="form-label">
-                                    Código do componente
-                                </label>
-                                <input type="text" class="form-control" id="codigo-componente-1"
-                                    name="codigo-componente-1" placeholder="Ex: EQ-0001.01">
-                            </div>
-                            <div class="col-md-5 mb-3">
-                                <label for="nome-componente-1" class="form-label">
-                                    Nome do componente
-                                </label>
-                                <input type="text" class="form-control" id="nome-componente-1" name="nome-componente-1">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="notificacao-1" class="form-label">
-                                    Notificação
-                                </label>
-                                <input type="text" class="form-control" id="notificacao-1" name="notificacao-1">
-                            </div>
-                        </div>
-                    </div>
                     <div class="border rounded p-3 mb-4">
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3">
                                 <label for="codigo-componente-2" class="form-label">
                                     Código do componente
                                 </label>
                                 <input type="text" class="form-control" id="codigo-componente-2"
                                     name="codigo-componente-2" placeholder="Ex: EQ-0001.02">
                             </div>
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-4">
                                 <label for="nome-componente-2" class="form-label">
                                     Nome do componente
                                 </label>
                                 <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2">
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4">
                                 <label for="notificacao-2" class="form-label">
                                     Notificação
                                 </label>
                                 <input type="text" class="form-control" id="notificacao-2" name="notificacao-2">
+                            </div>
+                            <div class="col-md-1 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded p-3 mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="codigo-componente-2" class="form-label">
+                                    Código do componente
+                                </label>
+                                <input type="text" class="form-control" id="codigo-componente-2"
+                                    name="codigo-componente-2" placeholder="Ex: EQ-0001.02">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="nome-componente-2" class="form-label">
+                                    Nome do componente
+                                </label>
+                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="notificacao-2" class="form-label">
+                                    Notificação
+                                </label>
+                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2">
+                            </div>
+                            <div class="col-md-1 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -241,16 +251,19 @@
                         Adicionar componente
                     </button>
                     <h4>Fornecedores associados</h4>
+                    <p class="text-muted">
+                        Fornecedores associados ao equipamento.
+                    </p>
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-5">
                                 <label for="fornecedor1" class="form-label">
                                     Fornecedor
                                 </label>
                                 <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
                                     placeholder="Ex: Philips Healthcare">
                             </div>
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-5">
                                 <label for="tipoRelacao1" class="form-label">
                                     Tipo de relação
                                 </label>
@@ -264,18 +277,23 @@
                                     <option>Consumíveis/acessórios</option>
                                 </select>
                             </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
-                            <div class="col-md-5 mb-3">
-                                <label for="fornecedor1" class="form-label">
+                            <div class="col-md-5">
+                                <label for="fornecedor2" class="form-label">
                                     Fornecedor
                                 </label>
-                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
-                                    placeholder="Ex: Philips Healthcare">
+                                <input type="text" class="form-control" id="fornecedor2" name="fornecedor2"
+                                    placeholder="Ex: Dräger Portugal">
                             </div>
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-5">
                                 <label for="tipoRelacao2" class="form-label">
                                     Tipo de relação
                                 </label>
@@ -283,19 +301,24 @@
                                     <option value="">
                                         Selecione o tipo
                                     </option>
-                                    <option selected>Fabricante</option>
+                                    <option>Fabricante</option>
                                     <option>Fornecedor comercial</option>
                                     <option>Assistência técnica</option>
                                     <option>Consumíveis/acessórios</option>
                                 </select>
                             </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex gap-2 align-items-end mt-3">
-                        <button type="button" class="btn btn-outline-primary py-2">
-                            <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar fornecedor
-                        </button>
+                    <button type="button" class="btn btn-outline-primary py-2 mb-4">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Adicionar fornecedor
+                    </button>
+                    <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success py-2">
                             Guardar
                         </button>
