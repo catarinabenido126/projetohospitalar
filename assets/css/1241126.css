@@ -479,3 +479,30 @@ section {
     font-weight: 600;
     margin-bottom: 0;
 }
+.caixa-dashboard h5 {
+    color: #062b4f;
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+.caixa-dashboard {
+    background-color: #ffffff;
+    border: 1px solid #d6e4f0;
+    border-radius: 10px;
+    padding: 20px;
+    height: 380px;
+}
+.caixa-dashboard canvas {
+    width: 100%;
+    height: 320px;
+}
+canvas {
+    width: 100%;
+    max-height: 250px;
+}
+.area-grafico {
+    height: 320px;
+}
+.area-grafico canvas {
+    width: 100%;
+    height: 100%;
+}

@@ -131,17 +131,116 @@
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="card-dashboard border-dark">
-                            <i class="fa-solid fa-heart-pulse text-dark"></i>
-                            <h5>Suporte de vida</h5>
+                            <i class="fa-solid fa-sliders text-dark"></i>
+                            <h5>Em calibração</h5>
                             <p class="text-dark"></p>
                         </div>
                     </div>
                 </div>
+                <hr>
+                <h4>Distribuição do inventário</h4>
+                <p class="text-muted">
+                    Análise resumida dos equipamentos por categoria, localização e estado.
+                </p>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-4">
+                        <div class="caixa-dashboard">
+                            <h5>Equipamentos por categoria</h5>
+                            <div class="area-grafico">
+                                <canvas id="graficoCategoria"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="caixa-dashboard">
+                            <h5>Equipamentos por estado</h5>
+                            <div class="area-grafico">
+                                <canvas id="graficoEstado"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h4>Resumo por serviço</h4>
+                <p class="text-muted">
+                    Distribuição dos equipamentos pelas principais áreas hospitalares.
+                </p>
+                <div class="row mb-4">
+                    <div class="col-md-7 mb-4">
+                        <div class="caixa-dashboard">
+                            <h5>Equipamentos por serviço</h5>
+                            <canvas id="graficoServico"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <div class="caixa-dashboard">
+                            <h5>Situações a acompanhar</h5>
+                            <div class="alert alert-warning">
+                                <i class="fa-solid fa-calendar-days me-1"></i>
+                                Garantias a expirar nos próximos 30 dias
+                            </div>
+                            <div class="alert alert-danger">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                                Equipamentos com criticidade elevada
+                            </div>
+                            <div class="alert alert-secondary">
+                                <i class="fa-solid fa-file-circle-xmark me-1"></i>
+                                Equipamentos sem documentação associada
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    new Chart(document.getElementById('graficoCategoria'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Monitorização', 'Suporte de Vida', 'Diagnóstico', 'Imagiologia', 'Laboratório', 'Terapia', 'Cirurgia'],
+                            datasets: [{
+                                data: [1, 1, 1, 1, 1, 1, 1],
+                                backgroundColor: ['#a8d8ff', '#b8eacb', '#ffd6a5', '#d6c5f0', '#ffe5ec', '#d6d6d6', '#f9dcc4']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    new Chart(document.getElementById('graficoEstado'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Ativo', 'Em manutenção', 'Em calibração', 'Inativo', 'Abatido'],
+                            datasets: [{
+                                data: [1, 1, 1, 1, 1],
+                                backgroundColor: ['#b8eacb', '#ffe5a3', '#a8d8ff', '#d6d6d6', '#f5b7b1']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    new Chart(document.getElementById('graficoServico'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Urgência', 'UCI', 'Bloco Operatório', 'Consultas', 'Laboratório', 'Radiologia', 'Reabilitação', 'Armazém'],
+                            datasets: [{
+                                label: 'N.º de equipamentos',
+                                data: [1, 1, 1, 1, 1, 1, 1, 1],
+                                backgroundColor: '#a8d8ff'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                </script>
             </main>
         </div>
     </div>
     <!-- Bootstrap JS -->
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
