@@ -324,16 +324,93 @@ section {
     font-weight: 600;
 }
 .area-conteudo.pagina-inicial {
-    background-image: url("../img/fundoindex.png");
+    background-color: #f4f8fc;
     background-size: cover;
     background-position: center;
     height: 100vh;
     padding: 40px;
     overflow: hidden;
+    padding-top: 10px;
 }
-.area-conteudo.pagina-inicial section {
-    margin-top: 80px;
-    text-align: center;
+.banner-inicial {
+    background-image: url("../img/fundoindex.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 14px;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 50px 80px;
+    border: 1px solid #d6e4f0;
+    margin-top: -90px;
+}
+.texto-banner-inicial {
+    max-width: 520px;
+}
+.texto-banner-inicial h2 {
+    color: #062b4f;
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+.texto-banner-inicial p {
+    color: #314b6b;
+    font-size: 1.1em;
+    margin-bottom: 14px;
+}
+.lembretes-inicial {
+    margin-top: 18px;
+}
+.lembretes-inicial h4 {
+    color: #062b4f;
+    font-size: 1.4em;
+    margin-bottom: 18px;
+    text-align: left;
+}
+.caixa-lembretes {
+    background-color: #ffffff;
+    border: 1px solid #d6e4f0;
+    border-radius: 12px;
+    padding: 22px;
+}
+.lembrete-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    border-top: 1px solid #e8eef5;
+}
+.lembrete-item:first-of-type {
+    border-top: none;
+}
+.lembrete-item div {
+    flex: 1;
+    text-align: left;
+}
+.lembrete-item strong {
+    color: #062b4f;
+    font-size: 1.05em;
+}
+.lembrete-item p {
+    margin: 5px 0 0 0;
+    color: #6c757d;
+    font-size: 0.95em;
+}
+.form-check-input {
+    width: 20px;
+    height: 20px;
+}
+.caixa-lembretes .form-control {
+    height: 48px;
+    border-radius: 10px;
+}
+.caixa-lembretes .btn-primary {
+    padding: 0 24px;
+    border-radius: 10px;
+}
+.caixa-lembretes .btn-outline-danger {
+    border-radius: 10px;
 }
 .area-conteudo h4 {
     color: #062b4f;

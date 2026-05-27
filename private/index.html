@@ -49,7 +49,7 @@
     </header>
     <div class="container-fluid">
         <div class="row">
-        <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
+            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3 min-vh-100">
                 <h4 class="titulo-menu">Menu</h4>
                 <nav class="nav flex-column menu-nav">
                     <a href="../../index.html" class="nav-link">
@@ -78,17 +78,79 @@
                     </a>
                 </nav>
             </aside>
-                </nav>
+            </nav>
             </aside>
             <main class="col-md-9 col-lg-10 p-4 area-conteudo pagina-inicial">
-                 <section>
-                    <h2>Página Inicial</h2>
-                    <p>Bem-vindo à área interna da MediSync.</p>
-                    <p>Utilize o menu lateral para aceder aos módulos de gestão do inventário hospitalar.</p>
-                </section>
+                <section class="pagina-inicial-conteudo">
+                    <div class="banner-inicial">
+                        <div class="texto-banner-inicial">
+                            <h2>Página Inicial</h2>
+                            <p>
+                                <strong>Bem-vindo à área interna da MediSync.</strong>
+                            </p>
+                            <p>
+                                Utilize o menu lateral para aceder aos módulos de gestão do inventário hospitalar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="lembretes-inicial mt-4">
+                        <h4>
+                            <i class="fa-solid fa-calendar-check me-1"></i>
+                            Lembretes
+                        </h4>
+                        <div class="caixa-lembretes">
+                            <div class="d-flex gap-2 mb-3">
+                                <input type="text" class="form-control" id="textoLembrete"
+                                    placeholder="Escreva um lembrete...">
+                                <button type="button" class="btn btn-primary" onclick="adicionarLembrete()">
+                                    Adicionar
+                                </button>
+                            </div>
+                            <div id="listaLembretes">
+                                <div class="lembrete-item">
+                                    <input type="checkbox" class="form-check-input">
+                                    <div>
+                                        <strong>Verificar calibração do Monitor Multiparamétrico X90</strong>
+                                        <p>Lembrete criado pelo utilizador</p>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                        onclick="removerLembrete(this)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </main>
         </div>
     </div>
     <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        function adicionarLembrete() {
+            let texto = document.getElementById("textoLembrete").value;
+            if (texto.trim() === "") {
+                alert("Escreva um lembrete antes de adicionar.");
+                return;
+            }
+            let lista = document.getElementById("listaLembretes");
+            lista.innerHTML += `
+            <div class="lembrete-item">
+                <input type="checkbox" class="form-check-input">
+                <div>
+                    <strong>${texto}</strong>
+                    <p>Lembrete criado pelo utilizador</p>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerLembrete(this)">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        `;
+            document.getElementById("textoLembrete").value = "";
+        }
+        function removerLembrete(botao) {
+            botao.parentElement.remove();
+        }
+    </script>
 </body>
+
 </html>
