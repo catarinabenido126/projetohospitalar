@@ -94,41 +94,63 @@
                 <p><strong>Estado:</strong> Ativo</p>
                 <p><strong>Criticidade:</strong> Alta</p>
                 <hr>
-                <h4>Localização</h4>
-                <p><strong>Edifício:</strong> Edifício A</p>
-                <p><strong>Piso:</strong> Piso 1</p>
-                <p><strong>Serviço:</strong> UCI</p>
-                <p><strong>Sala:</strong> Sala 101</p>
-                <hr>
                 <h4>Observações</h4>
                 <p>
                     Equipamento reservado para dia 12/06/2026 - UCI.
                 </p>
-                <h4>Componentes associados</h4>
+                <hr>
+                <h4>Localização associada</h4>
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle">
                         <thead>
                             <tr>
-                                <th>Código</th>
-                                <th>Componente</th>
-                                <th>Notificação</th>
+                                <th>Localização</th>
+                                <th>Serviço</th>
+                                <th class="text-center">Ver localização</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>EQ-0001.01</td>
-                                <td>Sensor SpO₂</td>
-                                <td>Sem notificações</td>
+                                <td>Edifício A • Piso 1 • Sala 101</td>
+                                <td>UCI</td>
+                                <td class="text-center">
+                                    <a href="../localizacao/detalhes.html" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4>Documentação associada</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Tipo</th>
+                                <th class="text-center">Ver documento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Manual do Utilizador</td>
+                                <td>Manual</td>
+                                <td class="text-center">
+                                    <a href="../documentacao/detalhes.html" class="btn btn-sm btn-outline-primary">
+
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
-                                <td>EQ-0001.02</td>
-                                <td>Cabo ECG</td>
-                                <td>Cabo com desgaste visível</td>
-                            </tr>
-                            <tr>
-                                <td>EQ-0001.03</td>
-                                <td>Bateria</td>
-                                <td>Autonomia reduzida</td>
+                                <td>Garantia Philips</td>
+                                <td>Garantia</td>
+                                <td class="text-center">
+                                    <a href="../documentacao/detalhes.html" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -165,6 +187,35 @@
                         </tbody>
                     </table>
                 </div>
+                <h4>Componentes associados</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Componente</th>
+                                <th>Notificação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EQ-0001.01</td>
+                                <td>Sensor SpO₂</td>
+                                <td>Sem notificações</td>
+                            </tr>
+                            <tr>
+                                <td>EQ-0001.02</td>
+                                <td>Cabo ECG</td>
+                                <td>Cabo com desgaste visível</td>
+                            </tr>
+                            <tr>
+                                <td>EQ-0001.03</td>
+                                <td>Bateria</td>
+                                <td>Autonomia reduzida</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <a href="../equipamentos/lista.html" class="btn btn-secondary">
                     Voltar
                 </a>
@@ -176,4 +227,5 @@
         <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
     </div>
 </body>
+
 </html>
