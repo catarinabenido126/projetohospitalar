@@ -100,7 +100,7 @@
                     </div>
                     <h4>Dados técnicos</h4>
                     <div class="mb-3">
-                        <label for="marca">Marca</label>
+                        <label for="marca" class="form-label">Marca</label>
                         <input type="text" class="form-control" id="marca" name="marca" value="Philips">
                     </div>
                     <div class="mb-3">
@@ -159,38 +159,165 @@
                             <option>Suporte de vida</option>
                         </select>
                     </div>
-                    <h4>Localização</h4>
-                    <div class="mb-3">
-                        <label for="edificio" class="form-label">Edifício</label>
-                        <input type="text" class="form-control" id="edificio" name="edificio" value="Edifício A">
-                    </div>
-                    <div class="mb-3">
-                        <label for="piso" class="form-label">Piso</label>
-                        <input type="text" class="form-control" id="piso" name="piso" value="1º Andar">
-                    </div>
-                    <div class="mb-3">
-                        <label for="servico" class="form-label">Serviço</label>
-                        <select class="form-select" id="servico" name="servico" required>
-                            <option value="">Selecione o serviço onde se localiza</option>
-                            <option>Urgência</option>
-                            <option selected>UCI</option>
-                            <option>Bloco Operatório</option>
-                            <option>Consultas</option>
-                            <option>Laboratório</option>
-                            <option>Radiologia</option>
-                            <option>Reabilitação</option>
-                            <option>Armazém</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sala" class="form-label">Sala</label>
-                        <input type="text" class="form-control" id="sala" name="sala" value="Sala 1">
-                    </div>
                     <div class="mb-3">
                         <label for="observacoes" class="form-label">Observações</label>
                         <textarea class="form-control" id="observacoes" name="observacoes"
                             rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
                     </div>
+                    <h4>Localização associada</h4>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="edificio" class="form-label">Edifício</label>
+                                <input type="text" class="form-control" id="edificio" name="edificio"
+                                    value="Edifício A">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="piso" class="form-label">Piso</label>
+                                <input type="text" class="form-control" id="piso" name="piso" value="Piso 1">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="sala" class="form-label">Sala</label>
+                                <input type="text" class="form-control" id="sala" name="sala" value="Sala 101">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="servico" class="form-label">Serviço</label>
+                                <select class="form-select" id="servico" name="servico" required>
+                                    <option value="">Selecione o serviço</option>
+                                    <option>Urgência</option>
+                                    <option selected>UCI</option>
+                                    <option>Bloco Operatório</option>
+                                    <option>Consultas</option>
+                                    <option>Laboratório</option>
+                                    <option>Radiologia</option>
+                                    <option>Reabilitação</option>
+                                    <option>Armazém</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <h4>Fornecedores associados</h4>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="fornecedor1" class="form-label">Fornecedor</label>
+                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
+                                    value="Philips Healthcare">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="tipoRelacao1" class="form-label">Tipo de relação</label>
+                                <select class="form-select" id="tipoRelacao1" name="tipoRelacao1">
+                                    <option value="">Selecione o tipo</option>
+                                    <option selected>Fabricante</option>
+                                    <option>Fornecedor comercial</option>
+                                    <option>Assistência técnica</option>
+                                    <option>Consumíveis/acessórios</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="fornecedor2" class="form-label">Fornecedor</label>
+                                <input type="text" class="form-control" id="fornecedor2" name="fornecedor2"
+                                    value="MedTech Solutions">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="tipoRelacao2" class="form-label">Tipo de relação</label>
+                                <select class="form-select" id="tipoRelacao2" name="tipoRelacao2">
+                                    <option value="">Selecione o tipo</option>
+                                    <option>Fabricante</option>
+                                    <option>Fornecedor comercial</option>
+                                    <option selected>Assistência técnica</option>
+                                    <option>Consumíveis/acessórios</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary py-2 mb-4">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Associar fornecedor
+                    </button>
+                    <h4>Documentação associada</h4>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="documento1" class="form-label">Documento</label>
+                                <input type="text" class="form-control" id="documento1" name="documento1"
+                                    value="Manual do Utilizador">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tipoDocumento1" class="form-label">Tipo</label>
+                                <select class="form-select" id="tipoDocumento1" name="tipoDocumento1">
+                                    <option value="">Selecione o tipo</option>
+                                    <option selected>Manual do utilizador</option>
+                                    <option>Manual técnico</option>
+                                    <option>Certificado de calibração</option>
+                                    <option>Garantia</option>
+                                    <option>Contrato de manutenção</option>
+                                    <option>Relatório técnico</option>
+                                    <option>Fatura</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ficheiroDocumento1" class="form-label">Ficheiro</label>
+                                <input type="text" class="form-control" id="ficheiroDocumento1"
+                                    name="ficheiroDocumento1" value="manual_utilizador_mp5.pdf">
+                            </div>
+                            <div class="col-md-1 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="documento2" class="form-label">Documento</label>
+                                <input type="text" class="form-control" id="documento2" name="documento2"
+                                    value="Garantia Philips">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tipoDocumento2" class="form-label">Tipo</label>
+                                <select class="form-select" id="tipoDocumento2" name="tipoDocumento2">
+                                    <option value="">Selecione o tipo</option>
+                                    <option>Manual do utilizador</option>
+                                    <option>Manual técnico</option>
+                                    <option>Certificado de calibração</option>
+                                    <option selected>Garantia</option>
+                                    <option>Contrato de manutenção</option>
+                                    <option>Relatório técnico</option>
+                                    <option>Fatura</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ficheiroDocumento2" class="form-label">Ficheiro</label>
+                                <input type="text" class="form-control" id="ficheiroDocumento2"
+                                    name="ficheiroDocumento2" value="garantia_philips.pdf">
+                            </div>
+                            <div class="col-md-1 mt-4">
+                                <button type="button" class="btn btn-outline-danger w-100">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary py-2 mb-4">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Associar documento
+                    </button>
                     <h4>Componentes associados</h4>
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
@@ -199,21 +326,18 @@
                                 <input type="text" class="form-control" id="codigo-componente-1"
                                     name="codigo-componente-1" value="EQ-0001.01">
                             </div>
-
                             <div class="col-md-4">
                                 <label for="nome-componente-1" class="form-label">Nome do componente</label>
                                 <input type="text" class="form-control" id="nome-componente-1" name="nome-componente-1"
                                     value="Sensor SpO₂">
                             </div>
-
                             <div class="col-md-4">
                                 <label for="notificacao-1" class="form-label">Notificação</label>
                                 <input type="text" class="form-control" id="notificacao-1" name="notificacao-1"
                                     value="Sem notificações">
                             </div>
                             <div class="col-md-1 mt-4">
-                                <button type="button"
-                                        class="btn btn-outline-danger w-100">
+                                <button type="button" class="btn btn-outline-danger w-100">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -226,100 +350,32 @@
                                 <input type="text" class="form-control" id="codigo-componente-2"
                                     name="codigo-componente-2" value="EQ-0001.02">
                             </div>
-
                             <div class="col-md-4">
                                 <label for="nome-componente-2" class="form-label">Nome do componente</label>
                                 <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2"
                                     value="Cabo ECG">
                             </div>
-
                             <div class="col-md-4">
                                 <label for="notificacao-2" class="form-label">Notificação</label>
                                 <input type="text" class="form-control" id="notificacao-2" name="notificacao-2"
                                     value="Cabo com desgaste visível">
                             </div>
                             <div class="col-md-1 mt-4">
-                                <button type="button"
-                                        class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Adicionar componente
-                    </button>
-                    <h4>Fornecedores associados</h4>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-5 mb-3">
-                                <label for="fornecedor1" class="form-label">
-                                    Fornecedor
-                                </label>
-                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
-                                    value="Philips Healthcare">
-                            </div>
-                            <div class="col-md-5 mb-3">
-                                <label for="tipoRelacao1" class="form-label">
-                                    Tipo de relação
-                                </label>
-                                <select class="form-select" id="tipoRelacao1" name="tipoRelacao1">
-                                    <option value="">
-                                        Selecione o tipo
-                                    </option>
-                                    <option>Fabricante</option>
-                                    <option selected>Fornecedor comercial</option>
-                                    <option>Assistência técnica</option>
-                                    <option>Consumíveis/acessórios</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mb-3 d-flex align-items-end">
                                 <button type="button" class="btn btn-outline-danger w-100">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-5 mb-3">
-                                <label for="fornecedor1" class="form-label">
-                                    Fornecedor
-                                </label>
-                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
-                                    value="Philips Healthcare">
-                            </div>
-                            <div class="col-md-5 mb-3">
-                                <label for="tipoRelacao2" class="form-label">
-                                    Tipo de relação
-                                </label>
-                                <select class="form-select" id="tipoRelacao2" name="tipoRelacao2">
-                                    <option value="">
-                                        Selecione o tipo
-                                    </option>
-                                    <option selected>Fabricante</option>
-                                    <option>Fornecedor comercial</option>
-                                    <option>Assistência técnica</option>
-                                    <option>Consumíveis/acessórios</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mb-3 d-flex align-items-end">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 align-items-end mt-3">
-                        <button type="button" class="btn btn-outline-primary py-2">
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="button" class="btn btn-outline-primary">
                             <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar fornecedor
+                            Adicionar componente
                         </button>
-                        <button type="submit" class="btn btn-success py-2">
+                        <button type="submit" class="btn btn-success">
                             Guardar
                         </button>
-                        <a href="../equipamentos/lista.html" class="btn btn-secondary py-2">
+                        <a href="../equipamentos/lista.html" class="btn btn-secondary">
                             Cancelar
                         </a>
                     </div>
@@ -329,4 +385,5 @@
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
