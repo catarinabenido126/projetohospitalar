@@ -252,69 +252,33 @@
                     <h4>Documentação associada</h4>
                     <div class="border rounded p-3 mb-3">
                         <div class="row">
-                            <div class="col-md-4">
-                                <label for="documento1" class="form-label">Documento</label>
-                                <input type="text" class="form-control" id="documento1" name="documento1"
-                                    value="Manual do Utilizador">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="tipoDocumento1" class="form-label">Tipo</label>
-                                <select class="form-select" id="tipoDocumento1" name="tipoDocumento1">
-                                    <option value="">Selecione o tipo</option>
-                                    <option selected>Manual do utilizador</option>
-                                    <option>Manual técnico</option>
-                                    <option>Certificado de calibração</option>
-                                    <option>Garantia</option>
-                                    <option>Contrato de manutenção</option>
-                                    <option>Relatório técnico</option>
-                                    <option>Fatura</option>
+                            <div class="col-md-10">
+                                <label for="documento1" class="form-label">
+                                    Documento existente
+                                </label>
+                                <select class="form-select" id="documento1" name="documento1">
+                                    <option value="">
+                                        Selecione um documento
+                                    </option>
+                                    <option selected>
+                                        Manual do Utilizador - Monitor Multiparamétrico
+                                    </option>
+                                    <option>
+                                        Garantia Philips - Monitor Multiparamétrico
+                                    </option>
+                                    <option>
+                                        Certificado de Calibração - Monitor Multiparamétrico
+                                    </option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="ficheiroDocumento1" class="form-label">Ficheiro</label>
-                                <input type="text" class="form-control" id="ficheiroDocumento1"
-                                    name="ficheiroDocumento1" value="manual_utilizador_mp5.pdf">
-                            </div>
-                            <div class="col-md-1 mt-4">
+                            <div class="col-md-2 mt-4">
                                 <button type="button" class="btn btn-outline-danger w-100">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="documento2" class="form-label">Documento</label>
-                                <input type="text" class="form-control" id="documento2" name="documento2"
-                                    value="Garantia Philips">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="tipoDocumento2" class="form-label">Tipo</label>
-                                <select class="form-select" id="tipoDocumento2" name="tipoDocumento2">
-                                    <option value="">Selecione o tipo</option>
-                                    <option>Manual do utilizador</option>
-                                    <option>Manual técnico</option>
-                                    <option>Certificado de calibração</option>
-                                    <option selected>Garantia</option>
-                                    <option>Contrato de manutenção</option>
-                                    <option>Relatório técnico</option>
-                                    <option>Fatura</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="ficheiroDocumento2" class="form-label">Ficheiro</label>
-                                <input type="text" class="form-control" id="ficheiroDocumento2"
-                                    name="ficheiroDocumento2" value="garantia_philips.pdf">
-                            </div>
-                            <div class="col-md-1 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary py-2 mb-4">
+                    <button type="button" class="btn btn-outline-primary mb-4">
                         <i class="fa-solid fa-plus me-1"></i>
                         Associar documento
                     </button>
@@ -385,5 +349,4 @@
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
