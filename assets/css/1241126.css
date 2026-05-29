@@ -583,3 +583,66 @@ canvas {
     width: 100%;
     height: 100%;
 }
+.menu-lateral {
+    min-height: 100vh;
+}
+/* Media */
+@media (max-width: 900px) {
+    .barra-superior .row {
+        align-items: center;
+    }
+    .menu-lateral {
+        min-height: auto;
+    }
+    .menu-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .menu-nav .nav-link {
+        padding: 8px 10px;
+        font-size: 0.95em;
+    }
+    .area-conteudo {
+        padding: 20px;
+    }
+    .banner-inicial {
+        min-height: 260px;
+        padding: 30px;
+    }
+    .d-flex {
+        flex-wrap: wrap;
+    }
+}
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.6em;
+    }
+    h4 {
+        font-size: 1.1em;
+    }
+    .menu-nav {
+        flex-direction: column;
+    }
+    .menu-nav .nav-link {
+        width: 100%;
+    }
+    .btn {
+        margin-bottom: 6px;
+    }
+    .banner-inicial {
+        min-height: 230px;
+        padding: 22px;
+    }
+    .texto-banner-inicial h2 {
+        font-size: 1.8em;
+    }
+    .texto-banner-inicial p {
+        font-size: 0.9em;
+    }
+    .lembrete-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
