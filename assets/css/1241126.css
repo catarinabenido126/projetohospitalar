@@ -646,3 +646,30 @@ canvas {
         align-items: flex-start;
     }
 }
+/* Tabs dos detalhes do equipamento */
+#tabsEquipamento {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    border-bottom: 1px solid #ccc;
+}
+#tabsEquipamento .nav-item {
+    flex: 0 0 auto;
+}
+#tabsEquipamento .nav-link {
+    color: #314b6b;
+    border: none;
+    background-color: transparent;
+    white-space: nowrap;
+}
+#tabsEquipamento .nav-link i {
+    color: #314b6b;
+}
+#tabsEquipamento .nav-link.active {
+    color: #314b6b;
+    background-color: transparent;
+    border-bottom: 3px solid #314b6b;
+    font-weight: 600;
+}
+#tabsEquipamento .nav-link.active i {
+    color: #314b6b;
+}
