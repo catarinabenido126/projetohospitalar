@@ -72,291 +72,402 @@
                 </nav>
             </aside>
             <main class="col-md-9 col-lg-10 p-4 area-conteudo">
-                <h2>Novo Equipamento</h2>
-                <hr>
-                <form action="../equipamentos/lista.html" method="post">
-                    <h4>Informação principal</h4>
-                    <div class="mb-3">
-                        <label for="codigo" class="form-label">Código interno</label>
-                        <input type="text" class="form-control" id="codigo" name="codigo" required>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2>Novo Equipamento</h2>
+                        <p class="text-muted mb-0">
+                            Preencha os dados para registar um novo equipamento.
+                        </p>
                     </div>
-                    <div class="mb-3">
-                        <label for="designacao" class="form-label">Designação</label>
-                        <input type="text" class="form-control" id="designacao" name="designacao" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoria</label>
-                        <select class="form-select" id="categoria" name="categoria" required>
-                            <option value="">Selecione uma categoria</option>
-                            <option>Monitorização</option>
-                            <option>Suporte de Vida</option>
-                            <option>Diagnóstico</option>
-                            <option>Imagiologia</option>
-                            <option>Laboratório</option>
-                            <option>Terapia</option>
-                            <option>Cirurgia</option>
-                        </select>
-                    </div>
-                    <h4>Dados técnicos</h4>
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="marca" name="marca">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="modelo" name="modelo">
-                    </div>
-                    <div class="mb-3">
-                        <label for="numeroSerie" class="form-label">Número de série</label>
-                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie">
-                    </div>
-                    <div class="mb-3">
-                        <label for="anoFabrico" class="form-label">Ano de fabrico</label>
-                        <input type="number" class="form-control" id="anoFabrico" name="anoFabrico">
-                    </div>
-                    <h4>Dados administrativos</h4>
-                    <div class="mb-3">
-                        <label for="dataAquisicao" class="form-label">Data de aquisição</label>
-                        <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao">
-                    </div>
-                    <div class="mb-3">
-                        <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
-                        <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao">
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
-                        <select class="form-select" id="tipoEntrada" name="tipoEntrada">
-                            <option value="">Selecione o tipo de entrada</option>
-                            <option>Compra</option>
-                            <option>Doação</option>
-                            <option>Aluguer</option>
-                            <option>Empréstimo</option>
-                        </select>
-                    </div>
-                    <h4>Estado e criticidade</h4>
-                    <div class="mb-3">
-                        <label for="estado" class="form-label">Estado</label>
-                        <select class="form-select" id="estado" name="estado" required>
-                            <option value="">Selecione o estado</option>
-                            <option>Ativo</option>
-                            <option>Em manutenção</option>
-                            <option>Em calibração</option>
-                            <option>Inativo</option>
-                            <option>Abatido</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="criticidade" class="form-label">Criticidade</label>
-                        <select class="form-select" id="criticidade" name="criticidade" required>
-                            <option value="">Selecione a criticidade</option>
-                            <option>Baixa</option>
-                            <option>Média</option>
-                            <option>Alta</option>
-                            <option>Suporte de vida</option>
-                        </select>
-                    </div>
-                    <h4>Localização associada</h4>
-                    <div class="border rounded p-3 mb-4">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <label for="localizacao" class="form-label">
-                                    Localização existente
-                                </label>
-                                <select class="form-select" id="localizacao" name="localizacao">
-                                    <option value="">
-                                        Selecione uma localização
-                                    </option>
-                                    <option>
-                                        Edifício A • Piso 1 • Sala 101 • UCI
-                                    </option>
-                                    <option>
-                                        Edifício B • Piso 2 • Sala 205 • Radiologia
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes" class="form-label">Observações</label>
-                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Associar localização
-                    </button>
-                    <h4>Componentes associados</h4>
-                    <p class="text-muted">
-                        Adicione os componentes ou acessórios associados ao equipamento.
-                    </p>
-                    <div class="border rounded p-3 mb-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="codigo-componente-2" class="form-label">
-                                    Código do componente
-                                </label>
-                                <input type="text" class="form-control" id="codigo-componente-2"
-                                    name="codigo-componente-2" placeholder="Ex: EQ-0001.02">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="nome-componente-2" class="form-label">
-                                    Nome do componente
-                                </label>
-                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="notificacao-2" class="form-label">
-                                    Notificação
-                                </label>
-                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2">
-                            </div>
-                            <div class="col-md-1 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded p-3 mb-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="codigo-componente-2" class="form-label">
-                                    Código do componente
-                                </label>
-                                <input type="text" class="form-control" id="codigo-componente-2"
-                                    name="codigo-componente-2" placeholder="Ex: EQ-0001.02">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="nome-componente-2" class="form-label">
-                                    Nome do componente
-                                </label>
-                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="notificacao-2" class="form-label">
-                                    Notificação
-                                </label>
-                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2">
-                            </div>
-                            <div class="col-md-1 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Adicionar componente
-                    </button>
-                    <h4>Fornecedores associados</h4>
-                    <p class="text-muted">
-                        Associe fornecedores já registados no sistema.
-                    </p>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="fornecedor1" class="form-label">
-                                    Fornecedor
-                                </label>
-                                <select class="form-select" id="fornecedor1" name="fornecedor1">
-                                    <option value="">
-                                        Selecione um fornecedor
-                                    </option>
-                                    <option>
-                                        Philips Healthcare
-                                    </option>
-                                    <option>
-                                        Dräger Portugal
-                                    </option>
-                                    <option>
-                                        Siemens Healthineers
-                                    </option>
-                                    <option>
-                                        GE Healthcare
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-5">
-                                <label for="tipoRelacao1" class="form-label">
-                                    Tipo de relação
-                                </label>
-                                <select class="form-select" id="tipoRelacao1" name="tipoRelacao1">
-                                    <option value="">
-                                        Selecione o tipo
-                                    </option>
-                                    <option>Fabricante
-                                    </option>
-                                    <option>Fornecedor comercial
-                                    </option>
-                                    <option>Assistência técnica
-                                    </option>
-                                    <option>Consumíveis/acessórios
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Associar fornecedor
-                    </button>
-                    <h4>Documentação associada</h4>
-                    <p class="text-muted">
-                        Associe documentos já registados no sistema.
-                    </p>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <label class="form-label">
-                                    Documento existente
-                                </label>
-                                <select class="form-select">
-                                    <option>
-                                        Selecione um documento
-                                    </option>
-                                    <option>
-                                        Manual do Utilizador
-                                    </option>
-                                    <option>
-                                        Garantia Philips
-                                    </option>
-                                    <option>
-                                        Certificado de Calibração
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="button" class="btn btn-outline-primary">
-                            <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar documento
-                        </button>
-                        <button type="submit" class="btn btn-success">
-                            Guardar
-                        </button>
+                    <div>
                         <a href="../equipamentos/lista.html" class="btn btn-secondary">
                             Cancelar
                         </a>
+                        <a href="../equipamentos/lista.html?criado=1" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-1"></i>
+                            Guardar Equipamento
+                        </a>
                     </div>
-                </form>
+                </div>
+                <hr>
+                <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
+
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento"
+                            type="button">
+                            <i class="fa-solid fa-stethoscope me-1"></i>
+                            Equipamento
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button">
+                            <i class="fa-solid fa-microchip me-1"></i>
+                            Componentes
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aquisicao" type="button">
+                            <i class="fa-solid fa-cart-shopping me-1"></i>
+                            Aquisição
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
+                            <i class="fa-solid fa-truck me-1"></i>
+                            Fornecedor
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button">
+                            <i class="fa-solid fa-location-dot me-1"></i>
+                            Localização
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button">
+                            <i class="fa-solid fa-shield-halved me-1"></i>
+                            Garantias
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button">
+                            <i class="fa-solid fa-file-contract me-1"></i>
+                            Contratos
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="equipamento">
+                        <h4>
+                            <i class="fa-solid fa-stethoscope me-2"></i>
+                            Informação do Equipamento
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Código Interno</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: EQ-0001">
+                                <label class="form-label">Designação</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: Monitor Multiparamétrico">
+                                <label class="form-label">Categoria</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: Monitorização">
+                                <label class="form-label">Marca</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: Philips">
+                                <label class="form-label">Modelo</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: IntelliVue MP5">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Número de Série</label>
+                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Ano de Fabrico</label>
+                                <input type="number" class="form-control mb-3">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select mb-3">
+                                    <option value="" selected disabled>Selecionar estado</option>
+                                    <option>Ativo</option>
+                                    <option>Em manutenção</option>
+                                    <option>Inativo</option>
+                                    <option>Abatido</option>
+                                </select>
+                                <label class="form-label">Criticidade</label>
+                                <select class="form-select mb-3">
+                                    <option value="" selected disabled>Selecionar criticidade</option>
+                                    <option>Baixa</option>
+                                    <option>Média</option>
+                                    <option>Alta</option>
+                                </select>
+                                <label class="form-label">Tipo de Entrada</label>
+                                <select class="form-select mb-3">
+                                    <option value="" selected disabled>Selecionar tipo de entrada</option>
+                                    <option>Compra</option>
+                                    <option>Aluguer</option>
+                                    <option>Doação</option>
+                                    <option>Empréstimo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label class="form-label">Observações</label>
+                        <textarea class="form-control mb-4" rows="4"></textarea>
+                    </div>
+                    <div class="tab-pane fade" id="componentes">
+                        <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="semComponentes"
+                                onchange="toggleComponentes()">
+                            <label class="form-check-label" for="semComponentes">
+                                Este equipamento não possui componentes associados
+                            </label>
+                        </div>
+                        <div id="areaComponentes">
+                            <div class="border rounded p-3 mb-3 bg-white">
+                                <h5>Componente 1</h5>
+                                <label class="form-label">Código do componente</label>
+                                <input type="text" class="form-control mb-2" placeholder="Ex: EQ-0001.01">
+                                <small class="text-muted d-block mb-3">
+                                    Formato recomendado: EQ-0001.01
+                                </small>
+                                <label class="form-label">Nome do componente</label>
+                                <input type="text" class="form-control mb-3" placeholder="Ex: Sensor SpO₂">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select mb-3">
+                                    <option value="" selected disabled>Selecionar estado</option>
+                                    <option>Funcional</option>
+                                    <option>Em manutenção</option>
+                                    <option>Avariado</option>
+                                    <option>Substituído</option>
+                                    <option>Abatido</option>
+                                </select>
+                                <label class="form-label">Notificação</label>
+                                <textarea class="form-control mb-3" rows="3"></textarea>
+                                <hr>
+                                <h6><i class="fa-solid fa-file-lines me-2"></i>Documentos do componente</h6>
+                                <div class="border rounded p-3 mb-3">
+                                    <div class="row align-items-end">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Nome do documento</label>
+                                            <input type="text" class="form-control" placeholder="Ex: Manual do Sensor">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tipo de documento</label>
+                                            <select class="form-select tipo-documento"
+                                                onchange="mostrarOutroDocumento(this)">
+                                                <option value="" selected disabled>Selecionar tipo</option>
+                                                <option>Manual de componente</option>
+                                                <option>Ficha Técnica</option>
+                                                <option>Certificação</option>
+                                                <option>Relatório de teste</option>
+                                                <option>Registo de substituição</option>
+                                                <option>Outro</option>
+                                            </select>
+                                            <input type="text" class="form-control mt-2 campo-outro-documento d-none"
+                                                placeholder="Escreve o tipo de documento">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Ficheiro</label>
+                                            <input type="file" id="novoDocumentoComponente" hidden>
+                                            <label for="novoDocumentoComponente" class="btn btn-outline-primary w-100">
+                                                <i class="fa-solid fa-upload me-1"></i>
+                                                Selecionar ficheiro
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-primary w-100">
+                                                <i class="fa-solid fa-plus me-1"></i>
+                                                Adicionar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Eliminar componente
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                Adicionar Componente
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="aquisicao">
+                        <h4><i class="fa-solid fa-cart-shopping me-2"></i>Dados de Aquisição / Entrada</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de entrada</label>
+                                <select class="form-select mb-3" id="tipoEntradaEquipamento"
+                                    onchange="mostrarCamposEntrada()">
+                                    <option value="" selected disabled>Selecionar tipo de entrada</option>
+                                    <option value="compra" selected>Compra</option>
+                                    <option value="aluguer">Aluguer</option>
+                                    <option value="doacao">Doação</option>
+                                    <option value="emprestimo">Empréstimo</option>
+                                </select>
+                                <label class="form-label">Data de entrada</label>
+                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Entidade associada</label>
+                                <input type="text" class="form-control mb-3">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="campos-entrada" id="camposCompra">
+                                    <label class="form-label">Custo de aquisição</label>
+                                    <input type="number" class="form-control mb-3">
+                                    <label class="form-label">Número da fatura</label>
+                                    <input type="text" class="form-control mb-3">
+                                    <label class="form-label">Método de pagamento</label>
+                                    <input type="text" class="form-control mb-3">
+                                </div>
+                                <div class="campos-entrada d-none" id="camposAluguer">
+                                    <label class="form-label">Valor mensal</label>
+                                    <input type="number" class="form-control mb-3">
+                                    <label class="form-label">Data de fim do aluguer</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do aluguer</label>
+                                    <textarea class="form-control mb-3" rows="3"></textarea>
+                                </div>
+                                <div class="campos-entrada d-none" id="camposDoacao">
+                                    <label class="form-label">Entidade doadora</label>
+                                    <input type="text" class="form-control mb-3">
+                                    <label class="form-label">Valor estimado</label>
+                                    <input type="number" class="form-control mb-3">
+                                    <label class="form-label">Condições da doação</label>
+                                    <textarea class="form-control mb-3" rows="3"></textarea>
+                                </div>
+                                <div class="campos-entrada d-none" id="camposEmprestimo">
+                                    <label class="form-label">Entidade proprietária</label>
+                                    <input type="text" class="form-control mb-3">
+                                    <label class="form-label">Data de início do empréstimo</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Data prevista de devolução</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do empréstimo</label>
+                                    <textarea class="form-control mb-3" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="fornecedor">
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
+                        <label class="form-label">Selecionar fornecedor existente</label>
+                        <select class="form-select mb-4">
+                            <option selected>Selecionar fornecedor</option>
+                            <option>Philips Healthcare</option>
+                            <option>GE Healthcare</option>
+                            <option>Siemens Healthineers</option>
+                            <option>MedTech Solutions</option>
+                        </select>
+                        <div class="alert alert-info mb-0">
+                            O fornecedor é criado e gerido no módulo de fornecedores.
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="localizacao">
+                        <h4><i class="fa-solid fa-location-dot me-2"></i>Localização Associada</h4>
+                        <label class="form-label">Selecionar localização existente</label>
+                        <select class="form-select mb-4">
+                            <option selected>Selecionar localização</option>
+                            <option>Edifício A • Piso 1 • Sala 101 • UCI</option>
+                            <option>Edifício A • Piso 2 • Bloco Operatório</option>
+                            <option>Edifício B • Piso 0 • Urgência</option>
+                            <option>Armazém</option>
+                        </select>
+                        <div class="alert alert-info mb-0">
+                            A localização é criada e gerida no módulo de localizações.
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="garantias">
+                        <h4><i class="fa-solid fa-shield-halved me-2"></i>Garantias</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="semGarantias"
+                                onchange="toggleGarantias()">
+                            <label class="form-check-label" for="semGarantias">Este equipamento não possui
+                                garantias</label>
+                        </div>
+                        <div id="areaGarantias">
+                            <div class="border rounded p-3 mb-3 bg-white">
+                                <label class="form-label">Nome da garantia</label>
+                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Data de início</label>
+                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Data de fim</label>
+                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select mb-3">
+                                    <option selected>Ativa</option>
+                                    <option>Expirada</option>
+                                </select>
+                                <input type="file" id="novaGarantia" hidden>
+                                <label for="novaGarantia" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa-solid fa-upload me-1"></i>
+                                    Selecionar PDF
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                Adicionar Garantia
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="contratos">
+                        <h4><i class="fa-solid fa-file-contract me-2"></i>Contratos</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="semContratos"
+                                onchange="toggleContratos()">
+                            <label class="form-check-label" for="semContratos">Este equipamento não possui
+                                contratos</label>
+                        </div>
+                        <div id="areaContratos">
+                            <div class="border rounded p-3 mb-3 bg-white">
+                                <label class="form-label">Nome do contrato</label>
+                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Fornecedor associado</label>
+                                <select class="form-select mb-3">
+                                    <option selected>Selecionar fornecedor</option>
+                                    <option>Philips Healthcare</option>
+                                    <option>GE Healthcare</option>
+                                    <option>Siemens Healthineers</option>
+                                    <option>MedTech Solutions</option>
+                                </select>
+                                <label class="form-label">Data de início</label>
+                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Data de fim</label>
+                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Valor anual</label>
+                                <input type="text" class="form-control mb-3">
+                                <input type="file" id="novoContrato" hidden>
+                                <label for="novoContrato" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa-solid fa-upload me-1"></i>
+                                    Selecionar PDF
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                Adicionar Contrato
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
-        <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    </div>
+    <script>
+        function mostrarOutroDocumento(select) {
+            const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
+            if (select.value === "Outro") {
+                campoOutro.classList.remove("d-none");
+            } else {
+                campoOutro.classList.add("d-none");
+                campoOutro.value = "";
+            }
+        }
+        function mostrarCamposEntrada() {
+            const tipo = document.getElementById("tipoEntradaEquipamento").value;
+            document.querySelectorAll(".campos-entrada").forEach(function (bloco) {
+                bloco.classList.add("d-none");
+            });
+            if (tipo === "compra") {
+                document.getElementById("camposCompra").classList.remove("d-none");
+            } else if (tipo === "aluguer") {
+                document.getElementById("camposAluguer").classList.remove("d-none");
+            } else if (tipo === "doacao") {
+                document.getElementById("camposDoacao").classList.remove("d-none");
+            } else if (tipo === "emprestimo") {
+                document.getElementById("camposEmprestimo").classList.remove("d-none");
+            }
+        }
+        function toggleComponentes() {
+            document.getElementById("areaComponentes").classList.toggle("d-none");
+        }
+        function toggleGarantias() {
+            document.getElementById("areaGarantias").classList.toggle("d-none");
+        }
+        function toggleContratos() {
+            document.getElementById("areaContratos").classList.toggle("d-none");
+        }
+    </script>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    </div>
 </body>
+
 </html>
