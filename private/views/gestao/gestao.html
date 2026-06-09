@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Fornecedor</title>
+    <title>Gestão da Página Pública</title>
     <!-- favicon -->
     <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
     <!-- Font Awesome -->
@@ -61,13 +61,231 @@
                         <i class="fa-solid fa-truck"></i>
                         Fornecedores
                     </a>
-                    <a href="../documentacao/lista.html" class="nav-link">
-                        <i class="fa-solid fa-file-lines"></i>
-                        Documentação
-                    </a>
                     <a href="../localizacao/lista.html" class="nav-link">
                         <i class="fa-solid fa-location-dot"></i>
                         Localizações
                     </a>
+                    <a href="../gestao/gestao.html" class="nav-link">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        Gestão
+                    </a>
                 </nav>
             </aside>
+            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+                <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Alterações guardadas com sucesso.
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2>Gestão da Página Pública</h2>
+                        <p class="text-muted mb-0">
+                            Altere os conteúdos apresentados na página pública do website.
+                        </p>
+                    </div>
+                    <div>
+                        <a href="../../../public/index.html" target="_blank" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-eye me-1"></i>
+                            Visualizar Página Pública
+                        </a>
+                        <a href="gestao.html?guardado=1" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-1"></i>
+                            Guardar Alterações
+                        </a>
+                    </div>
+                </div>
+                <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Conteúdo da página pública atualizado com sucesso.
+                </div>
+                <hr>
+                <section class="gestao-seccao">
+                    <h4>1. Início</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Título Principal</label>
+                            <input type="text" class="form-control mb-3"
+                                value="Sistema Digital de Apoio ao Inventário Hospitalar">
+
+                            <label class="form-label">Texto de Apresentação</label>
+                            <textarea class="form-control mb-3"
+                                rows="5">A MediSync é uma plataforma digital criada para apoiar instituições de saúde na organização e consulta do inventário de equipamentos médicos.</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Imagem Principal</label>
+                            <img src="../../../assets/img/hospital.png" alt="Imagem principal"
+                                class="img-fluid rounded mb-3 imagem-gestao">
+
+                            <input type="file" id="imagemInicio" hidden>
+                            <label for="imagemInicio" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-upload me-1"></i>
+                                Alterar imagem
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <section class="gestao-seccao">
+                    <h4>2. Sobre Nós</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Texto da Secção</label>
+                            <textarea class="form-control mb-3"
+                                rows="10">A MediSync foi criada em 2026, no âmbito da Licenciatura em Engenharia Biomédica do ISEP, com o objetivo de desenvolver uma solução web aplicada à gestão de informação hospitalar.
+                                
+O projeto surgiu da necessidade de tornar mais simples a organização de equipamentos médicos, documentação técnica, fornecedores e dados associados ao funcionamento de um inventário hospitalar.
+
+A plataforma procura contribuir para uma gestão mais centralizada, clara e acessível, apoiando a consulta rápida da informação relevante para os serviços hospitalares.</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Imagem da Secção</label>
+                            <img src="../../../assets/img/fundadores.png" alt="Imagem sobre nós"
+                                class="img-fluid rounded mb-3 imagem-gestao">
+                            <input type="file" id="imagemSobre" hidden>
+                            <label for="imagemSobre" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-upload me-1"></i>
+                                Alterar imagem
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <section class="gestao-seccao">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4>3. Serviços</h4>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-laptop-medical fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Inventário de Equipamentos">
+
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Registo e consulta de equipamentos médicos, incluindo identificação, localização, categoria, estado e criticidade.</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-folder-open fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Gestão Documental">
+
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Organização de manuais, certificados, relatórios técnicos, faturas e outros documentos associados.</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-truck-medical fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Fornecedores">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Associação de equipamentos a fornecedores, fabricantes e entidades responsáveis por assistência técnica.</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-file-contract fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Garantias e Contratos">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Consulta de garantias e contratos de manutenção relacionados com os equipamentos hospitalares.</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-magnifying-glass fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Pesquisa e Filtros">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Pesquisa de equipamentos por serviço, localização, categoria, estado ou criticidade.</textarea>
+                                <div class="text-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="servico-gestao p-3 border rounded h-100">
+                                <div class="text-center mb-3">
+                                    <i class="fa-solid fa-chart-column fa-2x"></i>
+                                </div>
+                                <label class="form-label">Título do Serviço</label>
+                                <input type="text" class="form-control mb-3" value="Dashboard">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control mb-3"
+                                    rows="3">Visualização resumida de indicadores úteis para acompanhamento do inventário hospitalar.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="gestao-seccao">
+                    <h4>4. Contacta-nos</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Título da Secção</label>
+                            <input type="text" class="form-control mb-3" value="Contacta-nos">
+                            <label class="form-label">Texto de Apresentação</label>
+                            <textarea class="form-control mb-3"
+                                rows="3">Para mais informações sobre a MediSync, fale connosco!</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control mb-3" value="geral@medisync.pt">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" class="form-control mb-3" value="+351 222 000 000">
+                        </div>
+                    </div>
+                </section>
+                <section class="gestao-seccao">
+                    <h4>5. Rodapé</h4>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Localização</label>
+                            <textarea class="form-control mb-3" rows="5">Instituto Superior de Engenharia do Porto
+Rua Dr. António Bernardino de Almeida
+Porto, Portugal</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Horário</label>
+                            <textarea class="form-control mb-3" rows="5">2ª a 6ª Feira: 9h — 18h
+Sábado: Encerrado
+Domingo: Encerrado</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Contactos</label>
+                            <textarea class="form-control mb-3" rows="5">Email: geral@medisync.pt
+Telefone: +351 222 000 000</textarea>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("guardado") === "1") {
+            const alerta = document.getElementById("mensagemSucesso");
+            alerta.classList.remove("d-none");
+            setTimeout(function () {
+                alerta.classList.add("d-none");
+            }, 4000);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>
