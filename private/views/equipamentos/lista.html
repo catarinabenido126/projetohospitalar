@@ -86,6 +86,10 @@
                     </a>
                 </div>
                 <hr>
+                <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
+    <i class="fa-solid fa-circle-check me-2"></i>
+    Equipamento guardado com sucesso.
+</div>
                 <p class="text-muted">
                     Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos
                     detalhes.
@@ -269,6 +273,17 @@
         </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+<script>
+    const parametros = new URLSearchParams(window.location.search);
+    const mensagem = document.getElementById("mensagemSucesso");
+    if (parametros.get("guardado") === "1") {
+        mensagem.classList.remove("d-none");
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setTimeout(() => {
+            mensagem.classList.add("d-none");
+        }, 4000);
+    }
+</script>
 </body>
 
 </html>
