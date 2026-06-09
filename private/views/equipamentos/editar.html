@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +17,7 @@
     <!-- estilos -->
     <link rel="stylesheet" href="../../../assets/css/1241126.css">
 </head>
+
 <body>
     <header class="container-fluid barra-superior text-white">
         <div class="row align-items-center">
@@ -72,281 +74,725 @@
                 </nav>
             </aside>
             <main class="col-md-9 col-lg-10 p-4 area-conteudo">
-                <h2>Editar Equipamento</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2>Editar Equipamento</h2>
+                        <p class="text-muted mb-0">Monitor Multiparamétrico Philips IntelliVue MP5 • EQ-0001</p>
+                    </div>
+                    <div>
+                        <a href="../equipamentos/detalhes.html" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-1"></i>
+                            Guardar Alterações
+                        </button>
+                    </div>
+                </div>
                 <hr>
-                <form action="../equipamentos/lista.html" method="post">
-                    <h4>Informação principal</h4>
-                    <div class="mb-3">
-                        <label for="codigo">Código interno</label>
-                        <input type="text" class="form-control" id="codigo" name="codigo" value="EQ-0001" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="designacao">Designação</label>
-                        <input type="text" class="form-control" id="designacao" name="designacao"
-                            value="Monitor Multiparamétrico" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoria</label>
-                        <select class="form-select" id="categoria" name="categoria" required>
-                            <option value="">Selecione uma categoria</option>
-                            <option selected>Monitorização</option>
-                            <option>Suporte de Vida</option>
-                            <option>Diagnóstico</option>
-                            <option>Imagiologia</option>
-                            <option>Laboratório</option>
-                            <option>Terapia</option>
-                            <option>Cirurgia</option>
-                        </select>
-                    </div>
-                    <h4>Dados técnicos</h4>
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="marca" name="marca" value="Philips">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="modelo" name="modelo" value="IntelliVue MP5">
-                    </div>
-                    <div class="mb-3">
-                        <label for="numeroSerie" class="form-label">Número de série</label>
-                        <input type="text" class="form-control" id="numeroSerie" name="numeroSerie"
-                            value="MP5-2022-45873">
-                    </div>
-                    <div class="mb-3">
-                        <label for="anoFabrico" class="form-label">Ano de fabrico</label>
-                        <input type="number" class="form-control" id="anoFabrico" name="anoFabrico" value="2022">
-                    </div>
-                    <h4>Dados administrativos</h4>
-                    <div class="mb-3">
-                        <label for="dataAquisicao" class="form-label">Data de aquisição</label>
-                        <input type="date" class="form-control" id="dataAquisicao" name="dataAquisicao"
-                            value="15/03/2023">
-                    </div>
-                    <div class="mb-3">
-                        <label for="custoAquisicao" class="form-label">Custo de aquisição</label>
-                        <input type="number" class="form-control" id="custoAquisicao" name="custoAquisicao "
-                            value="3500">
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipoEntrada" class="form-label">Tipo de entrada</label>
-                        <select class="form-select" id="tipoEntrada" name="tipoEntrada">
-                            <option value="">Selecione o tipo de entrada</option>
-                            <option selected>Compra</option>
-                            <option>Doação</option>
-                            <option>Aluguer</option>
-                            <option>Empréstimo</option>
-                        </select>
-                    </div>
-                    <h4>Estado e criticidade</h4>
-                    <div class="mb-3">
-                        <label for="estado" class="form-label">Estado</label>
-                        <select class="form-select" id="estado" name="estado" required>
-                            <option value="">Selecione o estado</option>
-                            <option selected>Ativo</option>
-                            <option>Em manutenção</option>
-                            <option>Em calibração</option>
-                            <option>Inativo</option>
-                            <option>Abatido</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="criticidade" class="form-label">Criticidade</label>
-                        <select class="form-select" id="criticidade" name="criticidade" required>
-                            <option value="">Selecione a criticidade</option>
-                            <option>Baixa</option>
-                            <option>Média</option>
-                            <option selected>Alta</option>
-                            <option>Suporte de vida</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes" class="form-label">Observações</label>
-                        <textarea class="form-control" id="observacoes" name="observacoes"
-                            rows="4"> Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
-                    </div>
-                    <h4>Localização associada</h4>
-                    <div class="border rounded p-3 mb-3">
+                <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento"
+                            type="button">
+                            <i class="fa-solid fa-stethoscope me-1"></i> Equipamento
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button">
+                            <i class="fa-solid fa-microchip me-1"></i> Componentes
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#compra" type="button">
+                            <i class="fa-solid fa-cart-shopping me-1"></i> Compra
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
+                            <i class="fa-solid fa-truck me-1"></i> Fornecedor
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button">
+                            <i class="fa-solid fa-location-dot me-1"></i> Localização
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button">
+                            <i class="fa-solid fa-shield-halved me-1"></i> Garantias
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button">
+                            <i class="fa-solid fa-file-contract me-1"></i> Contratos
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="equipamento">
+                        <h4><i class="fa-solid fa-stethoscope me-2"></i>Informação do Equipamento</h4>
                         <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <label for="edificio" class="form-label">Edifício</label>
-                                <input type="text" class="form-control" id="edificio" name="edificio"
-                                    value="Edifício A">
+                            <div class="col-md-6">
+                                <label class="form-label">Código Interno</label>
+                                <input type="text" class="form-control mb-3" value="EQ-0001">
+                                <label class="form-label">Designação</label>
+                                <input type="text" class="form-control mb-3" value="Monitor Multiparamétrico">
+                                <label class="form-label">Categoria</label>
+                                <input type="text" class="form-control mb-3" value="Monitorização">
+                                <label class="form-label">Marca</label>
+                                <input type="text" class="form-control mb-3" value="Philips">
+                                <label class="form-label">Modelo</label>
+                                <input type="text" class="form-control mb-3" value="IntelliVue MP5">
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="piso" class="form-label">Piso</label>
-                                <input type="text" class="form-control" id="piso" name="piso" value="Piso 1">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="sala" class="form-label">Sala</label>
-                                <input type="text" class="form-control" id="sala" name="sala" value="Sala 101">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="servico" class="form-label">Serviço</label>
-                                <select class="form-select" id="servico" name="servico" required>
-                                    <option value="">Selecione o serviço</option>
-                                    <option>Urgência</option>
-                                    <option selected>UCI</option>
-                                    <option>Bloco Operatório</option>
-                                    <option>Consultas</option>
-                                    <option>Laboratório</option>
-                                    <option>Radiologia</option>
-                                    <option>Reabilitação</option>
-                                    <option>Armazém</option>
+                            <div class="col-md-6">
+                                <label class="form-label">Número de Série</label>
+                                <input type="text" class="form-control mb-3" value="MP5-2022-45873">
+                                <label class="form-label">Ano de Fabrico</label>
+                                <input type="number" class="form-control mb-3" value="2022">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select mb-3">
+                                    <option selected>Ativo</option>
+                                    <option>Em manutenção</option>
+                                    <option>Inativo</option>
+                                    <option>Abatido</option>
+                                </select>
+                                <label class="form-label">Criticidade</label>
+                                <select class="form-select mb-3">
+                                    <option>Baixa</option>
+                                    <option>Média</option>
+                                    <option selected>Alta</option>
+                                </select>
+                                <label class="form-label">Tipo de Entrada</label>
+                                <select class="form-select mb-3">
+                                    <option selected>Compra</option>
+                                    <option>Aluguer</option>
+                                    <option>Doação</option>
+                                    <option>Empréstimo</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <h4>Fornecedores associados</h4>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="fornecedor1" class="form-label">Fornecedor</label>
-                                <input type="text" class="form-control" id="fornecedor1" name="fornecedor1"
-                                    value="Philips Healthcare">
-                            </div>
-                            <div class="col-md-5">
-                                <label for="tipoRelacao1" class="form-label">Tipo de relação</label>
-                                <select class="form-select" id="tipoRelacao1" name="tipoRelacao1">
-                                    <option value="">Selecione o tipo</option>
-                                    <option selected>Fabricante</option>
-                                    <option>Fornecedor comercial</option>
-                                    <option>Assistência técnica</option>
-                                    <option>Consumíveis/acessórios</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
+                        <label class="form-label">Observações</label>
+                        <textarea class="form-control mb-4"
+                            rows="4">Equipamento reservado para dia 12/06/2026 - UCI.</textarea>
+                        <hr>
+                        <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos do Equipamento</h5>
+                        <p class="text-muted">Adiciona, substitui ou remove os documentos próprios deste equipamento.
+                        </p>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">
+                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                                    Manual de Operação Philips IntelliVue MP5
+                                    <span class="badge bg-light text-primary border ms-2">Manual</span>
+                                </h6>
+                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Eliminar
                                 </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select mb-2 tipo-documento"
+                                        onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Manual de utilizador</option>
+                                        <option>Ficha Técnica</option>
+                                        <option>Certificação</option>
+                                        <option>Relatório de uso</option>
+                                        <option>Manual de manutenção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Ficheiro atual</label>
+                                    <p class="mb-1">
+                                        <i class="fa-regular fa-file-lines me-2"></i>
+                                        manual_operacao_philips_intellivue_mp5.pdf
+                                    </p>
+                                    <small class="text-muted d-block mb-3">1.24 MB • PDF</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="file" id="manualOperacaoMP5" hidden>
+                                    <label for="manualOperacaoMP5" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Substituir Ficheiro
+                                    </label>
+                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">
+                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                                    Ficha Técnica Philips IntelliVue MP5
+                                    <span class="badge bg-light text-primary border ms-2">Ficha Técnica</span>
+                                </h6>
+                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select mb-2 tipo-documento"
+                                        onchange="mostrarOutroDocumento(this)">
+                                        <option>Manual de utilizador</option>
+                                        <option selected>Ficha Técnica</option>
+                                        <option>Certificação</option>
+                                        <option>Relatório de uso</option>
+                                        <option>Manual de manutenção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Ficheiro atual</label>
+                                    <p class="mb-1">
+                                        <i class="fa-regular fa-file-lines me-2"></i>
+                                        ficha_tecnica_philips_intellivue_mp5.pdf
+                                    </p>
+                                    <small class="text-muted d-block mb-3">980 KB • PDF</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="file" id="fichaTecnicaMP5" hidden>
+                                    <label for="fichaTecnicaMP5" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Substituir Ficheiro
+                                    </label>
+                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-3 mb-4 bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">
+                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                                    Certificado CE do Equipamento IntelliVue MP5
+                                    <span class="badge bg-light text-primary border ms-2">Certificação</span>
+                                </h6>
+                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select mb-2 tipo-documento"
+                                        onchange="mostrarOutroDocumento(this)">
+                                        <option>Manual de utilizador</option>
+                                        <option>Ficha Técnica</option>
+                                        <option selected>Certificação</option>
+                                        <option>Relatório de uso</option>
+                                        <option>Manual de manutenção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Ficheiro atual</label>
+                                    <p class="mb-1">
+                                        <i class="fa-regular fa-file-lines me-2"></i>
+                                        certificado_ce_intellivue_mp5.pdf
+                                    </p>
+                                    <small class="text-muted d-block mb-3">450 KB • PDF</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="file" id="certificadoCEmp5" hidden>
+                                    <label for="certificadoCEmp5" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Substituir Ficheiro
+                                    </label>
+                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <h6>
+                                <i class="fa-solid fa-plus me-2"></i>
+                                Adicionar novo documento
+                            </h6>
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Relatório de manutenção">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Selecionar tipo</option>
+                                        <option>Manual de utilizador</option>
+                                        <option>Ficha Técnica</option>
+                                        <option>Certificação</option>
+                                        <option>Relatório de uso</option>
+                                        <option>Manual de manutenção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Ficheiro</label>
+                                    <input type="file" id="novoDocumentoEquipamento" hidden>
+                                    <label for="novoDocumentoEquipamento" class="btn btn-outline-primary w-100">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Selecionar ficheiro
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="fornecedor2" class="form-label">Fornecedor</label>
-                                <input type="text" class="form-control" id="fornecedor2" name="fornecedor2"
-                                    value="MedTech Solutions">
+                    <div class="tab-pane fade" id="componentes">
+                        <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <h5>Componente 1</h5>
+                            <label class="form-label">Código do componente</label>
+                            <input type="text" class="form-control mb-2" value="EQ-0001.01">
+                            <small class="text-muted d-block mb-3">Formato recomendado: EQ-0001.01</small>
+                            <label class="form-label">Nome do componente</label>
+                            <input type="text" class="form-control mb-3" value="Sensor SpO₂ Philips M1191BL">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select mb-3">
+                                <option selected>Funcional</option>
+                                <option>Em manutenção</option>
+                                <option>Avariado</option>
+                                <option>Substituído</option>
+                                <option>Abatido</option>
+                            </select>
+                            <label class="form-label">Notificação</label>
+                            <textarea class="form-control mb-3" rows="3">Sem notificações</textarea>
+                            <hr>
+                            <h6>
+                                <i class="fa-solid fa-file-lines me-2"></i>
+                                Documentos do componente
+                            </h6>
+                            <div class="border rounded p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">
+                                        <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                                        Manual do Sensor SpO₂ Philips M1191BL
+                                        <span class="badge bg-light text-primary border ms-2">Manual</span>
+                                    </h6>
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fa-solid fa-trash me-1"></i>
+                                        Eliminar
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Tipo de documento</label>
+                                        <select class="form-select mb-2 tipo-documento"
+                                            onchange="mostrarOutroDocumento(this)">
+                                            <option selected>Manual de componente</option>
+                                            <option>Ficha Técnica</option>
+                                            <option>Certificação</option>
+                                            <option>Relatório de teste</option>
+                                            <option>Registo de substituição</option>
+                                            <option>Outro</option>
+                                        </select>
+                                        <input type="text" class="form-control campo-outro-documento d-none"
+                                            placeholder="Escreve o tipo de documento">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Ficheiro atual</label>
+                                        <p class="mb-1">
+                                            <i class="fa-regular fa-file-lines me-2"></i>
+                                            manual_sensor_spo2_m1191bl.pdf
+                                        </p>
+                                        <small class="text-muted d-block mb-3">620 KB • PDF</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="file" id="docSensorSpo2" hidden>
+                                        <label for="docSensorSpo2" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa-solid fa-upload me-1"></i>
+                                            Substituir Ficheiro
+                                        </label>
+                                        <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-5">
-                                <label for="tipoRelacao2" class="form-label">Tipo de relação</label>
-                                <select class="form-select" id="tipoRelacao2" name="tipoRelacao2">
-                                    <option value="">Selecione o tipo</option>
-                                    <option>Fabricante</option>
-                                    <option>Fornecedor comercial</option>
-                                    <option selected>Assistência técnica</option>
-                                    <option>Consumíveis/acessórios</option>
-                                </select>
+                            <div class="border rounded p-3 mb-3">
+                                <h6>
+                                    <i class="fa-solid fa-plus me-2"></i>
+                                    Adicionar documento ao componente
+                                </h6>
+                                <div class="row align-items-end">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Nome do documento</label>
+                                        <input type="text" class="form-control"
+                                            placeholder="Ex: Relatório de teste do sensor">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Tipo de documento</label>
+                                        <select class="form-select tipo-documento"
+                                            onchange="mostrarOutroDocumento(this)">
+                                            <option selected>Selecionar tipo</option>
+                                            <option>Manual de componente</option>
+                                            <option>Ficha Técnica</option>
+                                            <option>Certificação</option>
+                                            <option>Relatório de teste</option>
+                                            <option>Registo de substituição</option>
+                                            <option>Outro</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2 campo-outro-documento d-none"
+                                            placeholder="Escreve o tipo de documento">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Ficheiro</label>
+                                        <input type="file" id="novoDocumentoComponente" hidden>
+                                        <label for="novoDocumentoComponente" class="btn btn-outline-primary w-100">
+                                            <i class="fa-solid fa-upload me-1"></i>
+                                            Selecionar ficheiro
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-primary w-100">
+                                            <i class="fa-solid fa-plus me-1"></i>
+                                            Adicionar
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash me-1"></i>
+                                Eliminar componente
+                            </button>
                         </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary py-2 mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Associar fornecedor
-                    </button>
-                    <h4>Documentação associada</h4>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <label for="documento1" class="form-label">
-                                    Documento existente
-                                </label>
-                                <select class="form-select" id="documento1" name="documento1">
-                                    <option value="">
-                                        Selecione um documento
-                                    </option>
-                                    <option selected>
-                                        Manual do Utilizador - Monitor Multiparamétrico
-                                    </option>
-                                    <option>
-                                        Garantia Philips - Monitor Multiparamétrico
-                                    </option>
-                                    <option>
-                                        Certificado de Calibração - Monitor Multiparamétrico
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-primary mb-4">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Associar documento
-                    </button>
-                    <h4>Componentes associados</h4>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="codigo-componente-1" class="form-label">Código do componente</label>
-                                <input type="text" class="form-control" id="codigo-componente-1"
-                                    name="codigo-componente-1" value="EQ-0001.01">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="nome-componente-1" class="form-label">Nome do componente</label>
-                                <input type="text" class="form-control" id="nome-componente-1" name="nome-componente-1"
-                                    value="Sensor SpO₂">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="notificacao-1" class="form-label">Notificação</label>
-                                <input type="text" class="form-control" id="notificacao-1" name="notificacao-1"
-                                    value="Sem notificações">
-                            </div>
-                            <div class="col-md-1 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded p-3 mb-3">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="codigo-componente-2" class="form-label">Código do componente</label>
-                                <input type="text" class="form-control" id="codigo-componente-2"
-                                    name="codigo-componente-2" value="EQ-0001.02">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="nome-componente-2" class="form-label">Nome do componente</label>
-                                <input type="text" class="form-control" id="nome-componente-2" name="nome-componente-2"
-                                    value="Cabo ECG">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="notificacao-2" class="form-label">Notificação</label>
-                                <input type="text" class="form-control" id="notificacao-2" name="notificacao-2"
-                                    value="Cabo com desgaste visível">
-                            </div>
-                            <div class="col-md-1 mt-4">
-                                <button type="button" class="btn btn-outline-danger w-100">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 mt-3">
                         <button type="button" class="btn btn-outline-primary">
                             <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar componente
+                            Adicionar Componente
                         </button>
-                        <button type="submit" class="btn btn-success">
-                            Guardar
-                        </button>
-                        <a href="../equipamentos/lista.html" class="btn btn-secondary">
-                            Cancelar
-                        </a>
                     </div>
-                </form>
+                    <div class="tab-pane fade" id="compra">
+                        <h4><i class="fa-solid fa-cart-shopping me-2"></i>Dados de Aquisição / Entrada</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de entrada</label>
+                                <select class="form-select mb-3" id="tipoEntradaEquipamento"
+                                    onchange="mostrarCamposEntrada()">
+                                    <option value="compra" selected>Compra</option>
+                                    <option value="aluguer">Aluguer</option>
+                                    <option value="doacao">Doação</option>
+                                    <option value="emprestimo">Empréstimo</option>
+                                </select>
+                                <label class="form-label">Data de entrada</label>
+                                <input type="date" class="form-control mb-3" value="2023-03-15">
+                                <label class="form-label">Entidade associada</label>
+                                <input type="text" class="form-control mb-3" value="Philips Healthcare">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="campos-entrada" id="camposCompra">
+                                    <label class="form-label">Custo de aquisição</label>
+                                    <input type="number" class="form-control mb-3" value="3500">
+                                    <label class="form-label">Número da fatura</label>
+                                    <input type="text" class="form-control mb-3" value="FT-2023/4587">
+                                    <label class="form-label">Método de pagamento</label>
+                                    <input type="text" class="form-control mb-3" value="Transferência Bancária">
+                                </div>
+                                <div class="campos-entrada d-none" id="camposAluguer">
+                                    <label class="form-label">Valor mensal</label>
+                                    <input type="number" class="form-control mb-3" placeholder="Ex: 250">
+                                    <label class="form-label">Data de fim do aluguer</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do aluguer</label>
+                                    <textarea class="form-control mb-3" rows="2"
+                                        placeholder="Ex: manutenção incluída, renovação anual..."></textarea>
+                                </div>
+                                <div class="campos-entrada d-none" id="camposDoacao">
+                                    <label class="form-label">Entidade doadora</label>
+                                    <input type="text" class="form-control mb-3" placeholder="Ex: Fundação Saúde+">
+                                    <label class="form-label">Valor estimado</label>
+                                    <input type="number" class="form-control mb-3" placeholder="Ex: 3500">
+                                    <label class="form-label">Condições da doação</label>
+                                    <textarea class="form-control mb-3" rows="2"
+                                        placeholder="Ex: equipamento doado sem custos associados..."></textarea>
+                                </div>
+                                <div id="camposEmprestimo" class="campos-entrada d-none">
+                                    <label class="form-label">Entidade proprietária</label>
+                                    <input type="text" class="form-control mb-3"
+                                        placeholder="Hospital Central de Braga">
+                                    <label class="form-label">Data de início do empréstimo</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Data prevista de devolução</label>
+                                    <input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do empréstimo</label>
+                                    <textarea class="form-control mb-3" rows="3"
+                                        placeholder="Ex: utilização temporária durante manutenção do equipamento principal"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos da Entrada</h5>
+                        <p class="text-muted">Os documentos mudam consoante o tipo de entrada do equipamento.</p>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">
+                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                                    Fatura de Aquisição do Monitor Philips MP5
+                                    <span class="badge bg-light text-primary border ms-2">Fatura</span>
+                                </h6>
+                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select mb-2 tipo-documento"
+                                        onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Fatura</option>
+                                        <option>Comprovativo de pagamento</option>
+                                        <option>Contrato de aluguer</option>
+                                        <option>Termo de doação</option>
+                                        <option>Termo de empréstimo</option>
+                                        <option>Guia de transporte</option>
+                                        <option>Auto de receção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Ficheiro atual</label>
+                                    <p class="mb-1">
+                                        <i class="fa-regular fa-file-lines me-2"></i>
+                                        fatura_aquisicao_monitor_mp5_ft20234587.pdf
+                                    </p>
+                                    <small class="text-muted d-block mb-3">700 KB • PDF</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="file" id="faturaAquisicaoMP5" hidden>
+                                    <label for="faturaAquisicaoMP5" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Substituir Ficheiro
+                                    </label>
+                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <h6>
+                                <i class="fa-solid fa-plus me-2"></i>
+                                Adicionar novo documento de entrada
+                            </h6>
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Ex: Termo de doação do equipamento">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Selecionar tipo</option>
+                                        <option>Fatura</option>
+                                        <option>Comprovativo de pagamento</option>
+                                        <option>Contrato de aluguer</option>
+                                        <option>Termo de doação</option>
+                                        <option>Termo de empréstimo</option>
+                                        <option>Guia de transporte</option>
+                                        <option>Auto de receção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none"
+                                        placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Ficheiro</label>
+                                    <input type="file" id="novoDocumentoEntrada" hidden>
+                                    <label for="novoDocumentoEntrada" class="btn btn-outline-primary w-100">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Selecionar ficheiro
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="fornecedor">
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
+                        <label class="form-label">Selecionar fornecedor</label>
+                        <select class="form-select mb-4">
+                            <option selected>Philips Healthcare</option>
+                            <option>MedTech Solutions</option>
+                            <option>GE Healthcare</option>
+                            <option>Siemens Healthineers</option>
+                        </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Nome da empresa:</strong> Philips Healthcare</p>
+                                <p><strong>NIF:</strong> 501234567</p>
+                                <p><strong>Tipo:</strong> Fabricante</p>
+                                <p><strong>Telefone:</strong> 222 000 100</p>
+                                <p><strong>Email:</strong> geral@philips-healthcare.pt</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Website:</strong> www.philips.pt</p>
+                                <p><strong>Pessoa de contacto:</strong> Ana Martins</p>
+                                <p><strong>Contacto direto:</strong> 912345678</p>
+                                <p><strong>Morada:</strong> Rua da Saúde, 120</p>
+                                <p><strong>Cidade:</strong> Porto</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-end">
+                            <a href="../fornecedores/editar.html" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-pen-to-square me-1"></i>
+                                Editar Ficha do Fornecedor
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="localizacao">
+                        <h4><i class="fa-solid fa-location-dot me-2"></i>Localização Associada</h4>
+                        <label class="form-label">Selecionar localização</label>
+                        <select class="form-select mb-4">
+                            <option selected>Edifício A • Piso 1 • Sala 101 • UCI</option>
+                            <option>Edifício A • Piso 2 • Bloco Operatório</option>
+                            <option>Edifício B • Piso 0 • Urgência</option>
+                            <option>Armazém Biomédico</option>
+                        </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Edifício:</strong> Edifício A</p>
+                                <p><strong>Piso:</strong> Piso 1</p>
+                                <p><strong>Sala:</strong> Sala 101</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Serviço:</strong> UCI</p>
+                                <p><strong>Responsável:</strong> Enf. Ana Costa</p>
+                                <p><strong>Contacto:</strong> 912345678</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-end">
+                            <a href="../localizacao/editar.html" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-pen-to-square me-1"></i>
+                                Editar Ficha da Localização
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="garantias">
+                        <h4><i class="fa-solid fa-shield-halved me-2"></i>Garantias</h4>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <h5>Garantia 1</h5>
+                            <label class="form-label">Nome da garantia</label>
+                            <input type="text" class="form-control mb-3"
+                                value="Garantia Comercial Philips IntelliVue MP5">
+                            <label class="form-label">Data de início</label>
+                            <input type="date" class="form-control mb-3" value="2023-03-15">
+                            <label class="form-label">Data de fim</label>
+                            <input type="date" class="form-control mb-3" value="2026-03-15">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select mb-3">
+                                <option selected>Expirada</option>
+                                <option>Ativa</option>
+                            </select>
+                            <p>
+                                <strong>Ficheiro atual:</strong>
+                                garantia_comercial_philips_mp5.pdf
+                            </p>
+                            <input type="file" id="garantiaComercialMP5" hidden>
+                            <label for="garantiaComercialMP5" class="btn btn-outline-primary btn-sm">
+                                <i class="fa-solid fa-upload me-1"></i>
+                                Substituir PDF
+                            </label>
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash me-1"></i>
+                                Eliminar garantia
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Adicionar Garantia
+                        </button>
+                    </div>
+                    <div class="tab-pane fade" id="contratos">
+                        <h4><i class="fa-solid fa-file-contract me-2"></i>Contratos</h4>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <h5>Contrato 1</h5>
+                            <label class="form-label">Nome do contrato</label>
+                            <input type="text" class="form-control mb-3"
+                                value="Contrato de Manutenção Preventiva do Monitor MP5">
+                            <label class="form-label">Fornecedor associado</label>
+                            <select class="form-select mb-3">
+                                <option selected>MedTech Solutions</option>
+                                <option>Philips Healthcare</option>
+                                <option>GE Healthcare</option>
+                            </select>
+                            <label class="form-label">Data de início</label>
+                            <input type="date" class="form-control mb-3" value="2025-01-01">
+                            <label class="form-label">Data de fim</label>
+                            <input type="date" class="form-control mb-3" value="2027-12-31">
+                            <label class="form-label">Valor anual</label>
+                            <input type="text" class="form-control mb-3" value="850 €/ano">
+                            <p>
+                                <strong>Ficheiro atual:</strong>
+                                contrato_manutencao_preventiva_monitor_mp5.pdf
+                            </p>
+                            <input type="file" id="contratoManutencaoMP5" hidden>
+                            <label for="contratoManutencaoMP5" class="btn btn-outline-primary btn-sm">
+                                <i class="fa-solid fa-upload me-1"></i>
+                                Substituir PDF
+                            </label>
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash me-1"></i>
+                                Eliminar contrato
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Adicionar Contrato
+                        </button>
+                    </div>
+                </div>
             </main>
+
         </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        function mostrarOutroDocumento(select) {
+            const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
+            if (select.value === "Outro") {
+                campoOutro.classList.remove("d-none");
+            } else {
+                campoOutro.classList.add("d-none");
+                campoOutro.value = "";
+            }
+        }
+
+        function mostrarCamposEntrada() {
+            const tipo = document.getElementById("tipoEntradaEquipamento").value;
+            document.querySelectorAll(".campos-entrada").forEach(function (bloco) {
+                bloco.classList.add("d-none");
+            });
+            if (tipo === "compra") {
+                document.getElementById("camposCompra").classList.remove("d-none");
+            } else if (tipo === "aluguer") {
+                document.getElementById("camposAluguer").classList.remove("d-none");
+            } else if (tipo === "doacao") {
+                document.getElementById("camposDoacao").classList.remove("d-none");
+            } else if (tipo === "emprestimo") {
+                document.getElementById("camposEmprestimo").classList.remove("d-none");
+            }
+        }
+    </script>
 </body>
+
 </html>
