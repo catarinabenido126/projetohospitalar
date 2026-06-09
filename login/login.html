@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,45 +14,75 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../assets/fontawesome/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
-<body>
-    <a href="../public/index.html" class="btn btn-secondary mb-3 voltar-btn">
-    Voltar</a>
-    <div class="container-fluid mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-6 col-sm-8 col-10">
-                <!-- Borda à volta do formulário -->
-                <div class="card p-4">
-                    <div class="d-flex align-items-center justify-content-center my-4">
-                        <img src="../assets/img/logo.png" alt="Logotipo da MediSync">
+
+<body class="login-body">
+    <header class="login-header">
+        <div class="login-logo">
+            <img src="../assets/img/logo.png" alt="Logo MediSync">
+        </div>
+        <a href="../index.html" class="login-home">
+            <i class="fa-solid fa-house me-2"></i>
+            Página Inicial
+        </a>
+    </header>
+    <main class="login-main">
+        <div class="login-card">
+            <div class="text-center">
+                <h2>Medi<span>Sync</span></h2>
+                <p>Sistema de Gestão de Equipamentos Médicos</p>
+            </div>
+            <hr>
+            <form action="../private/index.html" method="get">
+                <div class="mb-3">
+                    <label for="utilizador" class="form-label">Utilizador</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="utilizador" name="utilizador" class="form-control"
+                            placeholder="Insira o seu utilizador" required>
                     </div>
-                    <!-- Formulário -->
-                    <form action="../private/index.html" method="post">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Utilizador</label>
-                            <input type="email" name="email" id="email" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" id="password" class="form-control" required>
-                        </div>
-                        <!-- Submit -->
-                        <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary px-4">
-                                Entrar <i class="fa-solid fa-right-to-bracket ms-2"></i>
-                            </button>
-                        </div>
-                        <!-- Erros -->
-                        <div class="alert alert-danger p-2 text-center">
-                            Erro: Utilizador não registado
-                        </div>
-                    </form>
                 </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Palavra-passe</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Insira a sua palavra-passe" required>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="lembrar">
+                        <label class="form-check-label" for="lembrar">
+                            Lembrar-me
+                        </label>
+                    </div>
+                    <a href="#" class="login-link">
+                        Esqueceu a palavra-passe?
+                    </a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i>
+                    Iniciar Sessão
+                </button>
+            </form>
+            <div class="alert alert-info mt-4 mb-0">
+                <i class="fa-solid fa-circle-info me-2"></i>
+                <strong>Acesso restrito a utilizadores autorizados.</strong>
+                <br>
+                Por favor, inicie sessão para continuar.
             </div>
         </div>
-    </div>
-    <!-- Bootstrap JS -->
+    </main>
+    <footer class="login-footer">
+        2026 MediSync. Todos os direitos reservados.
+    </footer>
     <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>
