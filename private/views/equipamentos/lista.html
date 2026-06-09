@@ -87,9 +87,13 @@
                 </div>
                 <hr>
                 <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
-    <i class="fa-solid fa-circle-check me-2"></i>
-    Equipamento guardado com sucesso.
-</div>
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Equipamento guardado com sucesso.
+                </div>
+                <div id="mensagemCriado" class="alert alert-success d-none" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Equipamento criado com sucesso.
+                </div>
                 <p class="text-muted">
                     Lista resumida dos equipamentos médicos registados. A ficha completa pode ser consultada nos
                     detalhes.
@@ -273,17 +277,35 @@
         </div>
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
-<script>
-    const parametros = new URLSearchParams(window.location.search);
-    const mensagem = document.getElementById("mensagemSucesso");
-    if (parametros.get("guardado") === "1") {
-        mensagem.classList.remove("d-none");
-        window.history.replaceState({}, document.title, window.location.pathname);
-        setTimeout(() => {
-            mensagem.classList.add("d-none");
-        }, 4000);
-    }
-</script>
+    <script>
+        const parametros = new URLSearchParams(window.location.search);
+        const mensagem = document.getElementById("mensagemSucesso");
+        if (parametros.get("guardado") === "1") {
+            mensagem.classList.remove("d-none");
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setTimeout(() => {
+                mensagem.classList.add("d-none");
+            }, 4000);
+        }
+    </script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("criado") === "1") {
+            const alerta = document.getElementById("mensagemCriado");
+            alerta.classList.remove("d-none");
+            setTimeout(() => {
+                alerta.classList.add("d-none");
+            }, 5000);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        if (params.get("guardado") === "1") {
+            const alerta = document.getElementById("mensagemGuardado");
+            alerta.classList.remove("d-none");
+            setTimeout(() => {
+                alerta.classList.add("d-none");
+            }, 5000);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 </body>
-
 </html>
