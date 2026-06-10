@@ -278,34 +278,16 @@
     </div>
     <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
     <script>
-        const parametros = new URLSearchParams(window.location.search);
-        const mensagem = document.getElementById("mensagemSucesso");
-        if (parametros.get("guardado") === "1") {
-            mensagem.classList.remove("d-none");
-            window.history.replaceState({}, document.title, window.location.pathname);
-            setTimeout(() => {
-                mensagem.classList.add("d-none");
-            }, 4000);
-        }
-    </script>
-    <script>
         const params = new URLSearchParams(window.location.search);
         if (params.get("criado") === "1") {
-            const alerta = document.getElementById("mensagemCriado");
-            alerta.classList.remove("d-none");
-            setTimeout(() => {
-                alerta.classList.add("d-none");
-            }, 5000);
-            window.history.replaceState({}, document.title, window.location.pathname);
+            document.getElementById("mensagemCriado").classList.remove("d-none");
+            setTimeout(() => document.getElementById("mensagemCriado").classList.add("d-none"), 5000);
         }
         if (params.get("guardado") === "1") {
-            const alerta = document.getElementById("mensagemGuardado");
-            alerta.classList.remove("d-none");
-            setTimeout(() => {
-                alerta.classList.add("d-none");
-            }, 5000);
-            window.history.replaceState({}, document.title, window.location.pathname);
+            document.getElementById("mensagemSucesso").classList.remove("d-none");
+            setTimeout(() => document.getElementById("mensagemSucesso").classList.add("d-none"), 5000);
         }
+        window.history.replaceState({}, document.title, window.location.pathname);
     </script>
 </body>
 </html>

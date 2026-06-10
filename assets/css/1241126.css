@@ -511,12 +511,6 @@ section {
 .caixa-lembretes .btn-outline-danger {
     border-radius: 10px;
 }
-.area-conteudo h4 {
-    color: #062b4f;
-    font-size: 1.4em;
-    margin-top: 25px;
-    margin-bottom: 15px;
-}
 .area-conteudo h2 {
     color: #062b4f;
     font-size: 2em;
@@ -782,20 +776,17 @@ canvas {
     text-align: left;
     min-height: auto;
 }
-
 .gestao-seccao h4 {
     color: #062b4f;
     margin-top: 0;
     margin-bottom: 20px;
 }
-
 .imagem-gestao {
     width: 100%;
     height: 230px;
     object-fit: cover;
     border: 1px solid #d6e4f0;
 }
-
 .servico-gestao {
     background: #ffffff;
     transition: 0.2s;
@@ -804,11 +795,9 @@ canvas {
 .servico-gestao:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-
 .servico-gestao i {
     color: #0d6efd;
 }
-
 .servico-gestao .form-label {
     font-weight: 600;
     color: #062b4f;
