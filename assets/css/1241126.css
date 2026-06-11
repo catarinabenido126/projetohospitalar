@@ -704,7 +704,7 @@ canvas {
         min-height: 260px;
         padding: 30px;
     }
-    .d-flex {
+    .area-conteudo .d-flex {
         flex-wrap: wrap;
     }
 }
