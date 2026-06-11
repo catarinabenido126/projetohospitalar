@@ -840,3 +840,18 @@ canvas {
 .icone-historico:hover {
     color: #b8d7f3;
 }
+/* ultimo acesso na pag.principal */
+.caixa-ultimo-acesso {
+    background-color: #ffffff;
+    border: 1px solid #d6e4f0;
+    border-radius: 10px;
+    padding: 14px 20px;
+    color: #314b6b;
+    font-size: 0.95em;
+    text-align: center;
+    margin-top: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.caixa-ultimo-acesso i {
+    color: #0d6efd;
+}
