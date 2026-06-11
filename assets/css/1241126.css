@@ -6,7 +6,7 @@
 }
 /* Corpo da página */
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     background-color: #f4f8fc;
 }
 /* Barra de navegação */
@@ -801,6 +801,33 @@ canvas {
 .servico-gestao .form-label {
     font-weight: 600;
     color: #062b4f;
+}
+#tabsGestao {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    border-bottom: 1px solid #ccc;
+}
+#tabsGestao .nav-item {
+    flex: 0 0 auto;
+}
+#tabsGestao .nav-link {
+    color: #314b6b;
+    border: none;
+    background-color: transparent;
+    white-space: nowrap;
+    font-size: 0.95em;
+}
+#tabsGestao .nav-link i {
+    color: #314b6b;
+}
+#tabsGestao .nav-link.active {
+    color: #314b6b;
+    background-color: transparent;
+    border-bottom: 3px solid #314b6b;
+    font-weight: 600;
+}
+#tabsGestao .nav-link.active i {
+    color: #314b6b;
 }
 /* Botão do histórico */
 .icone-historico {
