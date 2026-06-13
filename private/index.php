@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['utilizador'])) {
+    header('Location: ../login/login.php');
+    exit();
+}
+?>
 <?php include 'includes/header.php'; ?>
 <?php include 'includes/nav.php'; ?>
 <div class="container-fluid">
