@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+$validation_errors = [];
+
+if (!empty($_SESSION['validation_errors'])) {
+    $validation_errors = $_SESSION['validation_errors'];
+    unset($_SESSION['validation_errors']);
+}
+
+$server_error = '';
+
+if (!empty($_SESSION['server_error'])) {
+    $server_error = $_SESSION['server_error'];
+    unset($_SESSION['server_error']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -33,6 +50,19 @@
                 <p>Sistema de Gestão de Equipamentos Médicos</p>
             </div>
             <hr>
+            <?php if (!empty($validation_errors)) : ?>
+            <div class="alert alert-danger p-2 text-center">
+                <?php foreach ($validation_errors as $error) : ?>
+                    <div><?php echo htmlspecialchars($error); ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($server_error)) : ?>
+            <div class="alert alert-danger p-2 text-center">
+                <div><?php echo htmlspecialchars($server_error); ?></div>
+            </div>
+        <?php endif; ?>
             <form action="../private/processa_login.php" method="post">
                 <div class="mb-3">
                     <label for="utilizador" class="form-label">

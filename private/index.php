@@ -1,9 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['utilizador'])) {
-    header('Location: ../login/login.php');
-    exit();
-}
+include 'includes/funcoes.php';
+
+redirect_if_not_logged();
 ?>
 <?php include 'includes/header.php'; ?>
 <?php include 'includes/nav.php'; ?>

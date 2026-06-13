@@ -1,6 +1,5 @@
 <?php
-session_start();
-session_unset();
-session_destroy();
-header('Location: ../login/login.php');
-exit();
+require_once '../private/includes/funcoes.php';
+
+logout_and_redirect('../login/login.php');
+?>
