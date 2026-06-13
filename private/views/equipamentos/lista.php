@@ -1,3 +1,89 @@
+<?php
+
+require_once __DIR__ . '/../../includes/funcoes.php';
+require_once __DIR__ . '/../../includes/database.php';
+redirect_if_not_logged();
+
+$pesquisa = $_GET['pesquisa'] ?? '';
+$categoria = $_GET['categoria'] ?? '';
+$estado = $_GET['estado'] ?? '';
+$criticidade = $_GET['criticidade'] ?? '';
+$ordenacao = $_GET['ordenacao'] ?? '';
+$sql = "
+    SELECT
+        e.id_equipamento,
+        e.codigo_interno,
+        e.designacao,
+        c.nome_categoria,
+        ee.nome_estado,
+        cr.nivel,
+        l.edificio,
+        l.piso,
+        l.sala
+    FROM equipamentos e
+    INNER JOIN categorias c
+        ON e.id_categoria = c.id_categoria
+    INNER JOIN estados_equipamento ee
+        ON e.id_estado = ee.id_estado
+    INNER JOIN criticidades cr
+        ON e.id_criticidade = cr.id_criticidade
+    INNER JOIN localizacoes l
+        ON e.id_localizacao = l.id_localizacao
+    WHERE e.ativo = 1
+";
+if ($pesquisa != '') {
+    $sql .= " AND (
+        e.codigo_interno LIKE :pesquisa
+        OR e.designacao LIKE :pesquisa
+    )";
+}
+if ($categoria != '') {
+    $sql .= " AND c.nome_categoria = :categoria";
+}
+
+if ($estado != '') {
+    $sql .= " AND ee.nome_estado = :estado";
+}
+
+if ($criticidade != '') {
+    $sql .= " AND cr.nivel = :criticidade";
+}
+
+switch ($ordenacao) {
+    case 'Código interno (descendente)':
+        $sql .= " ORDER BY e.codigo_interno DESC";
+        break;
+    case 'Designação (A-Z)':
+        $sql .= " ORDER BY e.designacao ASC";
+        break;
+    case 'Designação (Z-A)':
+        $sql .= " ORDER BY e.designacao DESC";
+        break;
+    default:
+        $sql .= " ORDER BY e.codigo_interno ASC";
+}
+
+$query = $database->prepare($sql);
+
+if ($pesquisa != '') {
+    $query->bindValue(':pesquisa', "%$pesquisa%");
+}
+
+if ($categoria != '') {
+    $query->bindValue(':categoria', $categoria);
+}
+
+if ($estado != '') {
+    $query->bindValue(':estado', $estado);
+}
+
+if ($criticidade != '') {
+    $query->bindValue(':criticidade', $criticidade);
+}
+$query->execute();
+$equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 <?php include '../../includes/header.php'; ?>
 <?php include '../../includes/nav.php'; ?>
 <div class="container-fluid">
@@ -136,51 +222,80 @@
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                   <tbody>
+                        <?php foreach ($equipamentos as $equipamento): ?>
                         <tr>
-                            <td>EQ-0001</td>
-                            <td>Monitor Multiparamétrico
-                                <br><small class="text-muted"> 3 componentes associados</small>
+                            <td><?php echo $equipamento['codigo_interno']; ?></td>
+                            <td><?php echo $equipamento['designacao']; ?></td>
+                            <td><?php echo $equipamento['nome_categoria']; ?></td>
+                            <td>
+                                <?php
+                                $classeEstado = 'bg-secondary';
+                                switch ($equipamento['nome_estado']) {
+                                    case 'Ativo':
+                                        $classeEstado = 'bg-success';
+                                        break;
+                                    case 'Em manutenção':
+                                        $classeEstado = 'bg-warning text-dark';
+                                        break;
+                                    case 'Em calibração':
+                                        $classeEstado = 'bg-info text-dark';
+                                        break;
+                                    case 'Inativo':
+                                        $classeEstado = 'bg-danger';
+                                        break;
+                                    case 'Abatido':
+                                        $classeEstado = 'bg-dark';
+                                        break;
+                                }
+                                ?>
+                                <span class="badge <?php echo $classeEstado; ?>">
+                                    <?php echo $equipamento['nome_estado']; ?>
+                                </span>
                             </td>
-                            <td>Monitorização</td>
-                            <td><span class="badge bg-success">Ativo</span></td>
-                            <td><span class="badge bg-danger">Alta</span></td>
-                            <td>UCI - Sala 101</td>
+                            <td>
+                                <?php
+                                $classeCriticidade = 'bg-secondary';
+                                switch ($equipamento['nivel']) {
+                                    case 'Baixa':
+                                        $classeCriticidade = 'bg-success';
+                                        break;
+                                    case 'Média':
+                                        $classeCriticidade = 'bg-warning text-dark';
+                                        break;
+                                    case 'Alta':
+                                        $classeCriticidade = 'bg-danger';
+                                        break;
+                                    case 'Suporte de vida':
+                                        $classeCriticidade = 'bg-danger';
+                                        break;
+                                }
+                                ?>
+                                <span class="badge <?php echo $classeCriticidade; ?>">
+                                    <?php echo $equipamento['nivel']; ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?php echo $equipamento['edificio']; ?>
+                                <br>
+                                <small class="text-muted">
+                                    <?php echo $equipamento['piso']; ?> | Sala <?php echo $equipamento['sala']; ?>
+                                </small>
+                            </td>
                             <td class="text-center">
-                                <a href="detalhes.php" class="btn btn-sm btn-outline-primary me-1">
+                                <a href="detalhes.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
+                                <a href="apagar.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>EQ-0002</td>
-                            <td>Ventilador Pulmonar
-                                <br> <small class="text-muted">2 componentes associados </small>
-                            </td>
-                            <td>Suporte de Vida</td>
-                            <td><span class="badge bg-warning text-dark">Em manutenção</span></td>
-                            <td><span class="badge bg-danger">Suporte de vida</span></td>
-                            <td>UCI - Sala 102</td>
-                            <td class="text-center">
-                                <a href="detalhes.php" class="btn btn-sm btn-outline-primary me-1">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
-                </table>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <p class="mb-0 text-muted">
                         A mostrar 1 a 2 de 2 equipamentos
