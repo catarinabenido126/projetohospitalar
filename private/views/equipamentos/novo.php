@@ -1,124 +1,62 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Equipamento</title>
-    <link rel="shortcut icon" href="../../../assets/img/logo.png" type="image/png">
-    <link rel="stylesheet" href="../../../assets/fontawesome/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../assets/css/1241126.css">
-</head>
-<body>
-    <header class="container-fluid barra-superior text-white">
-        <div class="row align-items-center">
-            <div class="col-6 d-flex align-items-center p-2">
-                <a href="../../index.html">
-                    <img src="../../../assets/img/logo.png" alt="Logo da MediSync" class="me-3">
-                </a>
-            </div>
-            <div class="col-6 text-end d-flex justify-content-end align-items-center">
-                <a href="../historico/historico.html" class="icone-historico" title="Histórico de alterações">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                </a>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        Utilizador
+<?php include '../../includes/header.php'; ?>
+<?php include '../../includes/nav.php'; ?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include '../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4 area-conteudo">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h2>Novo Equipamento</h2>
+                    <p class="text-muted mb-0">Preencha os dados para registar um novo equipamento.</p>
+                </div>
+                <div>
+                    <a href="lista.php" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" form="formNovoEquipamento" class="btn btn-success">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Guardar Equipamento
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalPassword">
-                            Alterar password
-                        </a>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="../../../public/index.html">Sair</a></li>
-                    </ul>
                 </div>
             </div>
-        </div>
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3">
-                <h4 class="titulo-menu">Menu</h4>
-                <nav class="nav flex-column menu-nav">
-                    <a href="../../index.html" class="nav-link">
-                        <i class="fa-solid fa-house"></i> Página Inicial
-                    </a>
-                    <a href="../dashboard/dashboard.html" class="nav-link">
-                        <i class="fa-solid fa-chart-line"></i> Dashboard
-                    </a>
-                    <a href="../equipamentos/lista.html" class="nav-link active">
-                        <i class="fa-solid fa-stethoscope"></i> Equipamentos
-                    </a>
-                    <a href="../fornecedores/lista.html" class="nav-link">
-                        <i class="fa-solid fa-truck"></i> Fornecedores
-                    </a>
-                    <a href="../localizacao/lista.html" class="nav-link">
-                        <i class="fa-solid fa-location-dot"></i> Localizações
-                    </a>
-                    <a href="../gestao/gestao.html" class="nav-link">
-                        <i class="fa-solid fa-screwdriver-wrench"></i> Gestão
-                    </a>
-                </nav>
-            </aside>
-            <main class="col-md-9 col-lg-10 p-4 area-conteudo">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h2>Novo Equipamento</h2>
-                        <p class="text-muted mb-0">Preencha os dados para registar um novo equipamento.</p>
-                    </div>
-                    <div>
-                        <a href="../equipamentos/lista.html" class="btn btn-secondary">Cancelar</a>
-                        <button type="submit" form="formNovoEquipamento" class="btn btn-success">
-                            <i class="fa-solid fa-floppy-disk me-1"></i>
-                            Guardar Equipamento
-                        </button>
-                    </div>
-                </div>
-                <hr>
-                <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento" type="button">
-                            <i class="fa-solid fa-stethoscope me-1"></i> Equipamento
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button">
-                            <i class="fa-solid fa-microchip me-1"></i> Componentes
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aquisicao" type="button">
-                            <i class="fa-solid fa-cart-shopping me-1"></i> Aquisição
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
-                            <i class="fa-solid fa-truck me-1"></i> Fornecedor
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button">
-                            <i class="fa-solid fa-location-dot me-1"></i> Localização
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button">
-                            <i class="fa-solid fa-shield-halved me-1"></i> Garantias
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button">
-                            <i class="fa-solid fa-file-contract me-1"></i> Contratos
-                        </button>
-                    </li>
-                </ul>
- 
-                <form id="formNovoEquipamento" action="../equipamentos/lista.html?criado=1" method="post">
+            <hr>
+            <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento" type="button">
+                        <i class="fa-solid fa-stethoscope me-1"></i> Equipamento
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button">
+                        <i class="fa-solid fa-microchip me-1"></i> Componentes
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aquisicao" type="button">
+                        <i class="fa-solid fa-cart-shopping me-1"></i> Aquisição
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
+                        <i class="fa-solid fa-truck me-1"></i> Fornecedor
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button">
+                        <i class="fa-solid fa-location-dot me-1"></i> Localização
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button">
+                        <i class="fa-solid fa-shield-halved me-1"></i> Garantias
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button">
+                        <i class="fa-solid fa-file-contract me-1"></i> Contratos
+                    </button>
+                </li>
+            </ul>
+            <form id="formNovoEquipamento" action="lista.php?criado=1" method="post">
                 <div class="tab-content">
-                
                     <div class="tab-pane fade show active" id="equipamento">
                         <h4><i class="fa-solid fa-stethoscope me-2"></i>Informação do Equipamento</h4>
                         <div class="row">
@@ -428,72 +366,39 @@
                         </div>
                     </div>
                 </div>
-                </form>
-            </main>
-        </div>
+            </form>
+            <script>
+                function mostrarOutroDocumento(select) {
+                    const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
+                    if (select.value === "Outro") {
+                        campoOutro.classList.remove("d-none");
+                    } else {
+                        campoOutro.classList.add("d-none");
+                        campoOutro.value = "";
+                    }
+                }
+                function mostrarCamposEntrada() {
+                    const tipo = document.getElementById("tipoEntradaEquipamento").value;
+                    document.querySelectorAll(".campos-entrada").forEach(bloco => bloco.classList.add("d-none"));
+                    if (tipo === "compra") document.getElementById("camposCompra").classList.remove("d-none");
+                    else if (tipo === "aluguer") document.getElementById("camposAluguer").classList.remove("d-none");
+                    else if (tipo === "doacao") document.getElementById("camposDoacao").classList.remove("d-none");
+                    else if (tipo === "emprestimo") document.getElementById("camposEmprestimo").classList.remove("d-none");
+                }
+                function toggleComponentes() {
+                    document.getElementById("areaComponentes").classList.toggle("d-none");
+                }
+                function toggleConsumiveis() {
+                    document.getElementById("areaConsumiveis").classList.toggle("d-none");
+                }
+                function toggleGarantias() {
+                    document.getElementById("areaGarantias").classList.toggle("d-none");
+                }
+                function toggleContratos() {
+                    document.getElementById("areaContratos").classList.toggle("d-none");
+                }
+            </script>
+        </main>
     </div>
-    <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
-    <script>
-        function mostrarOutroDocumento(select) {
-            const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
-            if (select.value === "Outro") {
-                campoOutro.classList.remove("d-none");
-            } else {
-                campoOutro.classList.add("d-none");
-                campoOutro.value = "";
-            }
-        }
-        function mostrarCamposEntrada() {
-            const tipo = document.getElementById("tipoEntradaEquipamento").value;
-            document.querySelectorAll(".campos-entrada").forEach(bloco => bloco.classList.add("d-none"));
-            if (tipo === "compra") document.getElementById("camposCompra").classList.remove("d-none");
-            else if (tipo === "aluguer") document.getElementById("camposAluguer").classList.remove("d-none");
-            else if (tipo === "doacao") document.getElementById("camposDoacao").classList.remove("d-none");
-            else if (tipo === "emprestimo") document.getElementById("camposEmprestimo").classList.remove("d-none");
-        }
-        function toggleComponentes() {
-            document.getElementById("areaComponentes").classList.toggle("d-none");
-        }
-        function toggleConsumiveis() {
-            document.getElementById("areaConsumiveis").classList.toggle("d-none");
-        }
-        function toggleGarantias() {
-            document.getElementById("areaGarantias").classList.toggle("d-none");
-        }
-        function toggleContratos() {
-            document.getElementById("areaContratos").classList.toggle("d-none");
-        }
-    </script>
-        <div class="modal fade" id="modalPassword" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Alterar password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Password atual</label>
-                    <input type="password" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Nova password</label>
-                    <input type="password" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Confirmar nova password</label>
-                    <input type="password" class="form-control">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-success" onclick="alert('Password alterada com sucesso.')">
-                    Guardar alteração
-                </button>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+</div>
+<?php include '../../includes/footer.php'; ?>
