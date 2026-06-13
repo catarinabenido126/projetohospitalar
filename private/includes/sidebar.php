@@ -1,7 +1,7 @@
 <aside class="col-md-3 col-lg-2 menu-lateral text-white p-3">
     <h4 class="titulo-menu">Menu</h4>
     <nav class="nav flex-column menu-nav">
-        <a href="/public/index.php" class="nav-link">
+        <a href="/private/index.php" class="nav-link">
             <i class="fa-solid fa-house"></i>
             Página Inicial
         </a>

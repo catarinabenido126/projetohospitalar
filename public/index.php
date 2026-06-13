@@ -32,7 +32,7 @@
         </div>
         <!-- Área Interna -->
          <div class="nav-cliente">
-            <a href="../login/login.html">
+            <a href="../login/login.php">
     <i class="fa-solid fa-lock"></i>
     Área Interna
 </a>
