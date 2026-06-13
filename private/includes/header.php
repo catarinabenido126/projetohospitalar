@@ -20,5 +20,14 @@ require_once __DIR__ . '/../../config/config.php';
     <link rel="stylesheet" href="/assets/bootstrap/bootstrap.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="/assets/css/1241126.css">
+<!-- jQuery -->
+
+<script src="/assets/jquery/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables -->
+
+<link rel="stylesheet" href="/assets/datatables/datatables.min.css">
+
+<script src="/assets/datatables/datatables.min.js"></script>
 </head>
 <body>

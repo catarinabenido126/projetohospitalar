@@ -8,7 +8,6 @@ $pesquisa = $_GET['pesquisa'] ?? '';
 $categoria = $_GET['categoria'] ?? '';
 $estado = $_GET['estado'] ?? '';
 $criticidade = $_GET['criticidade'] ?? '';
-$ordenacao = $_GET['ordenacao'] ?? '';
 $sql = "
     SELECT
         e.id_equipamento,
@@ -48,23 +47,8 @@ if ($estado != '') {
 if ($criticidade != '') {
     $sql .= " AND cr.nivel = :criticidade";
 }
-
-switch ($ordenacao) {
-    case 'Código interno (descendente)':
-        $sql .= " ORDER BY e.codigo_interno DESC";
-        break;
-    case 'Designação (A-Z)':
-        $sql .= " ORDER BY e.designacao ASC";
-        break;
-    case 'Designação (Z-A)':
-        $sql .= " ORDER BY e.designacao DESC";
-        break;
-    default:
-        $sql .= " ORDER BY e.codigo_interno ASC";
-}
-
+$sql .= " ORDER BY e.codigo_interno ASC";
 $query = $database->prepare($sql);
-
 if ($pesquisa != '') {
     $query->bindValue(':pesquisa', "%$pesquisa%");
 }
@@ -185,32 +169,11 @@ $equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
                             Limpar
                         </a>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="ordenacao" class="form-label">Critério de ordenação</label>
-                            <select class="form-select" id="ordenacao" name="ordenacao">
-                                <option value="">Selecione uma opção</option>
-                                <option>Código interno (ascendente)</option>
-                                <option>Código interno (descendente)</option>
-                                <option>Designação (A-Z)</option>
-                                <option>Designação (Z-A)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-arrow-down-a-z me-1"></i>
-                            Ordenar
-                        </button>
-                        <a href="lista.php" class="btn btn-secondary">
-                            <i class="fa-solid fa-broom me-1"></i>
-                            Limpar
-                        </a>
-                    </div>
+                    
                 </form>
             </div>
             <div class="caixa-tabela table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+                <table id="tabelaEquipamentos" class="table table-bordered table-striped align-middle">
                     <thead>
                         <tr>
                             <th>Código</th>
@@ -296,30 +259,7 @@ $equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <p class="mb-0 text-muted">
-                        A mostrar 1 a 2 de 2 equipamentos
-                    </p>
-                    <nav>
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">
-                                    Anterior
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">
-                                    1
-                                </a>
-                            </li>
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">
-                                    Seguinte
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                </table>
             </div>
             <script>
                 const params = new URLSearchParams(window.location.search);
@@ -336,4 +276,30 @@ $equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
         </main>
     </div>
 </div>
+<script>
+$(document).ready(function () {
+    $('#tabelaEquipamentos').DataTable({
+        searching: false,
+        pageLength: 10,
+        language: {
+            decimal: "",
+            emptyTable: "Não existem registos",
+            info: "A mostrar _START_ a _END_ de _TOTAL_ registos",
+            infoEmpty: "A mostrar 0 a 0 de 0 registos",
+            infoFiltered: "(filtrado de _MAX_ registos)",
+            lengthMenu: "Mostrar _MENU_ registos",
+            loadingRecords: "A carregar...",
+            processing: "A processar...",
+            search: "Pesquisar:",
+            zeroRecords: "Nenhum registo encontrado",
+            paginate: {
+                first: "Primeira",
+                last: "Última",
+                next: "Seguinte",
+                previous: "Anterior"
+            }
+        }
+    });
+});
+</script>
 <?php include '../../includes/footer.php'; ?>
