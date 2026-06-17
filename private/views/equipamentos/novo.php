@@ -1,9 +1,97 @@
 <?php
-
 require_once __DIR__ . '/../../includes/funcoes.php';
-
+require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
 
+$erros = [];
+$erro_sistema = "";
+$categorias = $database->query("SELECT id_categoria, nome_categoria FROM categorias WHERE ativo = 1 ORDER BY nome_categoria")->fetchAll(PDO::FETCH_ASSOC);
+$estados = $database->query("SELECT id_estado, nome_estado FROM estados_equipamento WHERE ativo = 1 ORDER BY nome_estado")->fetchAll(PDO::FETCH_ASSOC);
+$criticidades = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
+$localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $codigo = trim($_POST["codigo"] ?? "");
+    $designacao = trim($_POST["designacao"] ?? "");
+    $categoria = trim($_POST["categoria"] ?? "");
+    $marca = trim($_POST["marca"] ?? "");
+    $modelo = trim($_POST["modelo"] ?? "");
+    $fabricante = trim($_POST["fabricante"] ?? "");
+    $numero_serie = trim($_POST["numero_serie"] ?? "");
+    $ano_fabrico = trim($_POST["ano_fabrico"] ?? "");
+    $estado = trim($_POST["estado"] ?? "");
+    $criticidade = trim($_POST["criticidade"] ?? "");
+    $localizacao = trim($_POST["localizacao"] ?? "");
+    $observacoes = trim($_POST["observacoes"] ?? "");
+    if (empty($codigo)) {
+        $erros[] = "O campo Código Interno é obrigatório.";
+    } elseif (!preg_match('/^[A-Za-z]{1,5}-\d{1,6}$/', $codigo)) {
+        $erros[] = "Código Interno inválido (ex: EQ-0001).";
+    }
+    if (empty($designacao)) {
+        $erros[] = "O campo Designação é obrigatório.";
+    } elseif (preg_match('/^\d+$/', $designacao)) {
+        $erros[] = "A Designação não pode conter apenas números.";
+    }
+    if (empty($categoria) || !ctype_digit($categoria)) {
+        $erros[] = "Selecione uma categoria válida.";
+    }
+    if (empty($marca)) {
+        $erros[] = "O campo Marca é obrigatório.";
+    }
+    if (empty($modelo)) {
+        $erros[] = "O campo Modelo é obrigatório.";
+    }
+    if (empty($fabricante)) {
+        $erros[] = "O campo Fabricante é obrigatório.";
+    }
+    if (empty($numero_serie)) {
+        $erros[] = "O campo Número de Série é obrigatório.";
+    } elseif (strlen($numero_serie) < 3) {
+        $erros[] = "O Número de Série deve ter pelo menos 3 caracteres.";
+    }
+    if (!empty($ano_fabrico) && (!ctype_digit($ano_fabrico) || $ano_fabrico < 1900 || $ano_fabrico > date("Y"))) {
+        $erros[] = "O Ano de Fabrico deve ser um ano válido.";
+    }
+    if (empty($estado) || !ctype_digit($estado)) {
+        $erros[] = "Selecione um estado válido.";
+    }
+    if (empty($criticidade) || !ctype_digit($criticidade)) {
+        $erros[] = "Selecione uma criticidade válida.";
+    }
+    if (empty($localizacao) || !ctype_digit($localizacao)) {
+        $erros[] = "Selecione uma localização válida.";
+    }
+    if (empty($erros)) {
+        $codigo = strtoupper($codigo);
+        $designacao = ucwords(strtolower($designacao));
+        $numero_serie = strtoupper($numero_serie);
+    }
+    if (empty($erros)) {
+        try {
+            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, fabricante, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :fabricante, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
+            $query = $database->prepare($sql);
+            $query->execute([
+                ":codigo" => $codigo,
+                ":designacao" => $designacao,
+                ":categoria" => $categoria,
+                ":marca" => $marca,
+                ":modelo" => $modelo,
+                ":fabricante" => $fabricante,
+                ":numero_serie" => $numero_serie,
+                ":ano_fabrico" => $ano_fabrico !== "" ? $ano_fabrico : null,
+                ":estado" => $estado,
+                ":criticidade" => $criticidade,
+                ":localizacao" => $localizacao,
+                ":observacoes" => $observacoes
+            ]);
+            header("Location: lista.php?criado=1");
+            exit();
+        } catch (PDOException $err) {
+            $erro_sistema = "Erro ao gravar os dados: " . $err->getMessage();
+        }
+    }
+}
 ?>
 <?php include '../../includes/header.php'; ?>
 <?php include '../../includes/nav.php'; ?>
@@ -25,6 +113,22 @@ redirect_if_not_logged();
                 </div>
             </div>
             <hr>
+            <?php if (!empty($erros)): ?>
+                <div class="alert alert-danger">
+                    <strong>Foram encontrados os seguintes erros:</strong>
+                    <ul class="mb-0">
+                        <?php foreach ($erros as $erro): ?>
+                            <li><?= htmlspecialchars($erro) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($erro_sistema)): ?>
+                <div class="alert alert-danger">
+                    <strong>Erro:</strong>
+                    <p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p>
+                </div>
+            <?php endif; ?>
             <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
                 <li class="nav-item">
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento" type="button">
@@ -62,58 +166,48 @@ redirect_if_not_logged();
                     </button>
                 </li>
             </ul>
-            <form id="formNovoEquipamento" action="lista.php?criado=1" method="post">
+            <form id="formNovoEquipamento" action="#" method="post" novalidate>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="equipamento">
                         <h4><i class="fa-solid fa-stethoscope me-2"></i>Informação do Equipamento</h4>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Código Interno</label>
-                                <input type="text" name="codigo" class="form-control mb-3" placeholder="Ex: EQ-0001" required>
+                                <input type="text" name="codigo" class="form-control mb-3" placeholder="Ex: EQ-0001" value="<?= htmlspecialchars($_POST['codigo'] ?? '') ?>" required>
                                 <label class="form-label">Designação</label>
-                                <input type="text" name="designacao" class="form-control mb-3" placeholder="Ex: Monitor Multiparamétrico" required>
+                                <input type="text" name="designacao" class="form-control mb-3" placeholder="Ex: Monitor Multiparamétrico" value="<?= htmlspecialchars($_POST['designacao'] ?? '') ?>" required>
                                 <label class="form-label">Categoria</label>
                                 <select name="categoria" class="form-select mb-3" required>
-                                    <option value="" selected disabled>Selecionar categoria</option>
-                                    <option>Monitorização</option>
-                                    <option>Suporte de Vida</option>
-                                    <option>Diagnóstico</option>
-                                    <option>Imagiologia</option>
-                                    <option>Laboratório</option>
-                                    <option>Terapia</option>
-                                    <option>Cirurgia</option>
-                                    <option>Reabilitação</option>
-                                    <option>Esterilização</option>
+                                    <option value="" disabled <?= empty($_POST['categoria'] ?? '') ? 'selected' : '' ?>>Selecionar categoria</option>
+                                    <?php foreach ($categorias as $cat): ?>
+                                        <option value="<?= $cat['id_categoria'] ?>" <?= (($_POST['categoria'] ?? '') == $cat['id_categoria']) ? 'selected' : '' ?>><?= htmlspecialchars($cat['nome_categoria']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <label class="form-label">Marca</label>
-                                <input type="text" name="marca" class="form-control mb-3" placeholder="Ex: Philips">
+                                <input type="text" name="marca" class="form-control mb-3" placeholder="Ex: Philips" value="<?= htmlspecialchars($_POST['marca'] ?? '') ?>" required>
                                 <label class="form-label">Modelo</label>
-                                <input type="text" name="modelo" class="form-control mb-3" placeholder="Ex: IntelliVue MP5">
+                                <input type="text" name="modelo" class="form-control mb-3" placeholder="Ex: IntelliVue MP5" value="<?= htmlspecialchars($_POST['modelo'] ?? '') ?>" required>
                                 <label class="form-label">Fabricante</label>
-                                <input type="text" name="fabricante" class="form-control mb-3" placeholder="Ex: Philips Healthcare">
+                                <input type="text" name="fabricante" class="form-control mb-3" placeholder="Ex: Philips Healthcare" value="<?= htmlspecialchars($_POST['fabricante'] ?? '') ?>" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Número de Série</label>
-                                <input type="text" name="numero_serie" class="form-control mb-3">
+                                <input type="text" name="numero_serie" class="form-control mb-3" value="<?= htmlspecialchars($_POST['numero_serie'] ?? '') ?>" required>
                                 <label class="form-label">Ano de Fabrico</label>
-                                <input type="number" name="ano_fabrico" class="form-control mb-3" placeholder="Ex: 2022">
+                                <input type="number" name="ano_fabrico" class="form-control mb-3" placeholder="Ex: 2022" value="<?= htmlspecialchars($_POST['ano_fabrico'] ?? '') ?>">
                                 <label class="form-label">Estado</label>
                                 <select name="estado" class="form-select mb-3" required>
-                                    <option value="" selected disabled>Selecionar estado</option>
-                                    <option>Ativo</option>
-                                    <option>Em manutenção</option>
-                                    <option>Em calibração</option>
-                                    <option>Em quarentena</option>
-                                    <option>Inativo</option>
-                                    <option>Abatido</option>
+                                    <option value="" disabled <?= empty($_POST['estado'] ?? '') ? 'selected' : '' ?>>Selecionar estado</option>
+                                    <?php foreach ($estados as $est): ?>
+                                        <option value="<?= $est['id_estado'] ?>" <?= (($_POST['estado'] ?? '') == $est['id_estado']) ? 'selected' : '' ?>><?= htmlspecialchars($est['nome_estado']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <label class="form-label">Criticidade</label>
                                 <select name="criticidade" class="form-select mb-3" required>
-                                    <option value="" selected disabled>Selecionar criticidade</option>
-                                    <option>Baixa</option>
-                                    <option>Média</option>
-                                    <option>Alta</option>
-                                    <option>Suporte de vida</option>
+                                    <option value="" disabled <?= empty($_POST['criticidade'] ?? '') ? 'selected' : '' ?>>Selecionar criticidade</option>
+                                    <?php foreach ($criticidades as $crit): ?>
+                                        <option value="<?= $crit['id_criticidade'] ?>" <?= (($_POST['criticidade'] ?? '') == $crit['id_criticidade']) ? 'selected' : '' ?>><?= htmlspecialchars($crit['nivel']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <label class="form-label">Tipo de Entrada</label>
                                 <select name="tipo_entrada" class="form-select mb-3" required>
@@ -126,15 +220,13 @@ redirect_if_not_logged();
                             </div>
                         </div>
                         <label class="form-label">Observações</label>
-                        <textarea name="observacoes" class="form-control mb-4" rows="4"></textarea>
+                        <textarea name="observacoes" class="form-control mb-4" rows="4"><?= htmlspecialchars($_POST['observacoes'] ?? '') ?></textarea>
                     </div>
                     <div class="tab-pane fade" id="componentes">
                         <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
                         <div class="form-check form-switch mb-4">
                             <input class="form-check-input" type="checkbox" id="semComponentes" onchange="toggleComponentes()">
-                            <label class="form-check-label" for="semComponentes">
-                                Este equipamento não possui componentes associados
-                            </label>
+                            <label class="form-check-label" for="semComponentes">Este equipamento não possui componentes associados</label>
                         </div>
                         <div id="areaComponentes">
                             <div class="border rounded p-3 mb-3 bg-white">
@@ -155,55 +247,14 @@ redirect_if_not_logged();
                                 </select>
                                 <label class="form-label">Notificação</label>
                                 <textarea class="form-control mb-3" rows="3"></textarea>
-                                <hr>
-                                <h6><i class="fa-solid fa-file-lines me-2"></i>Documentos do componente</h6>
-                                <div class="border rounded p-3 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Nome do documento</label>
-                                            <input type="text" class="form-control" placeholder="Ex: Manual do Sensor">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Tipo de documento</label>
-                                            <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                                <option value="" selected disabled>Selecionar tipo</option>
-                                                <option>Manual de componente</option>
-                                                <option>Ficha Técnica</option>
-                                                <option>Certificação</option>
-                                                <option>Relatório de teste</option>
-                                                <option>Registo de substituição</option>
-                                                <option>Outro</option>
-                                            </select>
-                                            <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Ficheiro</label>
-                                            <input type="file" id="novoDocumentoComponente" hidden>
-                                            <label for="novoDocumentoComponente" class="btn btn-outline-primary w-100">
-                                                <i class="fa-solid fa-upload me-1"></i> Selecionar ficheiro
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-primary w-100">
-                                                <i class="fa-solid fa-plus me-1"></i> Adicionar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash me-1"></i> Eliminar componente
-                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash me-1"></i> Eliminar componente</button>
                             </div>
-                            <button type="button" class="btn btn-outline-primary">
-                                <i class="fa-solid fa-plus me-1"></i> Adicionar Componente
-                            </button>
+                            <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Componente</button>
                             <hr>
                             <h4><i class="fa-solid fa-box-open me-2"></i>Consumíveis</h4>
                             <div class="form-check form-switch mb-4">
                                 <input class="form-check-input" type="checkbox" id="semConsumiveis" onchange="toggleConsumiveis()">
-                                <label class="form-check-label" for="semConsumiveis">
-                                    Este equipamento não necessita de consumíveis
-                                </label>
+                                <label class="form-check-label" for="semConsumiveis">Este equipamento não necessita de consumíveis</label>
                             </div>
                             <div id="areaConsumiveis">
                                 <div class="border rounded p-3 mb-3 bg-white">
@@ -218,9 +269,7 @@ redirect_if_not_logged();
                                     <label class="form-label">Observações</label>
                                     <textarea class="form-control mb-3" rows="3"></textarea>
                                 </div>
-                                <button type="button" class="btn btn-outline-primary">
-                                    <i class="fa-solid fa-plus me-1"></i> Adicionar Consumível
-                                </button>
+                                <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Consumível</button>
                             </div>
                         </div>
                     </div>
@@ -280,34 +329,41 @@ redirect_if_not_logged();
                         </div>
                     </div>
                     <div class="tab-pane fade" id="fornecedor">
-                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
-                        <label class="form-label">Selecionar fornecedor existente</label>
-                        <select name="fornecedor" class="form-select mb-4">
-                            <option value="">Selecionar fornecedor</option>
-                            <option>Philips Healthcare</option>
-                            <option>GE Healthcare</option>
-                            <option>Siemens Healthineers</option>
-                            <option>MedTech Solutions</option>
-                        </select>
-                        <div class="alert alert-info mb-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>
-                            O fornecedor é criado e gerido no módulo de fornecedores.
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedores Associados</h4>
+                        <div id="areaFornecedores">
+                            <div class="row g-2 align-items-end mb-3 linha-fornecedor">
+                                <div class="col-md-10">
+                                    <label class="form-label">Selecionar fornecedor existente</label>
+                                    <select name="fornecedores[]" class="form-select">
+                                        <option value="">Selecionar fornecedor</option>
+                                        <option>Philips Healthcare</option>
+                                        <option>GE Healthcare</option>
+                                        <option>Siemens Healthineers</option>
+                                        <option>MedTech Solutions</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-outline-danger w-100 btn-remover-fornecedor" onclick="removerFornecedor(this)" disabled>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-outline-primary mb-4" onclick="adicionarFornecedor()">
+                            <i class="fa-solid fa-plus me-1"></i> Adicionar Fornecedor
+                        </button>
+                        <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>O fornecedor é criado e gerido no módulo de fornecedores.</div>
                     </div>
                     <div class="tab-pane fade" id="localizacao">
                         <h4><i class="fa-solid fa-location-dot me-2"></i>Localização Associada</h4>
                         <label class="form-label">Selecionar localização existente</label>
-                        <select name="localizacao" class="form-select mb-4">
-                            <option value="">Selecionar localização</option>
-                            <option>Edifício A • Piso 1 • Sala 101 • UCI</option>
-                            <option>Edifício A • Piso 2 • Bloco Operatório</option>
-                            <option>Edifício B • Piso 0 • Urgência</option>
-                            <option>Armazém</option>
+                        <select name="localizacao" class="form-select mb-4" required>
+                            <option value="" disabled <?= empty($_POST['localizacao'] ?? '') ? 'selected' : '' ?>>Selecionar localização</option>
+                            <?php foreach ($localizacoes as $loc): ?>
+                                <option value="<?= $loc['id_localizacao'] ?>" <?= (($_POST['localizacao'] ?? '') == $loc['id_localizacao']) ? 'selected' : '' ?>><?= htmlspecialchars($loc['edificio'] . ' • ' . $loc['piso'] . ' • Sala ' . $loc['sala'] . ' • ' . $loc['nome_servico']) ?></option>
+                            <?php endforeach; ?>
                         </select>
-                        <div class="alert alert-info mb-0">
-                            <i class="fa-solid fa-circle-info me-2"></i>
-                            A localização é criada e gerida no módulo de localizações.
-                        </div>
+                        <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>A localização é criada e gerida no módulo de localizações.</div>
                     </div>
                     <div class="tab-pane fade" id="garantias">
                         <h4><i class="fa-solid fa-shield-halved me-2"></i>Garantias</h4>
@@ -329,13 +385,9 @@ redirect_if_not_logged();
                                     <option>Expirada</option>
                                 </select>
                                 <input type="file" id="novaGarantia" hidden>
-                                <label for="novaGarantia" class="btn btn-outline-primary btn-sm">
-                                    <i class="fa-solid fa-upload me-1"></i> Selecionar PDF
-                                </label>
+                                <label for="novaGarantia" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-upload me-1"></i> Selecionar PDF</label>
                             </div>
-                            <button type="button" class="btn btn-outline-primary">
-                                <i class="fa-solid fa-plus me-1"></i> Adicionar Garantia
-                            </button>
+                            <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Garantia</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="contratos">
@@ -363,13 +415,9 @@ redirect_if_not_logged();
                                 <label class="form-label">Valor anual (€)</label>
                                 <input type="text" class="form-control mb-3">
                                 <input type="file" id="novoContrato" hidden>
-                                <label for="novoContrato" class="btn btn-outline-primary btn-sm">
-                                    <i class="fa-solid fa-upload me-1"></i> Selecionar PDF
-                                </label>
+                                <label for="novoContrato" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-upload me-1"></i> Selecionar PDF</label>
                             </div>
-                            <button type="button" class="btn btn-outline-primary">
-                                <i class="fa-solid fa-plus me-1"></i> Adicionar Contrato
-                            </button>
+                            <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Contrato</button>
                         </div>
                     </div>
                 </div>
@@ -403,6 +451,23 @@ redirect_if_not_logged();
                 }
                 function toggleContratos() {
                     document.getElementById("areaContratos").classList.toggle("d-none");
+                }
+                function adicionarFornecedor() {
+                    const area = document.getElementById("areaFornecedores");
+                    const linha = area.querySelector(".linha-fornecedor").cloneNode(true);
+                    linha.querySelector("select").value = "";
+                    area.appendChild(linha);
+                    atualizarBotoesFornecedor();
+                }
+                function removerFornecedor(botao) {
+                    botao.closest(".linha-fornecedor").remove();
+                    atualizarBotoesFornecedor();
+                }
+                function atualizarBotoesFornecedor() {
+                    const linhas = document.querySelectorAll("#areaFornecedores .linha-fornecedor");
+                    linhas.forEach(linha => {
+                        linha.querySelector(".btn-remover-fornecedor").disabled = linhas.length === 1;
+                    });
                 }
             </script>
         </main>

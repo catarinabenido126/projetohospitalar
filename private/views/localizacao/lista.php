@@ -1,8 +1,47 @@
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
-
+require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+
+$servicos = $database->query("SELECT id_servico, nome_servico FROM servicos WHERE ativo = 1 ORDER BY nome_servico")->fetchAll(PDO::FETCH_ASSOC);
+
+$pesquisa = $_GET['pesquisa'] ?? '';
+$servico = $_GET['servico'] ?? '';
+$sql = "
+    SELECT
+        l.id_localizacao,
+        l.edificio,
+        l.piso,
+        l.sala,
+        l.responsavel,
+        l.contacto,
+        s.nome_servico
+    FROM localizacoes l
+    INNER JOIN servicos s
+        ON l.id_servico = s.id_servico
+    WHERE l.ativo = 1
+";
+if ($pesquisa != '') {
+    $sql .= " AND (
+        l.edificio LIKE :pesquisa
+        OR l.sala LIKE :pesquisa
+    )";
+}
+if ($servico != '') {
+    $sql .= " AND l.id_servico = :servico";
+}
+$sql .= " ORDER BY l.edificio ASC, l.piso ASC, l.sala ASC";
+$query = $database->prepare($sql);
+if ($pesquisa != '') {
+    $query->bindValue(':pesquisa', "%$pesquisa%");
+}
+
+if ($servico != '') {
+    $query->bindValue(':servico', $servico);
+}
+$query->execute();
+$localizacoes = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -12,57 +51,48 @@ redirect_if_not_logged();
         <?php include '../../includes/sidebar.php'; ?>
         <main class="col-md-9 col-lg-10 p-4 area-conteudo">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="mb-0">
-                    Listagem de Localizações
-                </h2>
-                <a href="novo.php" class="btn btn-success">
-                    <i class="fa-solid fa-plus me-1"></i>
-                    Nova localização
-                </a>
+                <h2 class="mb-0">Listagem de Localizações</h2>
+                <div>
+                    <button type="button" class="btn btn-outline-danger me-2">
+                        <i class="fa-solid fa-file-pdf me-1"></i>
+                        PDF
+                    </button>
+                    <button type="button" class="btn btn-outline-success me-2">
+                        <i class="fa-solid fa-file-excel me-1"></i>
+                        Excel
+                    </button>
+                    <a href="novo.php" class="btn btn-success">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Nova localização
+                    </a>
+                </div>
             </div>
             <hr>
+            <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                Localização guardada com sucesso.
+            </div>
+            <div id="mensagemCriado" class="alert alert-success d-none" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                Localização criada com sucesso.
+            </div>
             <p class="text-muted">
-                Lista resumida das áreas e localizações hospitalares registadas.
+                Lista resumida das localizações registadas. A ficha completa pode ser consultada nos detalhes.
             </p>
-            <div class="mb-4">
+            <div class="caixa-filtros mb-4">
                 <form action="lista.php" method="get">
                     <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label for="edificio" class="form-label">
-                                Edifício
-                            </label>
-                            <select class="form-select" id="edificio" name="edificio">
-                                <option value="">Todos</option>
-                                <option>Edifício A</option>
-                                <option>Edifício B</option>
-                                <option>Edifício C</option>
-                            </select>
+                        <div class="col-md-6 mb-3">
+                            <label for="pesquisa" class="form-label">Pesquisar localização</label>
+                            <input type="text" class="form-control" id="pesquisa" name="pesquisa" placeholder="Ex: Edifício A ou Sala 101">
                         </div>
-                        <div class="col-md-2 mb-3">
-                            <label for="piso" class="form-label">
-                                Piso
-                            </label>
-                            <select class="form-select" id="piso" name="piso">
-                                <option value="">Todos</option>
-                                <option>Piso 0</option>
-                                <option>Piso 1</option>
-                                <option>Piso 2</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="servico" class="form-label">
-                                Serviço
-                            </label>
+                        <div class="col-md-6 mb-3">
+                            <label for="servico" class="form-label">Serviço</label>
                             <select class="form-select" id="servico" name="servico">
                                 <option value="">Todos</option>
-                                <option>UCI</option>
-                                <option>Urgência</option>
-                                <option>Bloco Operatório</option>
-                                <option>Consultas</option>
-                                <option>Laboratório</option>
-                                <option>Radiologia</option>
-                                <option>Reabilitação</option>
-                                <option>Armazém</option>
+                                <?php foreach ($servicos as $s): ?>
+                                    <option value="<?= $s['id_servico'] ?>" <?= (($_GET['servico'] ?? '') == $s['id_servico']) ? 'selected' : '' ?>><?= htmlspecialchars($s['nome_servico']) ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -78,8 +108,8 @@ redirect_if_not_logged();
                     </div>
                 </form>
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+            <div class="caixa-tabela table-responsive">
+                <table id="tabelaLocalizacoes" class="table table-bordered table-striped align-middle">
                     <thead>
                         <tr>
                             <th>Edifício</th>
@@ -92,72 +122,71 @@ redirect_if_not_logged();
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($localizacoes as $localizacao): ?>
                         <tr>
-                            <td>Edifício A</td>
-                            <td>Piso 1</td>
-                            <td>Sala 101</td>
-                            <td>UCI</td>
-                            <td>Enf. Marta Silva</td>
+                            <td><?php echo $localizacao['edificio']; ?></td>
+                            <td><?php echo $localizacao['piso']; ?></td>
+                            <td><?php echo $localizacao['sala']; ?></td>
                             <td>
-                                <i class="fa-solid fa-phone me-1"></i>
-                                912 345 678
+                                <span class="badge bg-secondary"><?php echo $localizacao['nome_servico']; ?></span>
                             </td>
+                            <td><?php echo $localizacao['responsavel']; ?></td>
+                            <td><?php echo $localizacao['contacto']; ?></td>
                             <td class="text-center">
-                                <a href="equipamentos.php" class="btn btn-sm btn-outline-primary me-1">
+                                <a href="detalhes.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
+                                <a href="apagar.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Edifício B</td>
-                            <td>Piso 0</td>
-                            <td>Sala 2</td>
-                            <td>Bloco operatório</td>
-                            <td>Dr. João Costa</td>
-                            <td>
-                                <i class="fa-solid fa-phone me-1"></i>
-                                913 222 444
-                            </td>
-                            <td class="text-center">
-                                <a href="equipamentos.php" class="btn btn-sm btn-outline-primary me-1">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <p class="mb-0 text-muted">
-                        A mostrar 1 a 2 de 2 localizações
-                    </p>
-                    <nav>
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">Anterior</a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
-                            </li>
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">Seguinte</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                if (params.get("criado") === "1") {
+                    document.getElementById("mensagemCriado").classList.remove("d-none");
+                    setTimeout(() => document.getElementById("mensagemCriado").classList.add("d-none"), 5000);
+                }
+                if (params.get("guardado") === "1") {
+                    document.getElementById("mensagemSucesso").classList.remove("d-none");
+                    setTimeout(() => document.getElementById("mensagemSucesso").classList.add("d-none"), 5000);
+                }
+                window.history.replaceState({}, document.title, window.location.pathname);
+            </script>
         </main>
     </div>
 </div>
+<script>
+$(document).ready(function () {
+    $('#tabelaLocalizacoes').DataTable({
+        searching: false,
+        pageLength: 10,
+        language: {
+            decimal: "",
+            emptyTable: "Não existem registos",
+            info: "A mostrar _START_ a _END_ de _TOTAL_ registos",
+            infoEmpty: "A mostrar 0 a 0 de 0 registos",
+            infoFiltered: "(filtrado de _MAX_ registos)",
+            lengthMenu: "Mostrar _MENU_ registos",
+            loadingRecords: "A carregar...",
+            processing: "A processar...",
+            search: "Pesquisar:",
+            zeroRecords: "Nenhum registo encontrado",
+            paginate: {
+                first: "Primeira",
+                last: "Última",
+                next: "Seguinte",
+                previous: "Anterior"
+            }
+        }
+    });
+});
+</script>
 <?php include '../../includes/footer.php'; ?>

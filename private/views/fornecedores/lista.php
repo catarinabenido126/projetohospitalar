@@ -1,8 +1,56 @@
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
-
+require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+
+$tipos_fornecedor = $database->query("SELECT id_tipo_fornecedor, tipo FROM tipos_fornecedor WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
+
+$pesquisa = $_GET['pesquisa'] ?? '';
+$tipo = $_GET['tipo'] ?? '';
+$cidade = $_GET['cidade'] ?? '';
+$sql = "
+    SELECT
+        f.id_fornecedor,
+        f.nome_empresa,
+        f.nif,
+        f.telefone,
+        f.email,
+        f.cidade,
+        tf.tipo AS tipo_fornecedor
+    FROM fornecedores f
+    INNER JOIN tipos_fornecedor tf
+        ON f.id_tipo_fornecedor = tf.id_tipo_fornecedor
+    WHERE f.ativo = 1
+";
+if ($pesquisa != '') {
+    $sql .= " AND (
+        f.nome_empresa LIKE :pesquisa
+        OR f.nif LIKE :pesquisa
+    )";
+}
+if ($tipo != '') {
+    $sql .= " AND f.id_tipo_fornecedor = :tipo";
+}
+
+if ($cidade != '') {
+    $sql .= " AND f.cidade LIKE :cidade";
+}
+$sql .= " ORDER BY f.nome_empresa ASC";
+$query = $database->prepare($sql);
+if ($pesquisa != '') {
+    $query->bindValue(':pesquisa', "%$pesquisa%");
+}
+
+if ($tipo != '') {
+    $query->bindValue(':tipo', $tipo);
+}
+
+if ($cidade != '') {
+    $query->bindValue(':cidade', "%$cidade%");
+}
+$query->execute();
+$fornecedores = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -29,25 +77,36 @@ redirect_if_not_logged();
                 </div>
             </div>
             <hr>
+            <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                Fornecedor guardado com sucesso.
+            </div>
+            <div id="mensagemCriado" class="alert alert-success d-none" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                Fornecedor criado com sucesso.
+            </div>
             <p class="text-muted">
                 Lista resumida dos fornecedores registados. A ficha completa pode ser consultada nos detalhes.
             </p>
-            <div class="mb-4">
+            <div class="caixa-filtros mb-4">
                 <form action="lista.php" method="get">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-5 mb-3">
                             <label for="pesquisa" class="form-label">Pesquisar fornecedor</label>
-                            <input type="text" class="form-control" id="pesquisa" name="pesquisa">
+                            <input type="text" class="form-control" id="pesquisa" name="pesquisa" placeholder="Ex: Philips Healthcare ou NIF">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tipo" class="form-label">Tipo de fornecedor</label>
+                            <select class="form-select" id="tipo" name="tipo">
+                                <option value="">Todos</option>
+                                <?php foreach ($tipos_fornecedor as $tf): ?>
+                                    <option value="<?= $tf['id_tipo_fornecedor'] ?>" <?= (($_GET['tipo'] ?? '') == $tf['id_tipo_fornecedor']) ? 'selected' : '' ?>><?= htmlspecialchars($tf['tipo']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="tipoFornecedor" class="form-label">Tipo de fornecedor</label>
-                            <select class="form-select" id="tipoFornecedor" name="tipoFornecedor">
-                                <option value="">Todos</option>
-                                <option>Fabricante</option>
-                                <option>Distribuidor</option>
-                                <option>Assistência técnica</option>
-                                <option>Consumíveis ou acessórios</option>
-                            </select>
+                            <label for="cidade" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Ex: Porto" value="<?= htmlspecialchars($_GET['cidade'] ?? '') ?>">
                         </div>
                     </div>
                     <div class="d-flex gap-2 mb-4">
@@ -60,116 +119,87 @@ redirect_if_not_logged();
                             Limpar
                         </a>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="ordenacao" class="form-label">Critério de ordenação</label>
-                            <select class="form-select" id="ordenacao" name="ordenacao">
-                                <option value="">Selecione uma opção</option>
-                                <option>Nome da empresa (A-Z)</option>
-                                <option>Nome da empresa (Z-A)</option>
-                                <option>NIF (ascendente)</option>
-                                <option>NIF (descendente)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-arrow-down-a-z me-1"></i>
-                            Ordenar
-                        </button>
-                        <a href="lista.php" class="btn btn-secondary">
-                            <i class="fa-solid fa-broom me-1"></i>
-                            Limpar
-                        </a>
-                    </div>
                 </form>
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+            <div class="caixa-tabela table-responsive">
+                <table id="tabelaFornecedores" class="table table-bordered table-striped align-middle">
                     <thead>
                         <tr>
-                            <th>Nome</th>
+                            <th>Nome da Empresa</th>
                             <th>NIF</th>
                             <th>Tipo</th>
                             <th>Telefone</th>
                             <th>Email</th>
-                            <th>Website</th>
+                            <th>Cidade</th>
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($fornecedores as $fornecedor): ?>
                         <tr>
-                            <td>Philips Healthcare</td>
-                            <td>501234567</td>
-                            <td>Fabricante</td>
-                            <td> <i class="fa-solid fa-phone me-1"></i>
-                                222 000 100</td>
-                            <td> <i class="fa-solid fa-envelope me-1"></i>
-                                geral@philips-healthcare.pt</td>
+                            <td><?php echo $fornecedor['nome_empresa']; ?></td>
+                            <td><?php echo $fornecedor['nif']; ?></td>
                             <td>
-                                <a href="https://www.philips.pt" target="_blank">
-                                    www.philips.pt
-                                </a>
+                                <span class="badge bg-secondary"><?php echo $fornecedor['tipo_fornecedor']; ?></span>
                             </td>
+                            <td><?php echo $fornecedor['telefone']; ?></td>
+                            <td><?php echo $fornecedor['email']; ?></td>
+                            <td><?php echo $fornecedor['cidade']; ?></td>
                             <td class="text-center">
-                                <a href="detalhes.php" class="btn btn-sm btn-outline-primary me-1">
+                                <a href="detalhes.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
+                                <a href="apagar.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Dräger Portugal</td>
-                            <td>509876543</td>
-                            <td>Assistência técnica</td>
-                            <td> <i class="fa-solid fa-phone me-1"></i>
-                                213 000 200</td>
-                            <td> <i class="fa-solid fa-envelope me-1"></i>
-                                assistencia@draeger.pt</td>
-                            <td>
-                                <a href="https://www.draeger.com" target="_blank">
-                                    www.draeger.com
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a href="detalhes.php" class="btn btn-sm btn-outline-primary me-1">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="editar.php" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <p class="mb-0 text-muted">
-                        A mostrar 1 a 2 de 2 fornecedores
-                    </p>
-                    <nav>
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">Anterior</a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
-                            </li>
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">Seguinte</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                if (params.get("criado") === "1") {
+                    document.getElementById("mensagemCriado").classList.remove("d-none");
+                    setTimeout(() => document.getElementById("mensagemCriado").classList.add("d-none"), 5000);
+                }
+                if (params.get("guardado") === "1") {
+                    document.getElementById("mensagemSucesso").classList.remove("d-none");
+                    setTimeout(() => document.getElementById("mensagemSucesso").classList.add("d-none"), 5000);
+                }
+                window.history.replaceState({}, document.title, window.location.pathname);
+            </script>
         </main>
     </div>
 </div>
+<script>
+$(document).ready(function () {
+    $('#tabelaFornecedores').DataTable({
+        searching: false,
+        pageLength: 10,
+        language: {
+            decimal: "",
+            emptyTable: "Não existem registos",
+            info: "A mostrar _START_ a _END_ de _TOTAL_ registos",
+            infoEmpty: "A mostrar 0 a 0 de 0 registos",
+            infoFiltered: "(filtrado de _MAX_ registos)",
+            lengthMenu: "Mostrar _MENU_ registos",
+            loadingRecords: "A carregar...",
+            processing: "A processar...",
+            search: "Pesquisar:",
+            zeroRecords: "Nenhum registo encontrado",
+            paginate: {
+                first: "Primeira",
+                last: "Última",
+                next: "Seguinte",
+                previous: "Anterior"
+            }
+        }
+    });
+});
+</script>
 <?php include '../../includes/footer.php'; ?>

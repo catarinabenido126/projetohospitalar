@@ -41,7 +41,7 @@ redirect_if_not_logged();
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
-                            <i class="fa-solid fa-truck me-1"></i> Fornecedor
+                            <i class="fa-solid fa-truck me-1"></i> Fornecedores
                         </button>
                     </li>
                     <li class="nav-item">
@@ -328,78 +328,166 @@ redirect_if_not_logged();
                         </div>
                     </div>
                     <div class="tab-pane fade" id="fornecedor">
-                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor</h4>
-                        <h5 class="mt-3">Informação principal</h5>
-                        <p><strong>Nome da empresa:</strong> Philips Healthcare</p>
-                        <p><strong>NIF:</strong> 501234567</p>
-                        <p><strong>Tipo de fornecedor:</strong> Fabricante</p>
-                        <hr>
-                        <h5>Contactos</h5>
-                        <p><strong>Telefone:</strong> 222 000 100</p>
-                        <p><strong>Email:</strong> geral@philips-healthcare.pt</p>
-                        <p><strong>Website:</strong> https://www.philips.pt</p>
-                        <hr>
-                        <h5>Pessoa de contacto</h5>
-                        <p><strong>Nome:</strong> Ana Martins</p>
-                        <p><strong>Telefone:</strong> 912 345 678</p>
-                        <p><strong>Email:</strong> ana.martins@philips-healthcare.pt</p>
-                        <hr>
-                        <h5>Morada</h5>
-                        <p><strong>Morada:</strong> Rua da Saúde, 120</p>
-                        <p><strong>Código postal:</strong> 4200-300</p>
-                        <p><strong>Cidade:</strong> Porto</p>
-                        <p><strong>País:</strong> Portugal</p>
-                        <hr>
-                        <h5>Documentação do fornecedor</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Nome do documento</th>
-                                        <th>Ficheiro</th>
-                                        <th>Tipo</th>
-                                        <th class="text-center">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Certificado ISO 13485 Philips Healthcare</td>
-                                        <td>certificado_iso13485_philips_healthcare.pdf</td>
-                                        <td>Certificação</td>
-                                        <td class="text-center">
-                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
-                                                target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
-                                                download class="btn btn-sm btn-outline-success">
-                                                <i class="fa-solid fa-download"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Declaração de Distribuidor Autorizado Philips</td>
-                                        <td>declaracao_distribuidor_autorizado_philips.pdf</td>
-                                        <td>Declaração</td>
-                                        <td class="text-center">
-                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
-                                                target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
-                                                download class="btn btn-sm btn-outline-success">
-                                                <i class="fa-solid fa-download"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <div class="text-end">
-                                <a href="../fornecedores/editar.html" class="btn btn-outline-primary">
-                                    <i class="fa-solid fa-truck me-2"></i>
-                                    Editar ficha do fornecedor
-                                </a>
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedores Associados</h4>
+                        <div class="accordion mt-3" id="accordionFornecedores">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#fornecedor1" aria-expanded="true" aria-controls="fornecedor1">
+                                        <i class="fa-solid fa-building me-2"></i> Philips Healthcare
+                                        <span class="badge bg-secondary ms-2">Fabricante</span>
+                                    </button>
+                                </h2>
+                                <div id="fornecedor1" class="accordion-collapse collapse show"
+                                    data-bs-parent="#accordionFornecedores">
+                                    <div class="accordion-body">
+                                        <h5 class="mt-1">Informação principal</h5>
+                                        <p><strong>Nome da empresa:</strong> Philips Healthcare</p>
+                                        <p><strong>NIF:</strong> 501234567</p>
+                                        <p><strong>Tipo de fornecedor:</strong> Fabricante</p>
+                                        <hr>
+                                        <h5>Contactos</h5>
+                                        <p><strong>Telefone:</strong> 222 000 100</p>
+                                        <p><strong>Email:</strong> geral@philips-healthcare.pt</p>
+                                        <p><strong>Website:</strong> https://www.philips.pt</p>
+                                        <hr>
+                                        <h5>Pessoa de contacto</h5>
+                                        <p><strong>Nome:</strong> Ana Martins</p>
+                                        <p><strong>Telefone:</strong> 912 345 678</p>
+                                        <p><strong>Email:</strong> ana.martins@philips-healthcare.pt</p>
+                                        <hr>
+                                        <h5>Morada</h5>
+                                        <p><strong>Morada:</strong> Rua da Saúde, 120</p>
+                                        <p><strong>Código postal:</strong> 4200-300</p>
+                                        <p><strong>Cidade:</strong> Porto</p>
+                                        <p><strong>País:</strong> Portugal</p>
+                                        <hr>
+                                        <h5>Documentação do fornecedor</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome do documento</th>
+                                                        <th>Ficheiro</th>
+                                                        <th>Tipo</th>
+                                                        <th class="text-center">Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Certificado ISO 13485 Philips Healthcare</td>
+                                                        <td>certificado_iso13485_philips_healthcare.pdf</td>
+                                                        <td>Certificação</td>
+                                                        <td class="text-center">
+                                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </a>
+                                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                                download class="btn btn-sm btn-outline-success">
+                                                                <i class="fa-solid fa-download"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Declaração de Distribuidor Autorizado Philips</td>
+                                                        <td>declaracao_distribuidor_autorizado_philips.pdf</td>
+                                                        <td>Declaração</td>
+                                                        <td class="text-center">
+                                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </a>
+                                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                                download class="btn btn-sm btn-outline-success">
+                                                                <i class="fa-solid fa-download"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                            <div class="text-end">
+                                                <a href="../fornecedores/editar.html" class="btn btn-outline-primary">
+                                                    <i class="fa-solid fa-truck me-2"></i>
+                                                    Editar ficha do fornecedor
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#fornecedor2" aria-expanded="false" aria-controls="fornecedor2">
+                                        <i class="fa-solid fa-building me-2"></i> MedTech Solutions
+                                        <span class="badge bg-secondary ms-2">Assistência Técnica</span>
+                                    </button>
+                                </h2>
+                                <div id="fornecedor2" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionFornecedores">
+                                    <div class="accordion-body">
+                                        <h5 class="mt-1">Informação principal</h5>
+                                        <p><strong>Nome da empresa:</strong> MedTech Solutions</p>
+                                        <p><strong>NIF:</strong> 509876543</p>
+                                        <p><strong>Tipo de fornecedor:</strong> Assistência Técnica</p>
+                                        <hr>
+                                        <h5>Contactos</h5>
+                                        <p><strong>Telefone:</strong> 226 100 200</p>
+                                        <p><strong>Email:</strong> geral@medtechsolutions.pt</p>
+                                        <p><strong>Website:</strong> https://www.medtechsolutions.pt</p>
+                                        <hr>
+                                        <h5>Pessoa de contacto</h5>
+                                        <p><strong>Nome:</strong> Rui Pereira</p>
+                                        <p><strong>Telefone:</strong> 933 456 789</p>
+                                        <p><strong>Email:</strong> rui.pereira@medtechsolutions.pt</p>
+                                        <hr>
+                                        <h5>Morada</h5>
+                                        <p><strong>Morada:</strong> Avenida da Boavista, 450</p>
+                                        <p><strong>Código postal:</strong> 4100-120</p>
+                                        <p><strong>Cidade:</strong> Porto</p>
+                                        <p><strong>País:</strong> Portugal</p>
+                                        <hr>
+                                        <h5>Documentação do fornecedor</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome do documento</th>
+                                                        <th>Ficheiro</th>
+                                                        <th>Tipo</th>
+                                                        <th class="text-center">Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Certificado de Assistência Técnica Autorizada</td>
+                                                        <td>certificado_assistencia_tecnica_medtech.pdf</td>
+                                                        <td>Certificação</td>
+                                                        <td class="text-center">
+                                                            <a href="../../../assets/docs/certificado_assistencia_tecnica_medtech.pdf"
+                                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </a>
+                                                            <a href="../../../assets/docs/certificado_assistencia_tecnica_medtech.pdf"
+                                                                download class="btn btn-sm btn-outline-success">
+                                                                <i class="fa-solid fa-download"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                            <div class="text-end">
+                                                <a href="../fornecedores/editar.html" class="btn btn-outline-primary">
+                                                    <i class="fa-solid fa-truck me-2"></i>
+                                                    Editar ficha do fornecedor
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
