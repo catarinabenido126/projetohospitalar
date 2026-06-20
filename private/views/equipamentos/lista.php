@@ -251,17 +251,17 @@ try {
                                 </span>
                             </td>
                             <td>
-                                <?php echo $equipamento['edificio']; ?>
+                                Edifício <?php echo $equipamento['edificio']; ?>
                                 <br>
                                 <small class="text-muted">
-                                    <?php echo $equipamento['piso']; ?> | Sala <?php echo $equipamento['sala']; ?>
+                                    Piso <?php echo $equipamento['piso']; ?> | Sala <?php echo $equipamento['sala']; ?>
                                 </small>
                             </td>
                             <td class="text-center">
                                 <a href="detalhes.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                                 <a href="apagar.php?id=<?php echo $equipamento['id_equipamento']; ?>" class="btn btn-sm btn-outline-danger">

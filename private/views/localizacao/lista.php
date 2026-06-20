@@ -32,16 +32,22 @@ if ($servico != '') {
     $sql .= " AND l.id_servico = :servico";
 }
 $sql .= " ORDER BY l.edificio ASC, l.piso ASC, l.sala ASC";
-$query = $database->prepare($sql);
-if ($pesquisa != '') {
-    $query->bindValue(':pesquisa', "%$pesquisa%");
-}
+$erro = '';
+try {
+    $query = $database->prepare($sql);
+    if ($pesquisa != '') {
+        $query->bindValue(':pesquisa', "%$pesquisa%");
+    }
 
-if ($servico != '') {
-    $query->bindValue(':servico', $servico);
+    if ($servico != '') {
+        $query->bindValue(':servico', $servico);
+    }
+    $query->execute();
+    $localizacoes = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $erro = "Não foi possível obter a listagem de localizações.";
+    $localizacoes = [];
 }
-$query->execute();
-$localizacoes = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -68,6 +74,12 @@ $localizacoes = $query->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <hr>
+            <?php if (!empty($erro)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                    <?= htmlspecialchars($erro) ?>
+                </div>
+            <?php endif; ?>
             <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
                 <i class="fa-solid fa-circle-check me-2"></i>
                 Localização guardada com sucesso.
@@ -136,7 +148,7 @@ $localizacoes = $query->fetchAll(PDO::FETCH_ASSOC);
                                 <a href="detalhes.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                                 <a href="apagar.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-danger">

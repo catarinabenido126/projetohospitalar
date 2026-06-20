@@ -14,3 +14,6 @@ define('MYSQL_USERNAME', '1241126');
 define('MYSQL_PASSWORD', 'benido_126');
 
 define('MYSQL_AES_KEY', 'medisync_chave_teste_2026');
+define('OPENSSL_METHOD', 'AES-256-CBC'); 
+define('OPENSSL_KEY', 'MediSyncChave32CaracteresExatos!'); 
+define('OPENSSL_IV', 'MediSyncIV16Car!'); 

@@ -12,9 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $edificio = trim($_POST["edificio"] ?? "");
     $piso = trim($_POST["piso"] ?? "");
     $sala = trim($_POST["sala"] ?? "");
-    $servico = trim($_POST["tipo"] ?? "");
+    $servico = trim($_POST["servico"] ?? "");
     $responsavel = trim($_POST["responsavel"] ?? "");
-    $contacto = trim($_POST["contacto-loc"] ?? "");
+    $contacto = trim($_POST["contacto"] ?? "");
     $email = trim($_POST["email"] ?? "");
 
     if (empty($edificio)) {
@@ -23,8 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($piso)) {
         $erros[] = "O campo Piso é obrigatório.";
     }
-    if (empty($sala)) {
-        $erros[] = "O campo Sala é obrigatório.";
+    if (!empty($sala) && !preg_match('/^\d{3}$/', $sala)) {
+        $erros[] = "A sala deve conter exatamente 3 dígitos (ex: 101).";
     }
     if (empty($servico) || !ctype_digit($servico)) {
         $erros[] = "Selecione um tipo de localização válido.";
@@ -109,18 +109,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="sala" class="form-label">
                         Sala
                     </label>
-                    <input type="text" class="form-control" id="sala" name="sala" placeholder="Ex: 101" value="<?= htmlspecialchars($_POST['sala'] ?? '') ?>" required>
+                    <input type="text" class="form-control" id="sala" name="sala" maxlength="3" pattern="[0-9]{3}" placeholder="Ex: 101" value="<?= htmlspecialchars($_POST['sala'] ?? '') ?>">
                 </div>
                 <div class="mb-3">
-                    <label for="tipo" class="form-label">
+                    <label for="servico" class="form-label">
                         Tipo de localização
                     </label>
-                    <select class="form-select" id="tipo" name="tipo" required>
-                        <option value="" disabled <?= empty($_POST['tipo'] ?? '') ? 'selected' : '' ?>>
+                    <select class="form-select" id="servico" name="servico" required>
+                        <option value="" disabled <?= empty($_POST['servico'] ?? '') ? 'selected' : '' ?>>
                             Selecione um tipo de serviço
                         </option>
                         <?php foreach ($servicos as $s): ?>
-                            <option value="<?= $s['id_servico'] ?>" <?= (($_POST['tipo'] ?? '') == $s['id_servico']) ? 'selected' : '' ?>><?= htmlspecialchars($s['nome_servico']) ?></option>
+                            <option value="<?= $s['id_servico'] ?>" <?= (($_POST['servico'] ?? '') == $s['id_servico']) ? 'selected' : '' ?>><?= htmlspecialchars($s['nome_servico']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="contacto-loc" class="form-label">
                         Contacto
                     </label>
-                    <input type="text" class="form-control" id="contacto-loc" name="contacto-loc" value="<?= htmlspecialchars($_POST['contacto-loc'] ?? '') ?>">
+                    <input type="text" class="form-control" id="contacto-loc" name="contacto" value="<?= htmlspecialchars($_POST['contacto'] ?? '') ?>">
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">

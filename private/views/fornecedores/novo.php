@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $website = trim($_POST["website"] ?? "");
     $pessoa_contacto = trim($_POST["pessoaContacto"] ?? "");
     $telefone_contacto = trim($_POST["telefoneContacto"] ?? "");
+    $email_contacto = trim($_POST["emailContacto"] ?? "");
     $morada = trim($_POST["morada"] ?? "");
     $codigo_postal = trim($_POST["codigoPostal"] ?? "");
     $cidade = trim($_POST["cidade"] ?? "");
@@ -48,18 +49,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($telefone_contacto) && !preg_match('/^\d{9}$/', $telefone_contacto)) {
         $erros[] = "O telefone da pessoa de contacto é inválido (deve ter 9 dígitos).";
     }
+    if (!empty($email_contacto) && !filter_var($email_contacto, FILTER_VALIDATE_EMAIL)) {
+        $erros[] = "O email da pessoa de contacto não é válido.";
+    }
     if (!empty($codigo_postal) && !preg_match('/^\d{4}-\d{3}$/', $codigo_postal)) {
         $erros[] = "Código Postal inválido (ex: 4000-007).";
     }
     if (empty($erros)) {
         $email = strtolower($email);
+        $email_contacto = $email_contacto !== "" ? strtolower($email_contacto) : "";
         $cidade = $cidade !== "" ? ucfirst(strtolower($cidade)) : "";
         $pais = $pais !== "" ? ucfirst(strtolower($pais)) : "";
         $pessoa_contacto = $pessoa_contacto !== "" ? ucwords(strtolower($pessoa_contacto)) : "";
     }
     if (empty($erros)) {
         try {
-            $sql = "INSERT INTO fornecedores (nome_empresa, nif, id_tipo_fornecedor, telefone, email, website, pessoa_contacto, telefone_contacto, morada, codigo_postal, cidade, pais, observacoes, ativo, created_at, updated_at) VALUES (:nome_empresa, :nif, :tipo_fornecedor, :telefone, :email, :website, :pessoa_contacto, :telefone_contacto, :morada, :codigo_postal, :cidade, :pais, :observacoes, 1, NOW(), NOW())";
+            $sql = "INSERT INTO fornecedores (nome_empresa, nif, id_tipo_fornecedor, telefone, email, website, pessoa_contacto, telefone_contacto, email_contacto, morada, codigo_postal, cidade, pais, observacoes, ativo, created_at, updated_at) VALUES (:nome_empresa, :nif, :tipo_fornecedor, :telefone, :email, :website, :pessoa_contacto, :telefone_contacto, :email_contacto, :morada, :codigo_postal, :cidade, :pais, :observacoes, 1, NOW(), NOW())";
             $query = $database->prepare($sql);
             $query->execute([
                 ":nome_empresa" => $nome_empresa,
@@ -70,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":website" => $website !== "" ? $website : null,
                 ":pessoa_contacto" => $pessoa_contacto !== "" ? $pessoa_contacto : null,
                 ":telefone_contacto" => $telefone_contacto !== "" ? $telefone_contacto : null,
+                ":email_contacto" => $email_contacto !== "" ? $email_contacto : null,
                 ":morada" => $morada !== "" ? $morada : null,
                 ":codigo_postal" => $codigo_postal !== "" ? $codigo_postal : null,
                 ":cidade" => $cidade !== "" ? $cidade : null,
@@ -153,6 +159,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <label for="telefoneContacto" class="form-label">Telefone da pessoa de contacto</label>
                     <input type="tel" class="form-control" id="telefoneContacto" name="telefoneContacto" value="<?= htmlspecialchars($_POST['telefoneContacto'] ?? '') ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="emailContacto" class="form-label">Email da pessoa de contacto</label>
+                    <input type="email" class="form-control" id="emailContacto" name="emailContacto" value="<?= htmlspecialchars($_POST['emailContacto'] ?? '') ?>">
                 </div>
                 <h4>Morada</h4>
                 <div class="mb-3">

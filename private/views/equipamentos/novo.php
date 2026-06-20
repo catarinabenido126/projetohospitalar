@@ -9,13 +9,14 @@ $categorias = $database->query("SELECT id_categoria, nome_categoria FROM categor
 $estados = $database->query("SELECT id_estado, nome_estado FROM estados_equipamento WHERE ativo = 1 ORDER BY nome_estado")->fetchAll(PDO::FETCH_ASSOC);
 $criticidades = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
 $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
+$fornecedores = $database->query("SELECT id_fornecedor, nome_empresa FROM fornecedores WHERE ativo = 1 ORDER BY nome_empresa")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo = trim($_POST["codigo"] ?? "");
-    $designacao = trim($_POST["designacao"] ?? "");
     $categoria = trim($_POST["categoria"] ?? "");
     $marca = trim($_POST["marca"] ?? "");
     $modelo = trim($_POST["modelo"] ?? "");
+    $fabricante = trim($_POST["fabricante"] ?? "");
     $numero_serie = trim($_POST["numero_serie"] ?? "");
     $ano_fabrico = trim($_POST["ano_fabrico"] ?? "");
     $estado = trim($_POST["estado"] ?? "");
@@ -41,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($modelo)) {
         $erros[] = "O campo Modelo é obrigatório.";
     }
+    if (empty($fabricante)) {
+        $erros[] = "O campo Fabricante é obrigatório.";
+    }
     if (empty($numero_serie)) {
         $erros[] = "O campo Número de Série é obrigatório.";
     } elseif (strlen($numero_serie) < 3) {
@@ -65,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if (empty($erros)) {
         try {
-            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
+            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, fabricante, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :fabricante, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
             $query = $database->prepare($sql);
             $query->execute([
                 ":codigo" => $codigo,
@@ -73,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":categoria" => $categoria,
                 ":marca" => $marca,
                 ":modelo" => $modelo,
+                ":fabricante" => $fabricante,
                 ":numero_serie" => $numero_serie,
                 ":ano_fabrico" => $ano_fabrico !== "" ? $ano_fabrico : null,
                 ":estado" => $estado,
@@ -182,6 +187,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="text" name="marca" class="form-control mb-3" placeholder="Ex: Philips" value="<?= htmlspecialchars($_POST['marca'] ?? '') ?>" required>
                                 <label class="form-label">Modelo</label>
                                 <input type="text" name="modelo" class="form-control mb-3" placeholder="Ex: IntelliVue MP5" value="<?= htmlspecialchars($_POST['modelo'] ?? '') ?>" required>
+                                <label class="form-label">Fabricante</label>
+                                <input type="text" name="fabricante" class="form-control mb-3" placeholder="Ex: Philips Healthcare" value="<?= htmlspecialchars($_POST['fabricante'] ?? '') ?>" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Número de Série</label>
@@ -201,14 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <?php foreach ($criticidades as $crit): ?>
                                         <option value="<?= $crit['id_criticidade'] ?>" <?= (($_POST['criticidade'] ?? '') == $crit['id_criticidade']) ? 'selected' : '' ?>><?= htmlspecialchars($crit['nivel']) ?></option>
                                     <?php endforeach; ?>
-                                </select>
-                                <label class="form-label">Tipo de Entrada</label>
-                                <select name="tipo_entrada" class="form-select mb-3" required>
-                                    <option value="" selected disabled>Selecionar tipo de entrada</option>
-                                    <option value="compra">Compra</option>
-                                    <option value="aluguer">Aluguer</option>
-                                    <option value="doacao">Doação</option>
-                                    <option value="emprestimo">Empréstimo</option>
                                 </select>
                             </div>
                         </div>
@@ -322,29 +321,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                     <div class="tab-pane fade" id="fornecedor">
-                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedores Associados</h4>
-                        <div id="areaFornecedores">
-                            <div class="row g-2 align-items-end mb-3 linha-fornecedor">
-                                <div class="col-md-10">
-                                    <label class="form-label">Selecionar fornecedor existente</label>
-                                    <select name="fornecedores[]" class="form-select">
-                                        <option value="">Selecionar fornecedor</option>
-                                        <option>Philips Healthcare</option>
-                                        <option>GE Healthcare</option>
-                                        <option>Siemens Healthineers</option>
-                                        <option>MedTech Solutions</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-outline-danger w-100 btn-remover-fornecedor" onclick="removerFornecedor(this)" disabled>
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-primary mb-4" onclick="adicionarFornecedor()">
-                            <i class="fa-solid fa-plus me-1"></i> Adicionar Fornecedor
-                        </button>
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
+                        <label class="form-label">Selecionar fornecedor existente</label>
+                        <select name="fornecedor" class="form-select mb-4">
+                            <option value="">Selecionar fornecedor</option>
+                            <?php foreach ($fornecedores as $forn): ?>
+                                <option value="<?= $forn['id_fornecedor'] ?>" <?= (($_POST['fornecedor'] ?? '') == $forn['id_fornecedor']) ? 'selected' : '' ?>><?= htmlspecialchars($forn['nome_empresa']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>O fornecedor é criado e gerido no módulo de fornecedores.</div>
                     </div>
                     <div class="tab-pane fade" id="localizacao">
@@ -353,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <select name="localizacao" class="form-select mb-4" required>
                             <option value="" disabled <?= empty($_POST['localizacao'] ?? '') ? 'selected' : '' ?>>Selecionar localização</option>
                             <?php foreach ($localizacoes as $loc): ?>
-                                <option value="<?= $loc['id_localizacao'] ?>" <?= (($_POST['localizacao'] ?? '') == $loc['id_localizacao']) ? 'selected' : '' ?>><?= htmlspecialchars($loc['edificio'] . ' • ' . $loc['piso'] . ' • Sala ' . $loc['sala'] . ' • ' . $loc['nome_servico']) ?></option>
+                                <option value="<?= $loc['id_localizacao'] ?>" <?= (($_POST['localizacao'] ?? '') == $loc['id_localizacao']) ? 'selected' : '' ?>><?= htmlspecialchars('Edifício ' . $loc['edificio'] . ' • Piso ' . $loc['piso'] . ' • Sala ' . $loc['sala'] . ' • ' . $loc['nome_servico']) ?></option>
                             <?php endforeach; ?>
                         </select>
                         <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>A localização é criada e gerida no módulo de localizações.</div>
@@ -396,10 +380,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label class="form-label">Fornecedor associado</label>
                                 <select class="form-select mb-3">
                                     <option value="">Selecionar fornecedor</option>
-                                    <option>Philips Healthcare</option>
-                                    <option>GE Healthcare</option>
-                                    <option>Siemens Healthineers</option>
-                                    <option>MedTech Solutions</option>
+                                    <?php foreach ($fornecedores as $forn): ?>
+                                        <option value="<?= $forn['id_fornecedor'] ?>"><?= htmlspecialchars($forn['nome_empresa']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <label class="form-label">Data de início</label>
                                 <input type="date" class="form-control mb-3">
@@ -444,23 +427,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 function toggleContratos() {
                     document.getElementById("areaContratos").classList.toggle("d-none");
-                }
-                function adicionarFornecedor() {
-                    const area = document.getElementById("areaFornecedores");
-                    const linha = area.querySelector(".linha-fornecedor").cloneNode(true);
-                    linha.querySelector("select").value = "";
-                    area.appendChild(linha);
-                    atualizarBotoesFornecedor();
-                }
-                function removerFornecedor(botao) {
-                    botao.closest(".linha-fornecedor").remove();
-                    atualizarBotoesFornecedor();
-                }
-                function atualizarBotoesFornecedor() {
-                    const linhas = document.querySelectorAll("#areaFornecedores .linha-fornecedor");
-                    linhas.forEach(linha => {
-                        linha.querySelector(".btn-remover-fornecedor").disabled = linhas.length === 1;
-                    });
                 }
             </script>
         </main>

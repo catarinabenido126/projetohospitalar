@@ -37,20 +37,26 @@ if ($cidade != '') {
     $sql .= " AND f.cidade LIKE :cidade";
 }
 $sql .= " ORDER BY f.nome_empresa ASC";
-$query = $database->prepare($sql);
-if ($pesquisa != '') {
-    $query->bindValue(':pesquisa', "%$pesquisa%");
-}
+$erro = '';
+try {
+    $query = $database->prepare($sql);
+    if ($pesquisa != '') {
+        $query->bindValue(':pesquisa', "%$pesquisa%");
+    }
 
-if ($tipo != '') {
-    $query->bindValue(':tipo', $tipo);
-}
+    if ($tipo != '') {
+        $query->bindValue(':tipo', $tipo);
+    }
 
-if ($cidade != '') {
-    $query->bindValue(':cidade', "%$cidade%");
+    if ($cidade != '') {
+        $query->bindValue(':cidade', "%$cidade%");
+    }
+    $query->execute();
+    $fornecedores = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $erro = "Não foi possível obter a listagem de fornecedores.";
+    $fornecedores = [];
 }
-$query->execute();
-$fornecedores = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -77,6 +83,12 @@ $fornecedores = $query->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <hr>
+            <?php if (!empty($erro)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                    <?= htmlspecialchars($erro) ?>
+                </div>
+            <?php endif; ?>
             <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
                 <i class="fa-solid fa-circle-check me-2"></i>
                 Fornecedor guardado com sucesso.
@@ -149,7 +161,7 @@ $fornecedores = $query->fetchAll(PDO::FETCH_ASSOC);
                                 <a href="detalhes.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-warning me-1">
+                                <a href="editar.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                                 <a href="apagar.php?id=<?php echo $fornecedor['id_fornecedor']; ?>" class="btn btn-sm btn-outline-danger">
