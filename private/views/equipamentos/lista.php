@@ -48,24 +48,30 @@ if ($criticidade != '') {
     $sql .= " AND cr.nivel = :criticidade";
 }
 $sql .= " ORDER BY e.codigo_interno ASC";
-$query = $database->prepare($sql);
-if ($pesquisa != '') {
-    $query->bindValue(':pesquisa', "%$pesquisa%");
-}
+$erro = '';
+try {
+    $query = $database->prepare($sql);
+    if ($pesquisa != '') {
+        $query->bindValue(':pesquisa', "%$pesquisa%");
+    }
 
-if ($categoria != '') {
-    $query->bindValue(':categoria', $categoria);
-}
+    if ($categoria != '') {
+        $query->bindValue(':categoria', $categoria);
+    }
 
-if ($estado != '') {
-    $query->bindValue(':estado', $estado);
-}
+    if ($estado != '') {
+        $query->bindValue(':estado', $estado);
+    }
 
-if ($criticidade != '') {
-    $query->bindValue(':criticidade', $criticidade);
+    if ($criticidade != '') {
+        $query->bindValue(':criticidade', $criticidade);
+    }
+    $query->execute();
+    $equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $erro = "Não foi possível obter a listagem de equipamentos.";
+    $equipamentos = [];
 }
-$query->execute();
-$equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -92,6 +98,12 @@ $equipamentos = $query->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <hr>
+            <?php if (!empty($erro)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                    <?= htmlspecialchars($erro) ?>
+                </div>
+            <?php endif; ?>
             <div id="mensagemSucesso" class="alert alert-success d-none" role="alert">
                 <i class="fa-solid fa-circle-check me-2"></i>
                 Equipamento guardado com sucesso.

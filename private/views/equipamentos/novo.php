@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria = trim($_POST["categoria"] ?? "");
     $marca = trim($_POST["marca"] ?? "");
     $modelo = trim($_POST["modelo"] ?? "");
-    $fabricante = trim($_POST["fabricante"] ?? "");
     $numero_serie = trim($_POST["numero_serie"] ?? "");
     $ano_fabrico = trim($_POST["ano_fabrico"] ?? "");
     $estado = trim($_POST["estado"] ?? "");
@@ -42,9 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($modelo)) {
         $erros[] = "O campo Modelo é obrigatório.";
     }
-    if (empty($fabricante)) {
-        $erros[] = "O campo Fabricante é obrigatório.";
-    }
     if (empty($numero_serie)) {
         $erros[] = "O campo Número de Série é obrigatório.";
     } elseif (strlen($numero_serie) < 3) {
@@ -69,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if (empty($erros)) {
         try {
-            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, fabricante, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :fabricante, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
+            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
             $query = $database->prepare($sql);
             $query->execute([
                 ":codigo" => $codigo,
@@ -77,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":categoria" => $categoria,
                 ":marca" => $marca,
                 ":modelo" => $modelo,
-                ":fabricante" => $fabricante,
                 ":numero_serie" => $numero_serie,
                 ":ano_fabrico" => $ano_fabrico !== "" ? $ano_fabrico : null,
                 ":estado" => $estado,
@@ -187,8 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="text" name="marca" class="form-control mb-3" placeholder="Ex: Philips" value="<?= htmlspecialchars($_POST['marca'] ?? '') ?>" required>
                                 <label class="form-label">Modelo</label>
                                 <input type="text" name="modelo" class="form-control mb-3" placeholder="Ex: IntelliVue MP5" value="<?= htmlspecialchars($_POST['modelo'] ?? '') ?>" required>
-                                <label class="form-label">Fabricante</label>
-                                <input type="text" name="fabricante" class="form-control mb-3" placeholder="Ex: Philips Healthcare" value="<?= htmlspecialchars($_POST['fabricante'] ?? '') ?>" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Número de Série</label>
