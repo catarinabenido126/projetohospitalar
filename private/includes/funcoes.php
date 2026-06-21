@@ -46,6 +46,18 @@ function aes_decrypt($valor)
     $iv = substr(hash('sha256', AES_ENCRYPTION_KEY), 0, 16);
     return openssl_decrypt($valor, AES_ENCRYPTION_METHOD, AES_ENCRYPTION_KEY, 0, $iv);
 }
+function restringir_perfil($perfis_permitidos, $redirect_to = '/private/index.php')
+{
+    start_session();
+
+    $perfil_atual = $_SESSION['perfil'] ?? '';
+
+    if (!in_array($perfil_atual, $perfis_permitidos)) {
+        $_SESSION['server_error'] = 'Não tem permissões para aceder a essa página.';
+        header("Location: " . BASE_URL . $redirect_to);
+        exit();
+    }
+}
 function registar_historico(PDO $database, string $modulo, string $acao, ?string $registo, ?string $detalhes = null): void
 {
     $stmt = $database->prepare("

@@ -1,9 +1,11 @@
+
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 
 redirect_if_not_logged();
+restringir_perfil(['Administrador']);
 
 $idEncriptado = $_GET['id'] ?? '';
 $idEquipamento = aes_decrypt($idEncriptado);
@@ -27,7 +29,13 @@ try {
     $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
     $query->execute();
     $equipamento = $query->fetch(PDO::FETCH_ASSOC);
-
+        registar_historico(
+            $database,
+            'Equipamentos',
+            'Remoção',
+            $equipamento['codigo_interno'],
+            'Equipamento removido.'
+        );
     if (!$equipamento) {
         header('Location: lista.php');
         exit();
@@ -43,13 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
         $query->execute();
-        registar_historico(
-            $database,
-            'Equipamentos',
-            'Remoção',
-            $equipamento['codigo_interno'],
-            'Equipamento removido.'
-        );
         header('Location: lista.php?desativado=1');
         exit();
     } catch (PDOException $e) {

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+restringir_perfil(['Administrador', 'Tecnico']);
 
 $erros = [];
 $erro_sistema = "";
@@ -572,3 +573,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 <?php include '../../includes/footer.php'; ?>
+            registar_historico(
+                $database,
+                'Equipamentos',
+                'Criação',
+                $codigo,
+                'Equipamento criado com sucesso.'
+            );
+           

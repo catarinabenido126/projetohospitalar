@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/funcoes.php';
+require_once 'includes/database.php';
 
 start_session();
 
@@ -31,15 +32,34 @@ if (!empty($validation_errors)) {
     exit();
 }
 
-$result['status'] = 1;
+try {
+    $comando = $database->prepare("
+        SELECT *, AES_DECRYPT(email, :chave) AS email_decifrado
+        FROM utilizadores
+        WHERE AES_DECRYPT(email, :chave) = :u AND ativo = 1
+    ");
+    $comando->execute([
+        ':chave' => MYSQL_AES_KEY,
+        ':u' => $username
+    ]);
+    $utilizador = $comando->fetch(PDO::FETCH_OBJ);
 
-if (!$result['status']) {
-    $_SESSION['server_error'] = 'Login inválido';
+    if (!$utilizador || !password_verify($password, $utilizador->password_hash)) {
+        $_SESSION['server_error'] = 'Login inválido';
+        header('Location: ../login/login.php');
+        exit();
+    }
+
+    $stmtUltimoAcesso = $database->prepare("UPDATE utilizadores SET ultimo_acesso = NOW() WHERE id_utilizador = :id");
+    $stmtUltimoAcesso->execute([':id' => $utilizador->id_utilizador]);
+
+    $_SESSION['utilizador'] = $utilizador->email_decifrado;
+    $_SESSION['perfil'] = $utilizador->perfil;
+} catch (PDOException $e) {
+    $_SESSION['server_error'] = 'Erro ao ligar à base de dados.';
     header('Location: ../login/login.php');
     exit();
 }
-
-$_SESSION['utilizador'] = $username;
 
 header('Location: index.php');
 exit();

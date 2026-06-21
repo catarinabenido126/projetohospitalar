@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+$perfilAtual = $_SESSION['perfil'] ?? '';
 
 $servicos = $database->query("SELECT id_servico, nome_servico FROM servicos WHERE ativo = 1 ORDER BY nome_servico")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -67,10 +68,12 @@ try {
                         <i class="fa-solid fa-file-excel me-1"></i>
                         Excel
                     </button>
-                    <a href="novo.php" class="btn btn-success">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Nova localização
-                    </a>
+                    <?php if ($perfilAtual === 'Administrador'): ?>
+                        <a href="novo.php" class="btn btn-success">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Nova localização
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
             <hr>
@@ -152,12 +155,14 @@ try {
                                 <a href="equipamentos.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+                                <?php if ($perfilAtual === 'Administrador'): ?>
+                                    <a href="editar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-warning me-1">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <a href="apagar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

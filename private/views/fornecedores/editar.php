@@ -1,7 +1,9 @@
+
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
 redirect_if_not_logged();
+restringir_perfil(['Administrador']);
 
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     header('Location: ' . BASE_URL . '/login/login.php');
@@ -96,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":observacoes" => $observacoes !== "" ? $observacoes : null,
                 ":id" => $idFornecedor
             ]);
-            registar_historico(
+                registar_historico(
                 $database,
                 'Fornecedores',
                 'Edição',

@@ -1,8 +1,10 @@
+
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+restringir_perfil(['Administrador']);
 
 $erros = [];
 $erro_sistema = "";
@@ -83,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":pais" => $pais !== "" ? $pais : null,
                 ":observacoes" => $observacoes !== "" ? $observacoes : null
             ]);
+
             registar_historico(
                 $database,
                 'Fornecedores',

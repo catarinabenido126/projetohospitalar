@@ -1,9 +1,11 @@
+
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 
 redirect_if_not_logged();
+restringir_perfil(['Administrador']);
 
 $idEncriptado = $_GET['id'] ?? '';
 $idFornecedor = aes_decrypt($idEncriptado);
@@ -25,7 +27,15 @@ try {
     $query = $database->prepare($sql);
     $query->bindParam(':id', $idFornecedor, PDO::PARAM_INT);
     $query->execute();
+            registar_historico(
+            $database,
+            'Fornecedores',
+            'Remoção',
+            $fornecedor['nome_empresa'],
+            'Fornecedor desativado com sucesso.'
+            );
     $fornecedor = $query->fetch(PDO::FETCH_ASSOC);
+
     if (!$fornecedor) {
         header('Location: lista.php');
         exit();
@@ -41,18 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idFornecedor, PDO::PARAM_INT);
         $query->execute();
-
-        registar_historico(
-            $database,
-            'Fornecedores',
-            'Remoção',
-            $fornecedor['nome_empresa'],
-            'Fornecedor desativado com sucesso.'
-        );
-
         header('Location: lista.php?desativado=1');
         exit();
-
     } catch (PDOException $e) {
         $erro_sistema = "Não foi possível desativar o fornecedor.";
     }

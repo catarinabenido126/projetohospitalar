@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 
 redirect_if_not_logged();
+restringir_perfil(['Administrador']);
 
 $idEncriptado = $_GET['id'] ?? '';
 $idLocalizacao = aes_decrypt($idEncriptado);
@@ -25,7 +26,14 @@ try {
     $query = $database->prepare($sql);
     $query->bindParam(':id', $idLocalizacao, PDO::PARAM_INT);
     $query->execute();
-    
+        registar_historico(
+            $database,
+            'Localizações',
+            'Remoção',
+            $localizacao['edificio'],
+            'Localização removida.'
+        );
+        
     $localizacao = $query->fetch(PDO::FETCH_ASSOC);
 
     if (!$localizacao) {
@@ -43,13 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idLocalizacao, PDO::PARAM_INT);
         $query->execute();
-        registar_historico(
-            $database,
-            'Localizações',
-            'Remoção',
-            $localizacao['edificio'],
-            'Localização removida.'
-        );
         header('Location: lista.php?desativado=1');
         exit();
     } catch (PDOException $e) {

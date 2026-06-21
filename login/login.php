@@ -63,7 +63,7 @@ if (!empty($_SESSION['server_error'])) {
                 <div><?php echo htmlspecialchars($server_error); ?></div>
             </div>
         <?php endif; ?>
-            <form action="../private/processa_login.php" method="post">
+            <form name="formulario" action="../private/processa_login.php" method="post">
                 <div class="mb-3">
                     <label for="utilizador" class="form-label">
                         Utilizador
@@ -109,10 +109,24 @@ if (!empty($_SESSION['server_error'])) {
                         Esqueceu a palavra-passe?
                     </a>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="fa-solid fa-right-to-bracket me-2"></i>
-                    Iniciar Sessão
-                </button>
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>
+                        Iniciar Sessão
+                    </button>
+                </div>
+                <!-- Botões de preenchimento automático (Fase de Testes) -->
+                <div class="mt-2 text-center">
+                    <button type="button" id="preencher_adm" class="btn btn-outline-primary btn-sm me-2">
+                        Preencher Admin
+                    </button>
+                    <button type="button" id="preencher_tec" class="btn btn-outline-secondary btn-sm me-2">
+                        Preencher Técnico
+                    </button>
+                    <button type="button" id="preencher_saude" class="btn btn-outline-success btn-sm">
+                        Preencher Prof. Saúde
+                    </button>
+                </div>
             </form>
             <div class="alert alert-info mt-4 mb-0">
                 <i class="fa-solid fa-circle-info me-2"></i>
@@ -157,5 +171,23 @@ if (!empty($_SESSION['server_error'])) {
     </div>
 </div>
     <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        // Preenchimento automático para testes
+        document.querySelector("#preencher_adm").addEventListener('click', () => {
+            const formulario = document.forms['formulario'];
+            formulario['text_username'].value = "admin@medisync.pt";
+            formulario['text_password'].value = "Admin123";
+        });
+        document.querySelector("#preencher_tec").addEventListener('click', () => {
+            const formulario = document.forms['formulario'];
+            formulario['text_username'].value = "tecnico@medisync.pt";
+            formulario['text_password'].value = "Tecnico123";
+        });
+        document.querySelector("#preencher_saude").addEventListener('click', () => {
+            const formulario = document.forms['formulario'];
+            formulario['text_username'].value = "saude@medisync.pt";
+            formulario['text_password'].value = "Saude123";
+        });
+    </script>
 </body>
 </html>

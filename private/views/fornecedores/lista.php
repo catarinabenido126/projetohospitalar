@@ -3,6 +3,8 @@
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+restringir_perfil(['Administrador', 'Tecnico']);
+$perfilAtual = $_SESSION['perfil'] ?? '';
 
 $tipos_fornecedor = $database->query("SELECT id_tipo_fornecedor, tipo FROM tipos_fornecedor WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -38,6 +40,10 @@ if ($cidade != '') {
 }
 $sql .= " ORDER BY f.nome_empresa ASC";
 $erro = '';
+if (!empty($_SESSION['erro_permissao'])) {
+    $erro = $_SESSION['erro_permissao'];
+    unset($_SESSION['erro_permissao']);
+}
 try {
     $query = $database->prepare($sql);
     if ($pesquisa != '') {
@@ -76,10 +82,12 @@ try {
                         <i class="fa-solid fa-file-excel me-1"></i>
                         Excel
                     </button>
-                    <a href="novo.php" class="btn btn-success">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Novo fornecedor
-                    </a>
+                    <?php if ($perfilAtual === 'Administrador'): ?>
+                        <a href="novo.php" class="btn btn-success">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Novo fornecedor
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
             <hr>
@@ -165,12 +173,14 @@ try {
                                 <a href="detalhes.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+                                <?php if ($perfilAtual === 'Administrador'): ?>
+                                    <a href="editar.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-warning me-1">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <a href="apagar.php?id=<?php echo aes_encrypt($fornecedor['id_fornecedor']); ?>" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

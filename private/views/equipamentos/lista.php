@@ -3,6 +3,13 @@
 require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/database.php';
 redirect_if_not_logged();
+$perfilAtual = $_SESSION['perfil'] ?? '';
+
+$erro = '';
+if (!empty($_SESSION['erro_permissao'])) {
+    $erro = $_SESSION['erro_permissao'];
+    unset($_SESSION['erro_permissao']);
+}
 
 $pesquisa = $_GET['pesquisa'] ?? '';
 $categoria = $_GET['categoria'] ?? '';
@@ -48,7 +55,6 @@ if ($criticidade != '') {
     $sql .= " AND cr.nivel = :criticidade";
 }
 $sql .= " ORDER BY e.codigo_interno ASC";
-$erro = '';
 try {
     $query = $database->prepare($sql);
     if ($pesquisa != '') {
@@ -91,10 +97,12 @@ try {
                         <i class="fa-solid fa-file-excel me-1"></i>
                         Excel
                     </button>
-                    <a href="novo.php" class="btn btn-success">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        Novo equipamento
-                    </a>
+                    <?php if (in_array($perfilAtual, ['Administrador', 'Tecnico'])): ?>
+                        <a href="novo.php" class="btn btn-success">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Novo equipamento
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
             <hr>
@@ -265,12 +273,16 @@ try {
                                 <a href="detalhes.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="editar.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="apagar.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+                                <?php if (in_array($perfilAtual, ['Administrador', 'Tecnico'])): ?>
+                                    <a href="editar.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-warning me-1">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                <?php endif; ?>
+                                <?php if ($perfilAtual === 'Administrador'): ?>
+                                    <a href="apagar.php?id=<?php echo aes_encrypt($equipamento['id_equipamento']); ?>" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

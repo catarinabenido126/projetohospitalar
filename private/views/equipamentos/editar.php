@@ -1,7 +1,9 @@
+
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
 redirect_if_not_logged();
+restringir_perfil(['Administrador', 'Tecnico']);
 
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
     header('Location: ' . BASE_URL . '/login/login.php');
@@ -105,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $codigo,
                 'Equipamento editado com sucesso.'
             );
-
             $queryRemoveRelacao = $database->prepare("DELETE FROM equipamento_fornecedor WHERE id_equipamento = :id AND id_tipo_relacao = (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor')");
             $queryRemoveRelacao->execute([":id" => $idEquipamento]);
 
