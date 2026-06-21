@@ -33,26 +33,16 @@ function logout_and_redirect($redirect_to = '/login/login.php')
     header("Location: " . BASE_URL . $redirect_to);
     exit();
 }
-function aes_encrypt($value)
+
+function aes_encrypt($valor)
 {
-    return bin2hex(openssl_encrypt(
-        $value,
-        OPENSSL_METHOD,
-        OPENSSL_KEY,
-        OPENSSL_RAW_DATA,
-        OPENSSL_IV
-    ));
+    $iv = substr(hash('sha256', AES_ENCRYPTION_KEY), 0, 16);
+    $encriptado = openssl_encrypt($valor, AES_ENCRYPTION_METHOD, AES_ENCRYPTION_KEY, 0, $iv);
+    return urlencode($encriptado);
 }
 
-function aes_decrypt($value)
+function aes_decrypt($valor)
 {
-    if (!is_string($value) || strlen($value) % 2 !== 0) return false;
-
-    return openssl_decrypt(
-        hex2bin($value),
-        OPENSSL_METHOD,
-        OPENSSL_KEY,
-        OPENSSL_RAW_DATA,
-        OPENSSL_IV
-    );
+    $iv = substr(hash('sha256', AES_ENCRYPTION_KEY), 0, 16);
+    return openssl_decrypt($valor, AES_ENCRYPTION_METHOD, AES_ENCRYPTION_KEY, 0, $iv);
 }

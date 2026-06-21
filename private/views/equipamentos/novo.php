@@ -13,6 +13,7 @@ $fornecedores = $database->query("SELECT id_fornecedor, nome_empresa FROM fornec
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo = trim($_POST["codigo"] ?? "");
+    $designacao = trim($_POST["designacao"] ?? "");
     $categoria = trim($_POST["categoria"] ?? "");
     $marca = trim($_POST["marca"] ?? "");
     $modelo = trim($_POST["modelo"] ?? "");
@@ -213,6 +214,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <label class="form-label">Observações</label>
                         <textarea name="observacoes" class="form-control mb-4" rows="4"><?= htmlspecialchars($_POST['observacoes'] ?? '') ?></textarea>
+                        <hr>
+                        <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos do Equipamento</h5>
+                        <p class="text-muted">Podes anexar documentos relacionados com este equipamento (manuais, fichas técnicas, certificações, etc.).</p>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Manual de Operação">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Selecionar tipo</option>
+                                        <option>Manual de utilizador</option>
+                                        <option>Ficha Técnica</option>
+                                        <option>Certificação</option>
+                                        <option>Relatório de uso</option>
+                                        <option>Manual de manutenção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Ficheiro</label>
+                                    <input type="file" id="documentoEquipamento1" hidden>
+                                    <label for="documentoEquipamento1" class="btn btn-outline-primary w-100">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Selecionar ficheiro
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Adicionar Documento
+                        </button>
                     </div>
                     <div class="tab-pane fade" id="componentes">
                         <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
@@ -239,6 +282,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </select>
                                 <label class="form-label">Notificação</label>
                                 <textarea class="form-control mb-3" rows="3"></textarea>
+                                <hr>
+                                <h6>
+                                    <i class="fa-solid fa-file-lines me-2"></i>
+                                    Documentos do componente
+                                </h6>
+                                <div class="border rounded p-3 mb-3">
+                                    <div class="row align-items-end">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Nome do documento</label>
+                                            <input type="text" class="form-control" placeholder="Ex: Manual do componente">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tipo de documento</label>
+                                            <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                                <option selected>Selecionar tipo</option>
+                                                <option>Manual de componente</option>
+                                                <option>Ficha Técnica</option>
+                                                <option>Certificação</option>
+                                                <option>Relatório de teste</option>
+                                                <option>Registo de substituição</option>
+                                                <option>Outro</option>
+                                            </select>
+                                            <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Ficheiro</label>
+                                            <input type="file" id="documentoComponente1" hidden>
+                                            <label for="documentoComponente1" class="btn btn-outline-primary w-100">
+                                                <i class="fa-solid fa-upload me-1"></i>
+                                                Selecionar ficheiro
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-primary w-100">
+                                                <i class="fa-solid fa-plus me-1"></i>
+                                                Adicionar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash me-1"></i> Eliminar componente</button>
                             </div>
                             <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Componente</button>
@@ -316,6 +399,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="date" class="form-control mb-3">
                                     <label class="form-label">Condições do empréstimo</label>
                                     <textarea class="form-control mb-3" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos da Entrada</h5>
+                        <p class="text-muted">Os documentos a anexar dependem do tipo de entrada selecionado (fatura, contrato de aluguer, termo de doação, etc.).</p>
+                        <div class="border rounded p-3 mb-3 bg-white">
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Fatura de aquisição">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                        <option selected>Selecionar tipo</option>
+                                        <option>Fatura</option>
+                                        <option>Comprovativo de pagamento</option>
+                                        <option>Contrato de aluguer</option>
+                                        <option>Termo de doação</option>
+                                        <option>Termo de empréstimo</option>
+                                        <option>Guia de transporte</option>
+                                        <option>Auto de receção</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Ficheiro</label>
+                                    <input type="file" id="documentoEntrada1" hidden>
+                                    <label for="documentoEntrada1" class="btn btn-outline-primary w-100">
+                                        <i class="fa-solid fa-upload me-1"></i>
+                                        Selecionar ficheiro
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Adicionar
+                                    </button>
                                 </div>
                             </div>
                         </div>
