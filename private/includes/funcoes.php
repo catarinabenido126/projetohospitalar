@@ -46,3 +46,36 @@ function aes_decrypt($valor)
     $iv = substr(hash('sha256', AES_ENCRYPTION_KEY), 0, 16);
     return openssl_decrypt($valor, AES_ENCRYPTION_METHOD, AES_ENCRYPTION_KEY, 0, $iv);
 }
+function registar_historico(PDO $database, string $modulo, string $acao, ?string $registo, ?string $detalhes = null): void
+{
+    $stmt = $database->prepare("
+        INSERT INTO historico (
+            id_utilizador,
+            modulo,
+            acao,
+            registo,
+            detalhes,
+            data_hora,
+            created_at,
+            updated_at
+        )
+        VALUES (
+            :id_utilizador,
+            :modulo,
+            :acao,
+            :registo,
+            :detalhes,
+            NOW(),
+            NOW(),
+            NOW()
+        )
+    ");
+
+    $stmt->execute([
+        ':id_utilizador' => $_SESSION['id_utilizador'],
+        ':modulo' => $modulo,
+        ':acao' => $acao,
+        ':registo' => $registo,
+        ':detalhes' => $detalhes
+    ]);
+}

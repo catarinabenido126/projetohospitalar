@@ -10,6 +10,7 @@ $estados = $database->query("SELECT id_estado, nome_estado FROM estados_equipame
 $criticidades = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
 $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
 $fornecedores = $database->query("SELECT id_fornecedor, nome_empresa FROM fornecedores WHERE ativo = 1 ORDER BY nome_empresa")->fetchAll(PDO::FETCH_ASSOC);
+$tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo = trim($_POST["codigo"] ?? "");
@@ -23,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $estado = trim($_POST["estado"] ?? "");
     $criticidade = trim($_POST["criticidade"] ?? "");
     $localizacao = trim($_POST["localizacao"] ?? "");
+    $fornecedor = trim($_POST["fornecedor"] ?? "");
     $observacoes = trim($_POST["observacoes"] ?? "");
     if (empty($codigo)) {
         $erros[] = "O campo Código Interno é obrigatório.";
@@ -63,6 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($localizacao) || !ctype_digit($localizacao)) {
         $erros[] = "Selecione uma localização válida.";
     }
+    if (!empty($fornecedor) && !ctype_digit($fornecedor)) {
+        $erros[] = "Selecione um fornecedor válido.";
+    }
     if (empty($erros)) {
         $codigo = strtoupper($codigo);
         $designacao = ucwords(strtolower($designacao));
@@ -86,6 +91,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":localizacao" => $localizacao,
                 ":observacoes" => $observacoes
             ]);
+            registar_historico(
+                $database,
+                'Equipamentos',
+                'Criação',
+                $codigo,
+                'Equipamento criado com sucesso.'
+            );
+            $idEquipamentoNovo = $database->lastInsertId();
+
+            if (!empty($fornecedor)) {
+                $sqlRelacao = "
+                    INSERT INTO equipamento_fornecedor (id_equipamento, id_fornecedor, id_tipo_relacao, ativo, created_at, updated_at)
+                    VALUES (:equipamento, :fornecedor, (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor'), 1, NOW(), NOW())
+                ";
+                $queryRelacao = $database->prepare($sqlRelacao);
+                $queryRelacao->execute([
+                    ":equipamento" => $idEquipamentoNovo,
+                    ":fornecedor" => $fornecedor
+                ]);
+            }
+
             header("Location: lista.php?criado=1");
             exit();
         } catch (PDOException $err) {
@@ -226,13 +252,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-md-3">
                                     <label class="form-label">Tipo de documento</label>
                                     <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option selected>Selecionar tipo</option>
-                                        <option>Manual de utilizador</option>
-                                        <option>Ficha Técnica</option>
-                                        <option>Certificação</option>
-                                        <option>Relatório de uso</option>
-                                        <option>Manual de manutenção</option>
-                                        <option>Outro</option>
+                                        <option value="" selected disabled>Selecionar tipo</option>
+                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                 </div>
@@ -296,13 +319,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <div class="col-md-3">
                                             <label class="form-label">Tipo de documento</label>
                                             <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                                <option selected>Selecionar tipo</option>
-                                                <option>Manual de componente</option>
-                                                <option>Ficha Técnica</option>
-                                                <option>Certificação</option>
-                                                <option>Relatório de teste</option>
-                                                <option>Registo de substituição</option>
-                                                <option>Outro</option>
+                                                <option value="" selected disabled>Selecionar tipo</option>
+                                                <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                                    <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                             <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                         </div>
@@ -414,15 +434,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-md-3">
                                     <label class="form-label">Tipo de documento</label>
                                     <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option selected>Selecionar tipo</option>
-                                        <option>Fatura</option>
-                                        <option>Comprovativo de pagamento</option>
-                                        <option>Contrato de aluguer</option>
-                                        <option>Termo de doação</option>
-                                        <option>Termo de empréstimo</option>
-                                        <option>Guia de transporte</option>
-                                        <option>Auto de receção</option>
-                                        <option>Outro</option>
+                                        <option value="" selected disabled>Selecionar tipo</option>
+                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                 </div>
@@ -524,7 +539,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <script>
                 function mostrarOutroDocumento(select) {
                     const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
-                    if (select.value === "Outro") {
+                    const textoSelecionado = select.options[select.selectedIndex].text;
+                    if (textoSelecionado === "Outro") {
                         campoOutro.classList.remove("d-none");
                     } else {
                         campoOutro.classList.add("d-none");

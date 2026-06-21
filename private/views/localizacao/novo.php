@@ -54,6 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":contacto" => $contacto !== "" ? $contacto : null,
                 ":email" => $email !== "" ? $email : null
             ]);
+
+            registar_historico(
+                $database,
+                'Localizações',
+                'Criação',
+                $edificio,
+                'Localização criada com sucesso.'
+            );
             header("Location: lista.php?criado=1");
             exit();
         } catch (PDOException $err) {

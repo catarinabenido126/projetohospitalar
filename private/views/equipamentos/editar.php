@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estado = trim($_POST["estado"] ?? "");
     $criticidade = trim($_POST["criticidade"] ?? "");
     $localizacao = trim($_POST["localizacao"] ?? "");
+    $fornecedor = trim($_POST["fornecedor"] ?? "");
     $observacoes = trim($_POST["observacoes"] ?? "");
 
     if (empty($codigo)) {
@@ -69,6 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($localizacao) || !ctype_digit($localizacao)) {
         $erros[] = "Selecione uma localização válida.";
     }
+    if (!empty($fornecedor) && !ctype_digit($fornecedor)) {
+        $erros[] = "Selecione um fornecedor válido.";
+    }
 
     if (empty($erros)) {
         $codigo = strtoupper($codigo);
@@ -94,6 +98,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ":observacoes" => $observacoes,
                 ":id" => $idEquipamento
             ]);
+            registar_historico(
+                $database,
+                'Equipamentos',
+                'Edição',
+                $codigo,
+                'Equipamento editado com sucesso.'
+            );
+
+            $queryRemoveRelacao = $database->prepare("DELETE FROM equipamento_fornecedor WHERE id_equipamento = :id AND id_tipo_relacao = (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor')");
+            $queryRemoveRelacao->execute([":id" => $idEquipamento]);
+
+            if (!empty($fornecedor)) {
+                $sqlRelacao = "
+                    INSERT INTO equipamento_fornecedor (id_equipamento, id_fornecedor, id_tipo_relacao, ativo, created_at, updated_at)
+                    VALUES (:equipamento, :fornecedor, (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor'), 1, NOW(), NOW())
+                ";
+                $queryRelacao = $database->prepare($sqlRelacao);
+                $queryRelacao->execute([
+                    ":equipamento" => $idEquipamento,
+                    ":fornecedor" => $fornecedor
+                ]);
+            }
+
             header("Location: lista.php?guardado=1");
             exit();
         } catch (PDOException $err) {
@@ -120,6 +147,20 @@ $categorias = $database->query("SELECT id_categoria, nome_categoria FROM categor
 $estados = $database->query("SELECT id_estado, nome_estado FROM estados_equipamento WHERE ativo = 1 ORDER BY nome_estado")->fetchAll(PDO::FETCH_ASSOC);
 $criticidades = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
 $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
+$fornecedores = $database->query("SELECT id_fornecedor, nome_empresa FROM fornecedores WHERE ativo = 1 ORDER BY nome_empresa")->fetchAll(PDO::FETCH_ASSOC);
+$tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
+
+$stmtFornecedorAtual = $database->prepare("
+    SELECT f.id_fornecedor
+    FROM equipamento_fornecedor ef
+    INNER JOIN fornecedores f ON ef.id_fornecedor = f.id_fornecedor
+    WHERE ef.id_equipamento = :id AND ef.id_tipo_relacao = (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor') AND ef.ativo = 1
+    LIMIT 1
+");
+$stmtFornecedorAtual->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
+$stmtFornecedorAtual->execute();
+$fornecedorAtual = $stmtFornecedorAtual->fetch(PDO::FETCH_ASSOC);
+$idFornecedorAtual = $fornecedorAtual['id_fornecedor'] ?? '';
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -134,7 +175,7 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                     <p class="text-muted mb-0"><?= htmlspecialchars(($equipamento['designacao'] ?? '') . ' • ' . ($equipamento['marca'] ?? '') . ' ' . ($equipamento['modelo'] ?? '') . ' • ' . ($equipamento['codigo_interno'] ?? '')) ?></p>
                 </div>
                 <div>
-                    <a href="detalhes.php" class="btn btn-secondary">Cancelar</a>
+                    <a href="detalhes.php?id=<?= aes_encrypt($equipamento['id_equipamento']) ?>" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" form="formEditarEquipamento" class="btn btn-success">
                         <i class="fa-solid fa-floppy-disk me-1"></i>
                         Guardar Alterações
@@ -244,233 +285,83 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos do Equipamento</h5>
                         <p class="text-muted">Adiciona, substitui ou remove os documentos próprios deste equipamento.</p>
                         <div class="border rounded p-3 mb-3 bg-white">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="mb-0">
-                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
-                                    Manual de Operação Philips IntelliVue MP5
-                                    <span class="badge bg-light text-primary border ms-2">Manual</span>
-                                </h6>
-                                <button type="button" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash me-1"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                            <div class="row">
+                            <div class="row align-items-end">
                                 <div class="col-md-4">
+                                    <label class="form-label">Nome do documento</label>
+                                    <input type="text" class="form-control" placeholder="Ex: Manual de Operação">
+                                </div>
+                                <div class="col-md-3">
                                     <label class="form-label">Tipo de documento</label>
-                                    <select class="form-select mb-2 tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option selected>Manual de utilizador</option>
-                                        <option>Ficha Técnica</option>
-                                        <option>Certificação</option>
-                                        <option>Relatório de uso</option>
-                                        <option>Manual de manutenção</option>
-                                        <option>Outro</option>
+                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                        <option value="" selected disabled>Selecionar tipo</option>
+                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                        <?php endforeach; ?>
                                     </select>
-                                    <input type="text" class="form-control campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Ficheiro atual</label>
-                                    <p class="mb-1">
-                                        <i class="fa-regular fa-file-lines me-2"></i>
-                                        manual_operacao_philips_intellivue_mp5.pdf
-                                    </p>
-                                    <small class="text-muted d-block mb-3">1.24 MB • PDF</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="file" id="manualOperacaoMP5" hidden>
-                                    <label for="manualOperacaoMP5" class="btn btn-outline-primary btn-sm">
+                                <div class="col-md-3">
+                                    <label class="form-label">Ficheiro</label>
+                                    <input type="file" id="documentoEquipamento1" hidden>
+                                    <label for="documentoEquipamento1" class="btn btn-outline-primary w-100">
                                         <i class="fa-solid fa-upload me-1"></i>
-                                        Substituir Ficheiro
+                                        Selecionar ficheiro
                                     </label>
-                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Adicionar
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="border rounded p-3 mb-3 bg-white">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="mb-0">
-                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
-                                    Ficha Técnica Philips IntelliVue MP5
-                                    <span class="badge bg-light text-primary border ms-2">Ficha Técnica</span>
-                                </h6>
-                                <button type="button" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash me-1"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label">Tipo de documento</label>
-                                    <select class="form-select mb-2 tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option>Manual de utilizador</option>
-                                        <option selected>Ficha Técnica</option>
-                                        <option>Certificação</option>
-                                        <option>Relatório de uso</option>
-                                        <option>Manual de manutenção</option>
-                                        <option>Outro</option>
-                                    </select>
-                                    <input type="text" class="form-control campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Ficheiro atual</label>
-                                    <p class="mb-1">
-                                        <i class="fa-regular fa-file-lines me-2"></i>
-                                        ficha_tecnica_philips_intellivue_mp5.pdf
-                                    </p>
-                                    <small class="text-muted d-block mb-3">980 KB • PDF</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="file" id="fichaTecnicaMP5" hidden>
-                                    <label for="fichaTecnicaMP5" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa-solid fa-upload me-1"></i>
-                                        Substituir Ficheiro
-                                    </label>
-                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border rounded p-3 mb-4 bg-white">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="mb-0">
-                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
-                                    Certificado CE do Equipamento IntelliVue MP5
-                                    <span class="badge bg-light text-primary border ms-2">Certificação</span>
-                                </h6>
-                                <button type="button" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash me-1"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label">Tipo de documento</label>
-                                    <select class="form-select mb-2 tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option>Manual de utilizador</option>
-                                        <option>Ficha Técnica</option>
-                                        <option selected>Certificação</option>
-                                        <option>Relatório de uso</option>
-                                        <option>Manual de manutenção</option>
-                                        <option>Outro</option>
-                                    </select>
-                                    <input type="text" class="form-control campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Ficheiro atual</label>
-                                    <p class="mb-1">
-                                        <i class="fa-regular fa-file-lines me-2"></i>
-                                        certificado_ce_intellivue_mp5.pdf
-                                    </p>
-                                    <small class="text-muted d-block mb-3">450 KB • PDF</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="file" id="certificadoCEmp5" hidden>
-                                    <label for="certificadoCEmp5" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa-solid fa-upload me-1"></i>
-                                        Substituir Ficheiro
-                                    </label>
-                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-primary">
-                            <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar Documento
-                        </button>
                     </div>
                     <div class="tab-pane fade" id="componentes">
                         <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
                         <div class="border rounded p-3 mb-3 bg-white">
                             <h5>Componente 1</h5>
                             <label class="form-label">Código do componente</label>
-                            <input type="text" class="form-control mb-2" value="EQ-0001.01">
+                            <input type="text" class="form-control mb-2" placeholder="Ex: EQ-0001.01">
                             <small class="text-muted d-block mb-3">Formato recomendado: EQ-0001.01</small>
                             <label class="form-label">Nome do componente</label>
-                            <input type="text" class="form-control mb-3" value="Sensor SpO₂ Philips M1191BL">
+                            <input type="text" class="form-control mb-3" placeholder="Ex: Sensor SpO₂">
                             <label class="form-label">Estado</label>
                             <select class="form-select mb-3">
-                                <option selected>Funcional</option>
+                                <option value="" selected disabled>Selecionar estado</option>
+                                <option>Funcional</option>
                                 <option>Em manutenção</option>
                                 <option>Avariado</option>
                                 <option>Substituído</option>
                                 <option>Abatido</option>
                             </select>
                             <label class="form-label">Notificação</label>
-                            <textarea class="form-control mb-3" rows="3">Sem notificações</textarea>
+                            <textarea class="form-control mb-3" rows="3"></textarea>
                             <hr>
                             <h6>
                                 <i class="fa-solid fa-file-lines me-2"></i>
                                 Documentos do componente
                             </h6>
                             <div class="border rounded p-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="mb-0">
-                                        <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
-                                        Manual do Sensor SpO₂ Philips M1191BL
-                                        <span class="badge bg-light text-primary border ms-2">Manual</span>
-                                    </h6>
-                                    <button type="button" class="btn btn-outline-danger btn-sm">
-                                        <i class="fa-solid fa-trash me-1"></i>
-                                        Eliminar
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label class="form-label">Tipo de documento</label>
-                                        <select class="form-select mb-2 tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                            <option selected>Manual de componente</option>
-                                            <option>Ficha Técnica</option>
-                                            <option>Certificação</option>
-                                            <option>Relatório de teste</option>
-                                            <option>Registo de substituição</option>
-                                            <option>Outro</option>
-                                        </select>
-                                        <input type="text" class="form-control campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Ficheiro atual</label>
-                                        <p class="mb-1">
-                                            <i class="fa-regular fa-file-lines me-2"></i>
-                                            manual_sensor_spo2_m1191bl.pdf
-                                        </p>
-                                        <small class="text-muted d-block mb-3">620 KB • PDF</small>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="file" id="docSensorSpo2" hidden>
-                                        <label for="docSensorSpo2" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa-solid fa-upload me-1"></i>
-                                            Substituir Ficheiro
-                                        </label>
-                                        <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border rounded p-3 mb-3">
-                                <h6>
-                                    <i class="fa-solid fa-plus me-2"></i>
-                                    Adicionar documento ao componente
-                                </h6>
                                 <div class="row align-items-end">
                                     <div class="col-md-4">
                                         <label class="form-label">Nome do documento</label>
-                                        <input type="text" class="form-control" placeholder="Ex: Relatório de teste do sensor">
+                                        <input type="text" class="form-control" placeholder="Ex: Manual do componente">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Tipo de documento</label>
                                         <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                            <option selected>Selecionar tipo</option>
-                                            <option>Manual de componente</option>
-                                            <option>Ficha Técnica</option>
-                                            <option>Certificação</option>
-                                            <option>Relatório de teste</option>
-                                            <option>Registo de substituição</option>
-                                            <option>Outro</option>
+                                            <option value="" selected disabled>Selecionar tipo</option>
+                                            <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                                <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Ficheiro</label>
-                                        <input type="file" id="novoDocumentoComponente" hidden>
-                                        <label for="novoDocumentoComponente" class="btn btn-outline-primary w-100">
+                                        <input type="file" id="documentoComponente1" hidden>
+                                        <label for="documentoComponente1" class="btn btn-outline-primary w-100">
                                             <i class="fa-solid fa-upload me-1"></i>
                                             Selecionar ficheiro
                                         </label>
@@ -497,32 +388,15 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <div class="border rounded p-3 mb-3 bg-white">
                             <h5>Consumível 1</h5>
                             <label class="form-label">Nome do consumível</label>
-                            <input type="text" class="form-control mb-3" value="Soro Fisiológico 500 ml">
+                            <input type="text" class="form-control mb-3" placeholder="Ex: Soro Fisiológico 500 ml">
                             <label class="form-label">Stock atual</label>
-                            <input type="number" class="form-control mb-3" value="24">
+                            <input type="number" class="form-control mb-3">
                             <label class="form-label">Stock mínimo</label>
-                            <input type="number" class="form-control mb-3" value="10">
+                            <input type="number" class="form-control mb-3">
                             <label class="form-label">Última atualização do stock</label>
-                            <input type="date" class="form-control mb-3" value="2026-06-09">
+                            <input type="date" class="form-control mb-3">
                             <label class="form-label">Observações</label>
-                            <textarea class="form-control mb-3" rows="3">Necessário para administração intravenosa.</textarea>
-                            <button type="button" class="btn btn-outline-danger btn-sm">
-                                <i class="fa-solid fa-trash me-1"></i>
-                                Eliminar consumível
-                            </button>
-                        </div>
-                        <div class="border rounded p-3 mb-3 bg-white">
-                            <h5>Consumível 2</h5>
-                            <label class="form-label">Nome do consumível</label>
-                            <input type="text" class="form-control mb-3" value="Sistema de Perfusão">
-                            <label class="form-label">Stock atual</label>
-                            <input type="number" class="form-control mb-3" value="35">
-                            <label class="form-label">Stock mínimo</label>
-                            <input type="number" class="form-control mb-3" value="15">
-                            <label class="form-label">Última atualização do stock</label>
-                            <input type="date" class="form-control mb-3" value="2026-06-08">
-                            <label class="form-label">Observações</label>
-                            <textarea class="form-control mb-3" rows="3">Compatível com bomba de infusão.</textarea>
+                            <textarea class="form-control mb-3" rows="3"></textarea>
                             <button type="button" class="btn btn-outline-danger btn-sm">
                                 <i class="fa-solid fa-trash me-1"></i>
                                 Eliminar consumível
@@ -545,44 +419,44 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                                     <option value="emprestimo">Empréstimo</option>
                                 </select>
                                 <label class="form-label">Data de entrada</label>
-                                <input type="date" class="form-control mb-3" value="2023-03-15">
+                                <input type="date" class="form-control mb-3">
                                 <label class="form-label">Entidade associada</label>
-                                <input type="text" class="form-control mb-3" value="Philips Healthcare">
+                                <input type="text" class="form-control mb-3">
                             </div>
                             <div class="col-md-6">
                                 <div class="campos-entrada" id="camposCompra">
                                     <label class="form-label">Custo de aquisição</label>
-                                    <input type="number" class="form-control mb-3" value="3500">
+                                    <input type="number" class="form-control mb-3">
                                     <label class="form-label">Número da fatura</label>
-                                    <input type="text" class="form-control mb-3" value="FT-2023/4587">
+                                    <input type="text" class="form-control mb-3">
                                     <label class="form-label">Método de pagamento</label>
-                                    <input type="text" class="form-control mb-3" value="Transferência Bancária">
+                                    <input type="text" class="form-control mb-3">
                                 </div>
                                 <div class="campos-entrada d-none" id="camposAluguer">
                                     <label class="form-label">Valor mensal</label>
-                                    <input type="number" class="form-control mb-3" placeholder="Ex: 250">
+                                    <input type="number" class="form-control mb-3">
                                     <label class="form-label">Data de fim do aluguer</label>
                                     <input type="date" class="form-control mb-3">
                                     <label class="form-label">Condições do aluguer</label>
-                                    <textarea class="form-control mb-3" rows="2" placeholder="Ex: manutenção incluída, renovação anual..."></textarea>
+                                    <textarea class="form-control mb-3" rows="2"></textarea>
                                 </div>
                                 <div class="campos-entrada d-none" id="camposDoacao">
                                     <label class="form-label">Entidade doadora</label>
-                                    <input type="text" class="form-control mb-3" placeholder="Ex: Fundação Saúde+">
+                                    <input type="text" class="form-control mb-3">
                                     <label class="form-label">Valor estimado</label>
-                                    <input type="number" class="form-control mb-3" placeholder="Ex: 3500">
+                                    <input type="number" class="form-control mb-3">
                                     <label class="form-label">Condições da doação</label>
-                                    <textarea class="form-control mb-3" rows="2" placeholder="Ex: equipamento doado sem custos associados..."></textarea>
+                                    <textarea class="form-control mb-3" rows="2"></textarea>
                                 </div>
                                 <div id="camposEmprestimo" class="campos-entrada d-none">
                                     <label class="form-label">Entidade proprietária</label>
-                                    <input type="text" class="form-control mb-3" placeholder="Hospital Central de Braga">
+                                    <input type="text" class="form-control mb-3">
                                     <label class="form-label">Data de início do empréstimo</label>
                                     <input type="date" class="form-control mb-3">
                                     <label class="form-label">Data prevista de devolução</label>
                                     <input type="date" class="form-control mb-3">
                                     <label class="form-label">Condições do empréstimo</label>
-                                    <textarea class="form-control mb-3" rows="3" placeholder="Ex: utilização temporária durante manutenção do equipamento principal"></textarea>
+                                    <textarea class="form-control mb-3" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -590,79 +464,25 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos da Entrada</h5>
                         <p class="text-muted">Os documentos mudam consoante o tipo de entrada do equipamento.</p>
                         <div class="border rounded p-3 mb-3 bg-white">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="mb-0">
-                                    <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
-                                    Fatura de Aquisição do Monitor Philips MP5
-                                    <span class="badge bg-light text-primary border ms-2">Fatura</span>
-                                </h6>
-                                <button type="button" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash me-1"></i>
-                                    Eliminar
-                                </button>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label">Tipo de documento</label>
-                                    <select class="form-select mb-2 tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option selected>Fatura</option>
-                                        <option>Comprovativo de pagamento</option>
-                                        <option>Contrato de aluguer</option>
-                                        <option>Termo de doação</option>
-                                        <option>Termo de empréstimo</option>
-                                        <option>Guia de transporte</option>
-                                        <option>Auto de receção</option>
-                                        <option>Outro</option>
-                                    </select>
-                                    <input type="text" class="form-control campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Ficheiro atual</label>
-                                    <p class="mb-1">
-                                        <i class="fa-regular fa-file-lines me-2"></i>
-                                        fatura_aquisicao_monitor_mp5_ft20234587.pdf
-                                    </p>
-                                    <small class="text-muted d-block mb-3">700 KB • PDF</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="file" id="faturaAquisicaoMP5" hidden>
-                                    <label for="faturaAquisicaoMP5" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa-solid fa-upload me-1"></i>
-                                        Substituir Ficheiro
-                                    </label>
-                                    <small class="d-block text-muted mt-2">PDF, JPG ou PNG</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border rounded p-3 mb-3 bg-white">
-                            <h6>
-                                <i class="fa-solid fa-plus me-2"></i>
-                                Adicionar novo documento de entrada
-                            </h6>
                             <div class="row align-items-end">
                                 <div class="col-md-4">
                                     <label class="form-label">Nome do documento</label>
-                                    <input type="text" class="form-control" placeholder="Ex: Termo de doação do equipamento">
+                                    <input type="text" class="form-control" placeholder="Ex: Fatura de aquisição">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Tipo de documento</label>
                                     <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option selected>Selecionar tipo</option>
-                                        <option>Fatura</option>
-                                        <option>Comprovativo de pagamento</option>
-                                        <option>Contrato de aluguer</option>
-                                        <option>Termo de doação</option>
-                                        <option>Termo de empréstimo</option>
-                                        <option>Guia de transporte</option>
-                                        <option>Auto de receção</option>
-                                        <option>Outro</option>
+                                        <option value="" selected disabled>Selecionar tipo</option>
+                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Ficheiro</label>
-                                    <input type="file" id="novoDocumentoEntrada" hidden>
-                                    <label for="novoDocumentoEntrada" class="btn btn-outline-primary w-100">
+                                    <input type="file" id="documentoEntrada1" hidden>
+                                    <label for="documentoEntrada1" class="btn btn-outline-primary w-100">
                                         <i class="fa-solid fa-upload me-1"></i>
                                         Selecionar ficheiro
                                     </label>
@@ -678,36 +498,14 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                     </div>
                     <div class="tab-pane fade" id="fornecedor">
                         <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
-                        <label class="form-label">Selecionar fornecedor</label>
-                        <select class="form-select mb-4">
-                            <option selected>Philips Healthcare</option>
-                            <option>MedTech Solutions</option>
-                            <option>GE Healthcare</option>
-                            <option>Siemens Healthineers</option>
+                        <label class="form-label">Selecionar fornecedor existente</label>
+                        <select name="fornecedor" class="form-select mb-4">
+                            <option value="">Selecionar fornecedor</option>
+                            <?php foreach ($fornecedores as $forn): ?>
+                                <option value="<?= $forn['id_fornecedor'] ?>" <?= ($idFornecedorAtual == $forn['id_fornecedor']) ? 'selected' : '' ?>><?= htmlspecialchars($forn['nome_empresa']) ?></option>
+                            <?php endforeach; ?>
                         </select>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Nome da empresa:</strong> Philips Healthcare</p>
-                                <p><strong>NIF:</strong> 501234567</p>
-                                <p><strong>Tipo:</strong> Fabricante</p>
-                                <p><strong>Telefone:</strong> 222 000 100</p>
-                                <p><strong>Email:</strong> geral@philips-healthcare.pt</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Website:</strong> www.philips.pt</p>
-                                <p><strong>Pessoa de contacto:</strong> Ana Martins</p>
-                                <p><strong>Contacto direto:</strong> 912345678</p>
-                                <p><strong>Morada:</strong> Rua da Saúde, 120</p>
-                                <p><strong>Cidade:</strong> Porto</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="text-end">
-                            <a href="../fornecedores/editar.php" class="btn btn-outline-primary">
-                                <i class="fa-solid fa-pen-to-square me-1"></i>
-                                Editar Ficha do Fornecedor
-                            </a>
-                        </div>
+                        <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>O fornecedor é criado e gerido no módulo de fornecedores.</div>
                     </div>
                     <div class="tab-pane fade" id="localizacao">
                         <h4><i class="fa-solid fa-location-dot me-2"></i>Localização Associada</h4>
@@ -715,7 +513,7 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <select name="localizacao" class="form-select mb-4" required>
                             <option value="" disabled>Selecionar localização</option>
                             <?php foreach ($localizacoes as $loc): ?>
-                                <option value="<?= $loc['id_localizacao'] ?>" <?= (($equipamento['id_localizacao'] ?? '') == $loc['id_localizacao']) ? 'selected' : '' ?>><?= htmlspecialchars($loc['edificio'] . ' • ' . $loc['piso'] . ' • Sala ' . $loc['sala'] . ' • ' . $loc['nome_servico']) ?></option>
+                                <option value="<?= $loc['id_localizacao'] ?>" <?= (($equipamento['id_localizacao'] ?? '') == $loc['id_localizacao']) ? 'selected' : '' ?>><?= htmlspecialchars('Edifício ' . $loc['edificio'] . ' • Piso ' . $loc['piso'] . ' • Sala ' . $loc['sala'] . ' • ' . $loc['nome_servico']) ?></option>
                             <?php endforeach; ?>
                         </select>
                         <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>A localização é criada e gerida no módulo de localizações.</div>
@@ -725,24 +523,20 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <div class="border rounded p-3 mb-3 bg-white">
                             <h5>Garantia 1</h5>
                             <label class="form-label">Nome da garantia</label>
-                            <input type="text" class="form-control mb-3" value="Garantia Comercial Philips IntelliVue MP5">
+                            <input type="text" class="form-control mb-3">
                             <label class="form-label">Data de início</label>
-                            <input type="date" class="form-control mb-3" value="2023-03-15">
+                            <input type="date" class="form-control mb-3">
                             <label class="form-label">Data de fim</label>
-                            <input type="date" class="form-control mb-3" value="2026-03-15">
+                            <input type="date" class="form-control mb-3">
                             <label class="form-label">Estado</label>
                             <select class="form-select mb-3">
-                                <option selected>Expirada</option>
-                                <option>Ativa</option>
+                                <option selected>Ativa</option>
+                                <option>Expirada</option>
                             </select>
-                            <p>
-                                <strong>Ficheiro atual:</strong>
-                                garantia_comercial_philips_mp5.pdf
-                            </p>
-                            <input type="file" id="garantiaComercialMP5" hidden>
-                            <label for="garantiaComercialMP5" class="btn btn-outline-primary btn-sm">
+                            <input type="file" id="garantia1" hidden>
+                            <label for="garantia1" class="btn btn-outline-primary btn-sm">
                                 <i class="fa-solid fa-upload me-1"></i>
-                                Substituir PDF
+                                Selecionar PDF
                             </label>
                             <button type="button" class="btn btn-outline-danger btn-sm">
                                 <i class="fa-solid fa-trash me-1"></i>
@@ -759,27 +553,24 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
                         <div class="border rounded p-3 mb-3 bg-white">
                             <h5>Contrato 1</h5>
                             <label class="form-label">Nome do contrato</label>
-                            <input type="text" class="form-control mb-3" value="Contrato de Manutenção Preventiva do Monitor MP5">
+                            <input type="text" class="form-control mb-3">
                             <label class="form-label">Fornecedor associado</label>
                             <select class="form-select mb-3">
-                                <option selected>MedTech Solutions</option>
-                                <option>Philips Healthcare</option>
-                                <option>GE Healthcare</option>
+                                <option value="">Selecionar fornecedor</option>
+                                <?php foreach ($fornecedores as $forn): ?>
+                                    <option value="<?= $forn['id_fornecedor'] ?>"><?= htmlspecialchars($forn['nome_empresa']) ?></option>
+                                <?php endforeach; ?>
                             </select>
                             <label class="form-label">Data de início</label>
-                            <input type="date" class="form-control mb-3" value="2025-01-01">
+                            <input type="date" class="form-control mb-3">
                             <label class="form-label">Data de fim</label>
-                            <input type="date" class="form-control mb-3" value="2027-12-31">
+                            <input type="date" class="form-control mb-3">
                             <label class="form-label">Valor anual</label>
-                            <input type="text" class="form-control mb-3" value="850 €/ano">
-                            <p>
-                                <strong>Ficheiro atual:</strong>
-                                contrato_manutencao_preventiva_monitor_mp5.pdf
-                            </p>
-                            <input type="file" id="contratoManutencaoMP5" hidden>
-                            <label for="contratoManutencaoMP5" class="btn btn-outline-primary btn-sm">
+                            <input type="text" class="form-control mb-3">
+                            <input type="file" id="contrato1" hidden>
+                            <label for="contrato1" class="btn btn-outline-primary btn-sm">
                                 <i class="fa-solid fa-upload me-1"></i>
-                                Substituir PDF
+                                Selecionar PDF
                             </label>
                             <button type="button" class="btn btn-outline-danger btn-sm">
                                 <i class="fa-solid fa-trash me-1"></i>
@@ -796,7 +587,8 @@ $localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l
             <script>
                 function mostrarOutroDocumento(select) {
                     const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
-                    if (select.value === "Outro") {
+                    const textoSelecionado = select.options[select.selectedIndex].text;
+                    if (textoSelecionado === "Outro") {
                         campoOutro.classList.remove("d-none");
                     } else {
                         campoOutro.classList.add("d-none");

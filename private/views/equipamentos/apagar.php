@@ -43,6 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
         $query->execute();
+        registar_historico(
+            $database,
+            'Equipamentos',
+            'Remoção',
+            $equipamento['codigo_interno'],
+            'Equipamento removido.'
+        );
         header('Location: lista.php?desativado=1');
         exit();
     } catch (PDOException $e) {

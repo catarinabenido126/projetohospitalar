@@ -7,6 +7,7 @@ redirect_if_not_logged();
 $erros = [];
 $erro_sistema = "";
 $tipos_fornecedor = $database->query("SELECT id_tipo_fornecedor, tipo FROM tipos_fornecedor WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
+$tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_empresa = trim($_POST["nomeEmpresa"] ?? "");
@@ -82,6 +83,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ":pais" => $pais !== "" ? $pais : null,
                 ":observacoes" => $observacoes !== "" ? $observacoes : null
             ]);
+            registar_historico(
+                $database,
+                'Fornecedores',
+                'Criação',
+                $nome_empresa,
+                'Fornecedor criado com sucesso.'
+            );
             header("Location: lista.php?criado=1");
             exit();
         } catch (PDOException $err) {
@@ -186,14 +194,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="observacoes" class="form-label">Observações</label>
                     <textarea class="form-control" id="observacoes" name="observacoes" rows="4"><?= htmlspecialchars($_POST['observacoes'] ?? '') ?></textarea>
                 </div>
-                <button type="submit" class="btn btn-success">
-                    Guardar
+                <hr>
+                <h4><i class="fa-solid fa-file-lines me-2"></i>Documentos do Fornecedor</h4>
+                <p class="text-muted">Podes anexar documentos relacionados com este fornecedor (contratos, certificações, fichas técnicas, etc.).</p>
+                <div class="border rounded p-3 mb-3 bg-white">
+                    <div class="row align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label">Nome do documento</label>
+                            <input type="text" class="form-control" placeholder="Ex: Contrato-quadro de fornecimento">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Tipo de documento</label>
+                            <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
+                                <option value="" selected disabled>Selecionar tipo</option>
+                                <?php foreach ($tipos_documento as $tipoDoc): ?>
+                                    <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Ficheiro</label>
+                            <input type="file" id="documentoFornecedor1" hidden>
+                            <label for="documentoFornecedor1" class="btn btn-outline-primary w-100">
+                                <i class="fa-solid fa-upload me-1"></i>
+                                Selecionar ficheiro
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary mb-4">
+                    <i class="fa-solid fa-plus me-1"></i>
+                    Adicionar Documento
                 </button>
-                <a href="lista.php" class="btn btn-secondary">
-                    Cancelar
-                </a>
+                <div>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                    <a href="lista.php" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
             </form>
         </main>
     </div>
 </div>
+<script>
+    function mostrarOutroDocumento(select) {
+        const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
+        const textoSelecionado = select.options[select.selectedIndex].text;
+        if (textoSelecionado === "Outro") {
+            campoOutro.classList.remove("d-none");
+        } else {
+            campoOutro.classList.add("d-none");
+            campoOutro.value = "";
+        }
+    }
+</script>
 <?php include '../../includes/footer.php'; ?>

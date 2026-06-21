@@ -88,6 +88,10 @@ try {
                 <i class="fa-solid fa-circle-check me-2"></i>
                 Localização criada com sucesso.
             </div>
+            <div id="mensagemDesativado" class="alert alert-success d-none" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                Localização desativada com sucesso.
+            </div>
             <p class="text-muted">
                 Lista resumida das localizações registadas. A ficha completa pode ser consultada nos detalhes.
             </p>
@@ -145,13 +149,13 @@ try {
                             <td><?php echo $localizacao['responsavel']; ?></td>
                             <td><?php echo $localizacao['contacto']; ?></td>
                             <td class="text-center">
-                                <a href="detalhes.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-primary me-1">
+                                <a href="equipamentos.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                                 <a href="editar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-warning me-1">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="apagar.php?id=<?php echo $localizacao['id_localizacao']; ?>" class="btn btn-sm btn-outline-danger">
+                                <a href="apagar.php?id=<?php echo aes_encrypt($localizacao['id_localizacao']); ?>" class="btn btn-sm btn-outline-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
@@ -169,6 +173,10 @@ try {
                 if (params.get("guardado") === "1") {
                     document.getElementById("mensagemSucesso").classList.remove("d-none");
                     setTimeout(() => document.getElementById("mensagemSucesso").classList.add("d-none"), 5000);
+                }
+                if (params.get("desativado") === "1") {
+                    document.getElementById("mensagemDesativado").classList.remove("d-none");
+                    setTimeout(() => document.getElementById("mensagemDesativado").classList.add("d-none"), 5000);
                 }
                 window.history.replaceState({}, document.title, window.location.pathname);
             </script>
