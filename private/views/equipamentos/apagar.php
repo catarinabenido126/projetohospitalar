@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
@@ -17,9 +16,11 @@ if (!$idEquipamento || !is_numeric($idEquipamento)) {
 
 $erro_sistema = "";
 
+// Carregar equipamento para confirmação
 try {
     $sql = "
-        SELECT e.id_equipamento, e.codigo_interno, e.designacao, c.nome_categoria, ee.nome_estado
+        SELECT e.id_equipamento, e.codigo_interno, e.designacao,
+               c.nome_categoria, ee.nome_estado
         FROM equipamentos e
         INNER JOIN categorias c ON e.id_categoria = c.id_categoria
         INNER JOIN estados_equipamento ee ON e.id_estado = ee.id_estado
@@ -29,13 +30,7 @@ try {
     $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
     $query->execute();
     $equipamento = $query->fetch(PDO::FETCH_ASSOC);
-        registar_historico(
-            $database,
-            'Equipamentos',
-            'Remoção',
-            $equipamento['codigo_interno'],
-            'Equipamento removido.'
-        );
+
     if (!$equipamento) {
         header('Location: lista.php');
         exit();
@@ -45,12 +40,23 @@ try {
     exit();
 }
 
+// Processar confirmação de desativação
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $sql = "UPDATE equipamentos SET ativo = 0, updated_at = NOW() WHERE id_equipamento = :id";
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
         $query->execute();
+
+        // Registar no histórico APÓS soft-delete bem-sucedido
+        registar_historico(
+            $database,
+            'Equipamentos',
+            'Remoção',
+            $equipamento['codigo_interno'],
+            'Equipamento desativado (soft-delete).'
+        );
+
         header('Location: lista.php?desativado=1');
         exit();
     } catch (PDOException $e) {

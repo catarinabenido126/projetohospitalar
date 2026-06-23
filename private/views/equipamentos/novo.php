@@ -6,27 +6,29 @@ restringir_perfil(['Administrador', 'Tecnico']);
 
 $erros = [];
 $erro_sistema = "";
-$categorias = $database->query("SELECT id_categoria, nome_categoria FROM categorias WHERE ativo = 1 ORDER BY nome_categoria")->fetchAll(PDO::FETCH_ASSOC);
-$estados = $database->query("SELECT id_estado, nome_estado FROM estados_equipamento WHERE ativo = 1 ORDER BY nome_estado")->fetchAll(PDO::FETCH_ASSOC);
-$criticidades = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
-$localizacoes = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
-$fornecedores = $database->query("SELECT id_fornecedor, nome_empresa FROM fornecedores WHERE ativo = 1 ORDER BY nome_empresa")->fetchAll(PDO::FETCH_ASSOC);
+$categorias      = $database->query("SELECT id_categoria, nome_categoria FROM categorias WHERE ativo = 1 ORDER BY nome_categoria")->fetchAll(PDO::FETCH_ASSOC);
+$estados         = $database->query("SELECT id_estado, nome_estado FROM estados_equipamento WHERE ativo = 1 ORDER BY nome_estado")->fetchAll(PDO::FETCH_ASSOC);
+$criticidades    = $database->query("SELECT id_criticidade, nivel FROM criticidades WHERE ativo = 1 ORDER BY id_criticidade")->fetchAll(PDO::FETCH_ASSOC);
+$localizacoes    = $database->query("SELECT l.id_localizacao, l.edificio, l.piso, l.sala, s.nome_servico FROM localizacoes l INNER JOIN servicos s ON l.id_servico = s.id_servico WHERE l.ativo = 1 ORDER BY l.edificio, l.piso, l.sala")->fetchAll(PDO::FETCH_ASSOC);
+$fornecedores    = $database->query("SELECT id_fornecedor, nome_empresa FROM fornecedores WHERE ativo = 1 ORDER BY nome_empresa")->fetchAll(PDO::FETCH_ASSOC);
+$tipos_relacao   = $database->query("SELECT id_tipo_relacao, tipo FROM tipos_relacao_fornecedor WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $codigo = trim($_POST["codigo"] ?? "");
-    $designacao = trim($_POST["designacao"] ?? "");
-    $categoria = trim($_POST["categoria"] ?? "");
-    $marca = trim($_POST["marca"] ?? "");
-    $modelo = trim($_POST["modelo"] ?? "");
-    $fabricante = trim($_POST["fabricante"] ?? "");
+    $codigo       = trim($_POST["codigo"]       ?? "");
+    $designacao   = trim($_POST["designacao"]   ?? "");
+    $categoria    = trim($_POST["categoria"]    ?? "");
+    $marca        = trim($_POST["marca"]        ?? "");
+    $modelo       = trim($_POST["modelo"]       ?? "");
     $numero_serie = trim($_POST["numero_serie"] ?? "");
-    $ano_fabrico = trim($_POST["ano_fabrico"] ?? "");
-    $estado = trim($_POST["estado"] ?? "");
-    $criticidade = trim($_POST["criticidade"] ?? "");
-    $localizacao = trim($_POST["localizacao"] ?? "");
-    $fornecedor = trim($_POST["fornecedor"] ?? "");
-    $observacoes = trim($_POST["observacoes"] ?? "");
+    $ano_fabrico  = trim($_POST["ano_fabrico"]  ?? "");
+    $estado       = trim($_POST["estado"]       ?? "");
+    $criticidade  = trim($_POST["criticidade"]  ?? "");
+    $localizacao  = trim($_POST["localizacao"]  ?? "");
+    $observacoes  = trim($_POST["observacoes"]  ?? "");
+    $fornecedor_ids      = $_POST["fornecedor_ids"]      ?? [];
+    $tipo_relacao_ids    = $_POST["tipo_relacao_ids"]    ?? [];
+
     if (empty($codigo)) {
         $erros[] = "O campo Código Interno é obrigatório.";
     } elseif (!preg_match('/^[A-Za-z]{1,5}-\d{1,6}$/', $codigo)) {
@@ -37,18 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (preg_match('/^\d+$/', $designacao)) {
         $erros[] = "A Designação não pode conter apenas números.";
     }
-    if (empty($categoria) || !ctype_digit($categoria)) {
-        $erros[] = "Selecione uma categoria válida.";
-    }
-    if (empty($marca)) {
-        $erros[] = "O campo Marca é obrigatório.";
-    }
-    if (empty($modelo)) {
-        $erros[] = "O campo Modelo é obrigatório.";
-    }
-    if (empty($fabricante)) {
-        $erros[] = "O campo Fabricante é obrigatório.";
-    }
+    if (empty($categoria) || !ctype_digit($categoria)) { $erros[] = "Selecione uma categoria válida."; }
+    if (empty($marca))   { $erros[] = "O campo Marca é obrigatório."; }
+    if (empty($modelo))  { $erros[] = "O campo Modelo é obrigatório."; }
     if (empty($numero_serie)) {
         $erros[] = "O campo Número de Série é obrigatório.";
     } elseif (strlen($numero_serie) < 3) {
@@ -57,60 +50,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($ano_fabrico) && (!ctype_digit($ano_fabrico) || $ano_fabrico < 1900 || $ano_fabrico > date("Y"))) {
         $erros[] = "O Ano de Fabrico deve ser um ano válido.";
     }
-    if (empty($estado) || !ctype_digit($estado)) {
-        $erros[] = "Selecione um estado válido.";
-    }
-    if (empty($criticidade) || !ctype_digit($criticidade)) {
-        $erros[] = "Selecione uma criticidade válida.";
-    }
-    if (empty($localizacao) || !ctype_digit($localizacao)) {
-        $erros[] = "Selecione uma localização válida.";
-    }
-    if (!empty($fornecedor) && !ctype_digit($fornecedor)) {
-        $erros[] = "Selecione um fornecedor válido.";
-    }
+    if (empty($estado) || !ctype_digit($estado))           { $erros[] = "Selecione um estado válido."; }
+    if (empty($criticidade) || !ctype_digit($criticidade)) { $erros[] = "Selecione uma criticidade válida."; }
+    if (empty($localizacao) || !ctype_digit($localizacao)) { $erros[] = "Selecione uma localização válida."; }
+
     if (empty($erros)) {
-        $codigo = strtoupper($codigo);
-        $designacao = ucwords(strtolower($designacao));
+        $codigo       = strtoupper($codigo);
+        $designacao   = ucwords(strtolower($designacao));
         $numero_serie = strtoupper($numero_serie);
     }
+
     if (empty($erros)) {
         try {
-            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, fabricante, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at) VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :fabricante, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
-            $query = $database->prepare($sql);
-            $query->execute([
-                ":codigo" => $codigo,
-                ":designacao" => $designacao,
-                ":categoria" => $categoria,
-                ":marca" => $marca,
-                ":modelo" => $modelo,
-                ":fabricante" => $fabricante,
+            $sql = "INSERT INTO equipamentos (codigo_interno, designacao, id_categoria, marca, modelo, numero_serie, ano_fabrico, id_estado, id_criticidade, id_localizacao, observacoes, ativo, created_at, updated_at)
+                    VALUES (:codigo, :designacao, :categoria, :marca, :modelo, :numero_serie, :ano_fabrico, :estado, :criticidade, :localizacao, :observacoes, 1, NOW(), NOW())";
+            $database->prepare($sql)->execute([
+                ":codigo"       => $codigo,
+                ":designacao"   => $designacao,
+                ":categoria"    => $categoria,
+                ":marca"        => $marca,
+                ":modelo"       => $modelo,
                 ":numero_serie" => $numero_serie,
-                ":ano_fabrico" => $ano_fabrico !== "" ? $ano_fabrico : null,
-                ":estado" => $estado,
-                ":criticidade" => $criticidade,
-                ":localizacao" => $localizacao,
-                ":observacoes" => $observacoes
+                ":ano_fabrico"  => $ano_fabrico !== "" ? $ano_fabrico : null,
+                ":estado"       => $estado,
+                ":criticidade"  => $criticidade,
+                ":localizacao"  => $localizacao,
+                ":observacoes"  => $observacoes !== "" ? $observacoes : null
             ]);
-            registar_historico(
-                $database,
-                'Equipamentos',
-                'Criação',
-                $codigo,
-                'Equipamento criado com sucesso.'
-            );
-            $idEquipamentoNovo = $database->lastInsertId();
 
-            if (!empty($fornecedor)) {
-                $sqlRelacao = "
-                    INSERT INTO equipamento_fornecedor (id_equipamento, id_fornecedor, id_tipo_relacao, ativo, created_at, updated_at)
-                    VALUES (:equipamento, :fornecedor, (SELECT id_tipo_relacao FROM tipos_relacao_fornecedor WHERE tipo = 'Fornecedor'), 1, NOW(), NOW())
-                ";
-                $queryRelacao = $database->prepare($sqlRelacao);
-                $queryRelacao->execute([
-                    ":equipamento" => $idEquipamentoNovo,
-                    ":fornecedor" => $fornecedor
-                ]);
+            $idEquipamentoNovo = $database->lastInsertId();
+            registar_historico($database, 'Equipamentos', 'Criação', $codigo, 'Equipamento criado com sucesso.');
+
+            foreach ($fornecedor_ids as $i => $idForn) {
+                $idTipoRel = $tipo_relacao_ids[$i] ?? '';
+                if (!empty($idForn) && ctype_digit($idForn) && !empty($idTipoRel) && ctype_digit($idTipoRel)) {
+                    try {
+                        $database->prepare("INSERT IGNORE INTO equipamento_fornecedor (id_equipamento, id_fornecedor, id_tipo_relacao, ativo, created_at, updated_at) VALUES (:eq, :forn, :tipo, 1, NOW(), NOW())")->execute([':eq' => $idEquipamentoNovo, ':forn' => $idForn, ':tipo' => $idTipoRel]);
+                    } catch (PDOException $e) {}
+                }
             }
 
             header("Location: lista.php?criado=1");
@@ -134,65 +111,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div>
                     <a href="lista.php" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" form="formNovoEquipamento" class="btn btn-success">
-                        <i class="fa-solid fa-floppy-disk me-1"></i>
-                        Guardar Equipamento
-                    </button>
+                    <button type="submit" form="formNovoEquipamento" class="btn btn-success"><i class="fa-solid fa-floppy-disk me-1"></i> Guardar Equipamento</button>
                 </div>
             </div>
             <hr>
             <?php if (!empty($erros)): ?>
-                <div class="alert alert-danger">
-                    <strong>Foram encontrados os seguintes erros:</strong>
-                    <ul class="mb-0">
-                        <?php foreach ($erros as $erro): ?>
-                            <li><?= htmlspecialchars($erro) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                <div class="alert alert-danger"><strong>Foram encontrados os seguintes erros:</strong><ul class="mb-0"><?php foreach ($erros as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul></div>
             <?php endif; ?>
             <?php if (!empty($erro_sistema)): ?>
-                <div class="alert alert-danger">
-                    <strong>Erro:</strong>
-                    <p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p>
-                </div>
+                <div class="alert alert-danger"><strong>Erro:</strong><p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p></div>
             <?php endif; ?>
             <ul class="nav nav-tabs mb-4" id="tabsEquipamento">
-                <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento" type="button">
-                        <i class="fa-solid fa-stethoscope me-1"></i> Equipamento
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button">
-                        <i class="fa-solid fa-microchip me-1"></i> Componentes
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aquisicao" type="button">
-                        <i class="fa-solid fa-cart-shopping me-1"></i> Aquisição
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button">
-                        <i class="fa-solid fa-truck me-1"></i> Fornecedor
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button">
-                        <i class="fa-solid fa-location-dot me-1"></i> Localização
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button">
-                        <i class="fa-solid fa-shield-halved me-1"></i> Garantias
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button">
-                        <i class="fa-solid fa-file-contract me-1"></i> Contratos
-                    </button>
-                </li>
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#equipamento" type="button"><i class="fa-solid fa-stethoscope me-1"></i> Equipamento</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#componentes" type="button"><i class="fa-solid fa-microchip me-1"></i> Componentes</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#aquisicao" type="button"><i class="fa-solid fa-cart-shopping me-1"></i> Aquisição</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedor" type="button"><i class="fa-solid fa-truck me-1"></i> Fornecedores</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#localizacao" type="button"><i class="fa-solid fa-location-dot me-1"></i> Localização</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#garantias" type="button"><i class="fa-solid fa-shield-halved me-1"></i> Garantias</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#contratos" type="button"><i class="fa-solid fa-file-contract me-1"></i> Contratos</button></li>
             </ul>
             <form id="formNovoEquipamento" action="#" method="post" novalidate>
                 <div class="tab-content">
@@ -215,8 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="text" name="marca" class="form-control mb-3" placeholder="Ex: Philips" value="<?= htmlspecialchars($_POST['marca'] ?? '') ?>" required>
                                 <label class="form-label">Modelo</label>
                                 <input type="text" name="modelo" class="form-control mb-3" placeholder="Ex: IntelliVue MP5" value="<?= htmlspecialchars($_POST['modelo'] ?? '') ?>" required>
-                                <label class="form-label">Fabricante</label>
-                                <input type="text" name="fabricante" class="form-control mb-3" placeholder="Ex: Philips Healthcare" value="<?= htmlspecialchars($_POST['fabricante'] ?? '') ?>" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Número de Série</label>
@@ -243,56 +177,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <textarea name="observacoes" class="form-control mb-4" rows="4"><?= htmlspecialchars($_POST['observacoes'] ?? '') ?></textarea>
                         <hr>
                         <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos do Equipamento</h5>
-                        <p class="text-muted">Podes anexar documentos relacionados com este equipamento (manuais, fichas técnicas, certificações, etc.).</p>
+                        <p class="text-muted">Podes anexar documentos relacionados com este equipamento.</p>
                         <div class="border rounded p-3 mb-3 bg-white">
                             <div class="row align-items-end">
-                                <div class="col-md-4">
-                                    <label class="form-label">Nome do documento</label>
-                                    <input type="text" class="form-control" placeholder="Ex: Manual de Operação">
-                                </div>
+                                <div class="col-md-4"><label class="form-label">Nome do documento</label><input type="text" class="form-control" placeholder="Ex: Manual de Operação"></div>
                                 <div class="col-md-3">
                                     <label class="form-label">Tipo de documento</label>
                                     <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
                                         <option value="" selected disabled>Selecionar tipo</option>
-                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
-                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
-                                        <?php endforeach; ?>
+                                        <?php foreach ($tipos_documento as $td): ?><option value="<?= $td['id_tipo_documento'] ?>"><?= htmlspecialchars($td['tipo']) ?></option><?php endforeach; ?>
                                     </select>
                                     <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Ficheiro</label>
-                                    <input type="file" id="documentoEquipamento1" hidden>
-                                    <label for="documentoEquipamento1" class="btn btn-outline-primary w-100">
-                                        <i class="fa-solid fa-upload me-1"></i>
-                                        Selecionar ficheiro
-                                    </label>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-primary w-100">
-                                        <i class="fa-solid fa-plus me-1"></i>
-                                        Adicionar
-                                    </button>
-                                </div>
+                                <div class="col-md-3"><label class="form-label">Ficheiro</label><input type="file" id="docEq1" hidden><label for="docEq1" class="btn btn-outline-primary w-100"><i class="fa-solid fa-upload me-1"></i> Selecionar ficheiro</label></div>
+                                <div class="col-md-2"><button type="button" class="btn btn-primary w-100"><i class="fa-solid fa-plus me-1"></i> Adicionar</button></div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-primary">
-                            <i class="fa-solid fa-plus me-1"></i>
-                            Adicionar Documento
-                        </button>
                     </div>
                     <div class="tab-pane fade" id="componentes">
                         <h4><i class="fa-solid fa-microchip me-2"></i>Componentes Associados</h4>
                         <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" id="semComponentes" onchange="toggleComponentes()">
+                            <input class="form-check-input" type="checkbox" id="semComponentes" onchange="toggleArea('areaComponentes')">
                             <label class="form-check-label" for="semComponentes">Este equipamento não possui componentes associados</label>
                         </div>
                         <div id="areaComponentes">
                             <div class="border rounded p-3 mb-3 bg-white">
-                                <h5>Componente 1</h5>
                                 <label class="form-label">Código do componente</label>
                                 <input type="text" class="form-control mb-2" placeholder="Ex: EQ-0001.01">
-                                <small class="text-muted d-block mb-3">Formato recomendado: EQ-0001.01</small>
+                                <small class="text-muted d-block mb-3">Formato recomendado: código do equipamento + .01, .02, etc.</small>
                                 <label class="form-label">Nome do componente</label>
                                 <input type="text" class="form-control mb-3" placeholder="Ex: Sensor SpO₂">
                                 <label class="form-label">Estado</label>
@@ -305,51 +217,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <option>Abatido</option>
                                 </select>
                                 <label class="form-label">Notificação</label>
-                                <textarea class="form-control mb-3" rows="3"></textarea>
-                                <hr>
-                                <h6>
-                                    <i class="fa-solid fa-file-lines me-2"></i>
-                                    Documentos do componente
-                                </h6>
-                                <div class="border rounded p-3 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Nome do documento</label>
-                                            <input type="text" class="form-control" placeholder="Ex: Manual do componente">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Tipo de documento</label>
-                                            <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                                <option value="" selected disabled>Selecionar tipo</option>
-                                                <?php foreach ($tipos_documento as $tipoDoc): ?>
-                                                    <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Ficheiro</label>
-                                            <input type="file" id="documentoComponente1" hidden>
-                                            <label for="documentoComponente1" class="btn btn-outline-primary w-100">
-                                                <i class="fa-solid fa-upload me-1"></i>
-                                                Selecionar ficheiro
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-primary w-100">
-                                                <i class="fa-solid fa-plus me-1"></i>
-                                                Adicionar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <textarea class="form-control mb-3" rows="3" placeholder="Ex: Cabo com desgaste visível"></textarea>
                                 <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash me-1"></i> Eliminar componente</button>
                             </div>
-                            <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i> Adicionar Componente</button>
+                            <button type="button" class="btn btn-outline-primary mb-3"><i class="fa-solid fa-plus me-1"></i> Adicionar Componente</button>
                             <hr>
                             <h4><i class="fa-solid fa-box-open me-2"></i>Consumíveis</h4>
                             <div class="form-check form-switch mb-4">
-                                <input class="form-check-input" type="checkbox" id="semConsumiveis" onchange="toggleConsumiveis()">
+                                <input class="form-check-input" type="checkbox" id="semConsumiveis" onchange="toggleArea('areaConsumiveis')">
                                 <label class="form-check-label" for="semConsumiveis">Este equipamento não necessita de consumíveis</label>
                             </div>
                             <div id="areaConsumiveis">
@@ -376,99 +251,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label class="form-label">Tipo de entrada</label>
                                 <select class="form-select mb-3" id="tipoEntradaEquipamento" onchange="mostrarCamposEntrada()">
                                     <option value="" selected disabled>Selecionar tipo de entrada</option>
-                                    <option value="compra">Compra</option>
-                                    <option value="aluguer">Aluguer</option>
-                                    <option value="doacao">Doação</option>
-                                    <option value="emprestimo">Empréstimo</option>
+                                    <option value="compra">Compra</option><option value="aluguer">Aluguer</option>
+                                    <option value="doacao">Doação</option><option value="emprestimo">Empréstimo</option>
                                 </select>
-                                <label class="form-label">Data de entrada</label>
-                                <input type="date" class="form-control mb-3">
-                                <label class="form-label">Entidade associada</label>
-                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Data de entrada</label><input type="date" class="form-control mb-3">
+                                <label class="form-label">Entidade associada</label><input type="text" class="form-control mb-3">
                             </div>
                             <div class="col-md-6">
                                 <div class="campos-entrada" id="camposCompra">
-                                    <label class="form-label">Custo de aquisição (€)</label>
-                                    <input type="number" class="form-control mb-3">
-                                    <label class="form-label">Número da fatura</label>
-                                    <input type="text" class="form-control mb-3">
-                                    <label class="form-label">Método de pagamento</label>
-                                    <input type="text" class="form-control mb-3">
+                                    <label class="form-label">Custo de aquisição (€)</label><input type="number" class="form-control mb-3">
+                                    <label class="form-label">Número da fatura</label><input type="text" class="form-control mb-3">
+                                    <label class="form-label">Método de pagamento</label><input type="text" class="form-control mb-3">
                                 </div>
                                 <div class="campos-entrada d-none" id="camposAluguer">
-                                    <label class="form-label">Valor mensal (€)</label>
-                                    <input type="number" class="form-control mb-3">
-                                    <label class="form-label">Data de fim do aluguer</label>
-                                    <input type="date" class="form-control mb-3">
-                                    <label class="form-label">Condições do aluguer</label>
-                                    <textarea class="form-control mb-3" rows="3"></textarea>
+                                    <label class="form-label">Valor mensal (€)</label><input type="number" class="form-control mb-3">
+                                    <label class="form-label">Data de fim do aluguer</label><input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do aluguer</label><textarea class="form-control mb-3" rows="3"></textarea>
                                 </div>
                                 <div class="campos-entrada d-none" id="camposDoacao">
-                                    <label class="form-label">Entidade doadora</label>
-                                    <input type="text" class="form-control mb-3">
-                                    <label class="form-label">Valor estimado (€)</label>
-                                    <input type="number" class="form-control mb-3">
-                                    <label class="form-label">Condições da doação</label>
-                                    <textarea class="form-control mb-3" rows="3"></textarea>
+                                    <label class="form-label">Entidade doadora</label><input type="text" class="form-control mb-3">
+                                    <label class="form-label">Valor estimado (€)</label><input type="number" class="form-control mb-3">
+                                    <label class="form-label">Condições da doação</label><textarea class="form-control mb-3" rows="3"></textarea>
                                 </div>
                                 <div class="campos-entrada d-none" id="camposEmprestimo">
-                                    <label class="form-label">Entidade proprietária</label>
-                                    <input type="text" class="form-control mb-3">
-                                    <label class="form-label">Data de início do empréstimo</label>
-                                    <input type="date" class="form-control mb-3">
-                                    <label class="form-label">Data prevista de devolução</label>
-                                    <input type="date" class="form-control mb-3">
-                                    <label class="form-label">Condições do empréstimo</label>
-                                    <textarea class="form-control mb-3" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <h5><i class="fa-solid fa-file-lines me-2"></i>Documentos da Entrada</h5>
-                        <p class="text-muted">Os documentos a anexar dependem do tipo de entrada selecionado (fatura, contrato de aluguer, termo de doação, etc.).</p>
-                        <div class="border rounded p-3 mb-3 bg-white">
-                            <div class="row align-items-end">
-                                <div class="col-md-4">
-                                    <label class="form-label">Nome do documento</label>
-                                    <input type="text" class="form-control" placeholder="Ex: Fatura de aquisição">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Tipo de documento</label>
-                                    <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                        <option value="" selected disabled>Selecionar tipo</option>
-                                        <?php foreach ($tipos_documento as $tipoDoc): ?>
-                                            <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Ficheiro</label>
-                                    <input type="file" id="documentoEntrada1" hidden>
-                                    <label for="documentoEntrada1" class="btn btn-outline-primary w-100">
-                                        <i class="fa-solid fa-upload me-1"></i>
-                                        Selecionar ficheiro
-                                    </label>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-primary w-100">
-                                        <i class="fa-solid fa-plus me-1"></i>
-                                        Adicionar
-                                    </button>
+                                    <label class="form-label">Entidade proprietária</label><input type="text" class="form-control mb-3">
+                                    <label class="form-label">Data de início do empréstimo</label><input type="date" class="form-control mb-3">
+                                    <label class="form-label">Data prevista de devolução</label><input type="date" class="form-control mb-3">
+                                    <label class="form-label">Condições do empréstimo</label><textarea class="form-control mb-3" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="fornecedor">
-                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor Associado</h4>
-                        <label class="form-label">Selecionar fornecedor existente</label>
-                        <select name="fornecedor" class="form-select mb-4">
-                            <option value="">Selecionar fornecedor</option>
-                            <?php foreach ($fornecedores as $forn): ?>
-                                <option value="<?= $forn['id_fornecedor'] ?>" <?= (($_POST['fornecedor'] ?? '') == $forn['id_fornecedor']) ? 'selected' : '' ?>><?= htmlspecialchars($forn['nome_empresa']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <div class="alert alert-info mb-0"><i class="fa-solid fa-circle-info me-2"></i>O fornecedor é criado e gerido no módulo de fornecedores.</div>
+                        <h4><i class="fa-solid fa-truck me-2"></i>Fornecedores Associados</h4>
+                        <p class="text-muted">Associa um ou mais fornecedores com o seu papel (Fabricante, Assistência técnica, etc.).</p>
+                        <div id="listaFornecedores" class="mb-3"></div>
+                        <button type="button" class="btn btn-outline-primary" onclick="adicionarFornecedor()">
+                            <i class="fa-solid fa-plus me-1"></i> Adicionar Fornecedor
+                        </button>
+                        <div class="alert alert-info mt-3 mb-0">
+                            <i class="fa-solid fa-circle-info me-2"></i>Os fornecedores são criados e geridos no módulo de fornecedores.
+                        </div>
+                        <template id="templateFornecedor">
+                            <div class="row align-items-end mb-2 fornecedor-row border rounded p-2 bg-white">
+                                <div class="col-md-5">
+                                    <label class="form-label">Fornecedor</label>
+                                    <select name="fornecedor_ids[]" class="form-select">
+                                        <option value="">Selecionar fornecedor</option>
+                                        <?php foreach ($fornecedores as $f): ?>
+                                            <option value="<?= $f['id_fornecedor'] ?>"><?= htmlspecialchars($f['nome_empresa']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label">Papel</label>
+                                    <select name="tipo_relacao_ids[]" class="form-select">
+                                        <option value="">Selecionar papel</option>
+                                        <?php foreach ($tipos_relacao as $tr): ?>
+                                            <option value="<?= $tr['id_tipo_relacao'] ?>"><?= htmlspecialchars($tr['tipo']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-outline-danger w-100" onclick="this.closest('.fornecedor-row').remove()">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                     <div class="tab-pane fade" id="localizacao">
                         <h4><i class="fa-solid fa-location-dot me-2"></i>Localização Associada</h4>
@@ -484,22 +334,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="tab-pane fade" id="garantias">
                         <h4><i class="fa-solid fa-shield-halved me-2"></i>Garantias</h4>
                         <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" id="semGarantias" onchange="toggleGarantias()">
+                            <input class="form-check-input" type="checkbox" id="semGarantias" onchange="toggleArea('areaGarantias')">
                             <label class="form-check-label" for="semGarantias">Este equipamento não possui garantias</label>
                         </div>
                         <div id="areaGarantias">
                             <div class="border rounded p-3 mb-3 bg-white">
-                                <label class="form-label">Nome da garantia</label>
-                                <input type="text" class="form-control mb-3">
-                                <label class="form-label">Data de início</label>
-                                <input type="date" class="form-control mb-3">
-                                <label class="form-label">Data de fim</label>
-                                <input type="date" class="form-control mb-3">
+                                <label class="form-label">Nome da garantia</label><input type="text" class="form-control mb-3">
+                                <label class="form-label">Data de início</label><input type="date" class="form-control mb-3">
+                                <label class="form-label">Data de fim</label><input type="date" class="form-control mb-3">
                                 <label class="form-label">Estado</label>
-                                <select class="form-select mb-3">
-                                    <option selected>Ativa</option>
-                                    <option>Expirada</option>
-                                </select>
+                                <select class="form-select mb-3"><option selected>Ativa</option><option>Expirada</option></select>
                                 <input type="file" id="novaGarantia" hidden>
                                 <label for="novaGarantia" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-upload me-1"></i> Selecionar PDF</label>
                             </div>
@@ -509,26 +353,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="tab-pane fade" id="contratos">
                         <h4><i class="fa-solid fa-file-contract me-2"></i>Contratos</h4>
                         <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" id="semContratos" onchange="toggleContratos()">
+                            <input class="form-check-input" type="checkbox" id="semContratos" onchange="toggleArea('areaContratos')">
                             <label class="form-check-label" for="semContratos">Este equipamento não possui contratos</label>
                         </div>
                         <div id="areaContratos">
                             <div class="border rounded p-3 mb-3 bg-white">
-                                <label class="form-label">Nome do contrato</label>
-                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Nome do contrato</label><input type="text" class="form-control mb-3">
                                 <label class="form-label">Fornecedor associado</label>
                                 <select class="form-select mb-3">
                                     <option value="">Selecionar fornecedor</option>
-                                    <?php foreach ($fornecedores as $forn): ?>
-                                        <option value="<?= $forn['id_fornecedor'] ?>"><?= htmlspecialchars($forn['nome_empresa']) ?></option>
-                                    <?php endforeach; ?>
+                                    <?php foreach ($fornecedores as $f): ?><option value="<?= $f['id_fornecedor'] ?>"><?= htmlspecialchars($f['nome_empresa']) ?></option><?php endforeach; ?>
                                 </select>
-                                <label class="form-label">Data de início</label>
-                                <input type="date" class="form-control mb-3">
-                                <label class="form-label">Data de fim</label>
-                                <input type="date" class="form-control mb-3">
-                                <label class="form-label">Valor anual (€)</label>
-                                <input type="text" class="form-control mb-3">
+                                <label class="form-label">Data de início</label><input type="date" class="form-control mb-3">
+                                <label class="form-label">Data de fim</label><input type="date" class="form-control mb-3">
+                                <label class="form-label">Valor anual (€)</label><input type="text" class="form-control mb-3">
                                 <input type="file" id="novoContrato" hidden>
                                 <label for="novoContrato" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-upload me-1"></i> Selecionar PDF</label>
                             </div>
@@ -538,46 +376,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </form>
             <script>
-                function mostrarOutroDocumento(select) {
-                    const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
-                    const textoSelecionado = select.options[select.selectedIndex].text;
-                    if (textoSelecionado === "Outro") {
-                        campoOutro.classList.remove("d-none");
-                    } else {
-                        campoOutro.classList.add("d-none");
-                        campoOutro.value = "";
-                    }
+                function adicionarFornecedor() {
+                    const clone = document.getElementById('templateFornecedor').content.cloneNode(true);
+                    document.getElementById('listaFornecedores').appendChild(clone);
                 }
                 function mostrarCamposEntrada() {
                     const tipo = document.getElementById("tipoEntradaEquipamento").value;
-                    document.querySelectorAll(".campos-entrada").forEach(bloco => bloco.classList.add("d-none"));
-                    if (tipo === "compra") document.getElementById("camposCompra").classList.remove("d-none");
-                    else if (tipo === "aluguer") document.getElementById("camposAluguer").classList.remove("d-none");
-                    else if (tipo === "doacao") document.getElementById("camposDoacao").classList.remove("d-none");
-                    else if (tipo === "emprestimo") document.getElementById("camposEmprestimo").classList.remove("d-none");
+                    document.querySelectorAll(".campos-entrada").forEach(b => b.classList.add("d-none"));
+                    const mapa = { compra: "camposCompra", aluguer: "camposAluguer", doacao: "camposDoacao", emprestimo: "camposEmprestimo" };
+                    if (mapa[tipo]) document.getElementById(mapa[tipo]).classList.remove("d-none");
                 }
-                function toggleComponentes() {
-                    document.getElementById("areaComponentes").classList.toggle("d-none");
+                function mostrarOutroDocumento(select) {
+                    const c = select.parentElement.querySelector(".campo-outro-documento");
+                    c.classList.toggle("d-none", select.options[select.selectedIndex].text !== "Outro");
+                    if (select.options[select.selectedIndex].text !== "Outro") c.value = "";
                 }
-                function toggleConsumiveis() {
-                    document.getElementById("areaConsumiveis").classList.toggle("d-none");
-                }
-                function toggleGarantias() {
-                    document.getElementById("areaGarantias").classList.toggle("d-none");
-                }
-                function toggleContratos() {
-                    document.getElementById("areaContratos").classList.toggle("d-none");
-                }
+                function toggleArea(id) { document.getElementById(id).classList.toggle("d-none"); }
             </script>
         </main>
     </div>
 </div>
 <?php include '../../includes/footer.php'; ?>
-            registar_historico(
-                $database,
-                'Equipamentos',
-                'Criação',
-                $codigo,
-                'Equipamento criado com sucesso.'
-            );
-           

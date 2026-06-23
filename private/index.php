@@ -2,6 +2,8 @@
 include 'includes/funcoes.php';
 
 redirect_if_not_logged();
+
+$ultimoAcesso = $_SESSION['ultimo_acesso'] ?? null;
 ?>
 <?php include 'includes/header.php'; ?>
 <?php include 'includes/nav.php'; ?>
@@ -52,7 +54,11 @@ redirect_if_not_logged();
                 <div class="caixa-ultimo-acesso mb-4">
                     <i class="fa-solid fa-clock me-2"></i>
                     <strong>Último acesso:</strong>
-                    10/06/2026 às 14:35
+                    <?php if ($ultimoAcesso): ?>
+                        <?= date('d/m/Y \à\s H:i', strtotime($ultimoAcesso)) ?>
+                    <?php else: ?>
+                        Primeiro acesso
+                    <?php endif; ?>
                 </div>
             </section>
         </main>

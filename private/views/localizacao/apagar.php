@@ -16,9 +16,11 @@ if (!$idLocalizacao || !is_numeric($idLocalizacao)) {
 
 $erro_sistema = "";
 
+// Carregar localização para confirmação
 try {
     $sql = "
-        SELECT l.id_localizacao, l.edificio, l.piso, l.sala, l.responsavel, l.contacto, s.nome_servico
+        SELECT l.id_localizacao, l.edificio, l.piso, l.sala,
+               l.responsavel, l.contacto, s.nome_servico
         FROM localizacoes l
         INNER JOIN servicos s ON l.id_servico = s.id_servico
         WHERE l.id_localizacao = :id AND l.ativo = 1
@@ -26,14 +28,6 @@ try {
     $query = $database->prepare($sql);
     $query->bindParam(':id', $idLocalizacao, PDO::PARAM_INT);
     $query->execute();
-        registar_historico(
-            $database,
-            'Localizações',
-            'Remoção',
-            $localizacao['edificio'],
-            'Localização removida.'
-        );
-        
     $localizacao = $query->fetch(PDO::FETCH_ASSOC);
 
     if (!$localizacao) {
@@ -45,12 +39,23 @@ try {
     exit();
 }
 
+// Processar confirmação de desativação
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $sql = "UPDATE localizacoes SET ativo = 0, updated_at = NOW() WHERE id_localizacao = :id";
         $query = $database->prepare($sql);
         $query->bindParam(':id', $idLocalizacao, PDO::PARAM_INT);
         $query->execute();
+
+        // Registar no histórico APÓS soft-delete bem-sucedido
+        registar_historico(
+            $database,
+            'Localizações',
+            'Remoção',
+            'Edifício ' . $localizacao['edificio'] . ' • Piso ' . $localizacao['piso'] . ' • Sala ' . $localizacao['sala'],
+            'Localização desativada (soft-delete).'
+        );
+
         header('Location: lista.php?desativado=1');
         exit();
     } catch (PDOException $e) {
@@ -75,20 +80,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php endif; ?>
             <p>Tem a certeza que pretende desativar esta localização? Esta ação não apaga o registo, mas remove-o da listagem.</p>
             <div class="mb-3">
-                <strong>Edifício:</strong>
-                Edifício <?= htmlspecialchars($localizacao['edificio']) ?>
+                <strong>Edifício:</strong> Edifício <?= htmlspecialchars($localizacao['edificio']) ?>
             </div>
             <div class="mb-3">
-                <strong>Piso:</strong>
-                Piso <?= htmlspecialchars($localizacao['piso']) ?>
+                <strong>Piso:</strong> Piso <?= htmlspecialchars($localizacao['piso']) ?>
             </div>
             <div class="mb-3">
-                <strong>Sala:</strong>
-                Sala <?= htmlspecialchars($localizacao['sala']) ?>
+                <strong>Sala:</strong> Sala <?= htmlspecialchars($localizacao['sala']) ?>
             </div>
             <div class="mb-3">
-                <strong>Serviço:</strong>
-                <?= htmlspecialchars($localizacao['nome_servico']) ?>
+                <strong>Serviço:</strong> <?= htmlspecialchars($localizacao['nome_servico']) ?>
             </div>
             <div class="mb-3">
                 <strong>Responsável:</strong>

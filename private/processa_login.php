@@ -1,4 +1,5 @@
 <?php
+
 require_once 'includes/funcoes.php';
 require_once 'includes/database.php';
 
@@ -40,21 +41,36 @@ try {
     ");
     $comando->execute([
         ':chave' => MYSQL_AES_KEY,
-        ':u' => $username
+        ':u'     => $username
     ]);
     $utilizador = $comando->fetch(PDO::FETCH_OBJ);
 
     if (!$utilizador || !password_verify($password, $utilizador->password_hash)) {
-        $_SESSION['server_error'] = 'Login inválido';
+        $_SESSION['server_error'] = 'Credenciais inválidas. Por favor verifique o email e a palavra-passe.';
         header('Location: ../login/login.php');
         exit();
     }
 
-    $stmtUltimoAcesso = $database->prepare("UPDATE utilizadores SET ultimo_acesso = NOW() WHERE id_utilizador = :id");
+    $ultimoAcessoAnterior = $utilizador->ultimo_acesso;
+    $stmtUltimoAcesso = $database->prepare(
+        "UPDATE utilizadores SET ultimo_acesso = NOW() WHERE id_utilizador = :id"
+    );
     $stmtUltimoAcesso->execute([':id' => $utilizador->id_utilizador]);
 
-    $_SESSION['utilizador'] = $utilizador->email_decifrado;
-    $_SESSION['perfil'] = $utilizador->perfil;
+    // Definir sessão
+    $_SESSION['utilizador']    = $utilizador->email_decifrado;
+    $_SESSION['id_utilizador'] = $utilizador->id_utilizador;   // necessário para registar_historico()
+    $_SESSION['perfil']        = $utilizador->perfil;
+    $_SESSION['ultimo_acesso'] = $ultimoAcessoAnterior;         // para mostrar na página inicial
+
+    registar_historico(
+        $database,
+        'Autenticação',
+        'Login',
+        $utilizador->email_decifrado,
+        'Login efetuado com sucesso. Perfil: ' . $utilizador->perfil
+    );
+
 } catch (PDOException $e) {
     $_SESSION['server_error'] = 'Erro ao ligar à base de dados.';
     header('Location: ../login/login.php');

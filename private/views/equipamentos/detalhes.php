@@ -1,60 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
-require_once __DIR__ . '/../../includes/database.php';
 
 redirect_if_not_logged();
-
-$idEncriptado = $_GET['id'] ?? '';
-$idEquipamento = aes_decrypt($idEncriptado);
-
-if (!$idEquipamento || !is_numeric($idEquipamento)) {
-    header('Location: lista.php');
-    exit();
-}
-
-try {
-    $sql = "
-        SELECT
-            e.id_equipamento,
-            e.codigo_interno,
-            e.designacao,
-            e.marca,
-            e.modelo,
-            e.fabricante,
-            e.numero_serie,
-            e.ano_fabrico,
-            e.observacoes,
-            c.nome_categoria,
-            ee.nome_estado,
-            cr.nivel,
-            l.edificio,
-            l.piso,
-            l.sala,
-            l.responsavel,
-            l.contacto,
-            s.nome_servico
-        FROM equipamentos e
-        INNER JOIN categorias c ON e.id_categoria = c.id_categoria
-        INNER JOIN estados_equipamento ee ON e.id_estado = ee.id_estado
-        INNER JOIN criticidades cr ON e.id_criticidade = cr.id_criticidade
-        INNER JOIN localizacoes l ON e.id_localizacao = l.id_localizacao
-        INNER JOIN servicos s ON l.id_servico = s.id_servico
-        WHERE e.id_equipamento = :id AND e.ativo = 1
-    ";
-    $query = $database->prepare($sql);
-    $query->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
-    $query->execute();
-    $equipamento = $query->fetch(PDO::FETCH_ASSOC);
-
-    if (!$equipamento) {
-        header('Location: lista.php');
-        exit();
-    }
-} catch (PDOException $e) {
-    header('Location: lista.php');
-    exit();
-}
 
 ?>
 <?php include '../../includes/header.php'; ?>
@@ -66,11 +14,11 @@ try {
              <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <h2>Detalhes do Equipamento</h2>
-                    <p class="text-muted mb-0"><?= htmlspecialchars($equipamento['designacao']) ?> • <?= htmlspecialchars($equipamento['codigo_interno']) ?></p>
+                    <p class="text-muted mb-0">Monitor Multiparamétrico Philips IntelliVue MP5 • EQ-0001</p>
                  </div>
             <div>
                         <a href="../equipamentos/lista.php" class="btn btn-secondary">Voltar</a>
-                        <a href="../equipamentos/editar.php?id=<?= aes_encrypt($equipamento['id_equipamento']) ?>" class="btn btn-warning">Editar</a>
+                        <a href="../equipamentos/editar.php" class="btn btn-warning">Editar</a>
                     </div>
                 </div>
                 <hr>
@@ -122,24 +70,24 @@ try {
                         <h4><i class="fa-solid fa-stethoscope me-2"></i>Informação do equipamento</h4>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <p><strong>Código interno:</strong> <?= htmlspecialchars($equipamento['codigo_interno']) ?></p>
-                                <p><strong>Designação:</strong> <?= htmlspecialchars($equipamento['designacao']) ?></p>
-                                <p><strong>Categoria:</strong> <?= htmlspecialchars($equipamento['nome_categoria']) ?></p>
-                                <p><strong>Marca:</strong> <?= htmlspecialchars($equipamento['marca']) ?></p>
-                                <p><strong>Modelo:</strong> <?= htmlspecialchars($equipamento['modelo']) ?></p>
+                                <p><strong>Código interno:</strong> EQ-0001</p>
+                                <p><strong>Designação:</strong> Monitor Multiparamétrico</p>
+                                <p><strong>Categoria:</strong> Monitorização</p>
+                                <p><strong>Marca:</strong> Philips</p>
+                                <p><strong>Modelo:</strong> IntelliVue MP5</p>
                             </div>
 
                             <div class="col-md-6">
-                                <p><strong>Número de série:</strong> <?= htmlspecialchars($equipamento['numero_serie']) ?></p>
-                                <p><strong>Ano de fabrico:</strong> <?= $equipamento['ano_fabrico'] ? htmlspecialchars($equipamento['ano_fabrico']) : '—' ?></p>
-                                <p><strong>Estado:</strong> <?= htmlspecialchars($equipamento['nome_estado']) ?></p>
-                                <p><strong>Criticidade:</strong> <?= htmlspecialchars($equipamento['nivel']) ?></p>
-                                <p><strong>Fabricante:</strong> <?= htmlspecialchars($equipamento['fabricante']) ?></p>
+                                <p><strong>Número de série:</strong> MP5-2022-45873</p>
+                                <p><strong>Ano de fabrico:</strong> 2022</p>
+                                <p><strong>Estado:</strong> Ativo</p>
+                                <p><strong>Criticidade:</strong> Alta</p>
+                                <p><strong>Tipo de entrada:</strong> Compra</p>
                             </div>
                         </div>
                         <hr>
                         <h5>Observações</h5>
-                        <p><?= !empty($equipamento['observacoes']) ? nl2br(htmlspecialchars($equipamento['observacoes'])) : 'Sem observações registadas.' ?></p>
+                        <p>Equipamento reservado para dia 12/06/2026 - UCI.</p>
                         <hr>
                         <h5>Documentos do equipamento</h5>
                         <div class="table-responsive">
@@ -154,17 +102,55 @@ try {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Sem documentos associados a este registo.</td>
+                                        <td>Manual de Operação Philips IntelliVue MP5</td>
+                                        <td>manual_operacao_philips_intellivue_mp5.pdf</td>
+                                        <td>Manual</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/manual_operacao_philips_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/manual_operacao_philips_intellivue_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ficha Técnica Philips IntelliVue MP5</td>
+                                        <td>ficha_tecnica_philips_intellivue_mp5.pdf</td>
+                                        <td>Ficha técnica</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/ficha_tecnica_philips_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/ficha_tecnica_philips_intellivue_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Certificado CE do Equipamento IntelliVue MP5</td>
+                                        <td>certificado_ce_intellivue_mp5.pdf</td>
+                                        <td>Certificação</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/certificado_ce_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/certificado_ce_intellivue_mp5.pdf" download
+                                                class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="componentes">
-                        <div class="alert alert-info">
-                            <i class="fa-solid fa-circle-info me-2"></i>
-                            Não existem componentes associados a este equipamento.
-                        </div>
                         <h4><i class="fa-solid fa-microchip me-2"></i>Componentes associados</h4>
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered align-middle">
@@ -233,10 +219,6 @@ try {
                                 </tbody>
                             </table>
                             <hr>
-                            <div class="alert alert-info">
-                                <i class="fa-solid fa-circle-info me-2"></i>
-                                Não existem contratos associados a este equipamento.
-                            </div>
                             <h4><i class="fa-solid fa-boxes-stacked me-2"></i>Consumíveis Necessários</h4>
                             <div class="table-responsive mt-3">
                                 <table class="table table-bordered align-middle">
@@ -304,7 +286,34 @@ try {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Sem documentos associados a este registo.</td>
+                                        <td>Fatura de Aquisição do Monitor Philips MP5</td>
+                                        <td>fatura_aquisicao_monitor_mp5_ft20234587.pdf</td>
+                                        <td>Fatura</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/fatura_aquisicao_monitor_mp5_ft20234587.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/fatura_aquisicao_monitor_mp5_ft20234587.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comprovativo de Pagamento da Aquisição do Monitor MP5</td>
+                                        <td>comprovativo_pagamento_monitor_mp5.pdf</td>
+                                        <td>Comprovativo de pagamento</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/comprovativo_pagamento_monitor_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/comprovativo_pagamento_monitor_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -346,7 +355,34 @@ try {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Sem documentos associados a este registo.</td>
+                                        <td>Certificado ISO 13485 Philips Healthcare</td>
+                                        <td>certificado_iso13485_philips_healthcare.pdf</td>
+                                        <td>Certificação</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Declaração de Distribuidor Autorizado Philips</td>
+                                        <td>declaracao_distribuidor_autorizado_philips.pdf</td>
+                                        <td>Declaração</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -361,12 +397,12 @@ try {
                     </div>
                     <div class="tab-pane fade" id="localizacao">
                         <h4><i class="fa-solid fa-location-dot me-2"></i>Localização</h4>
-                        <p class="mt-3"><strong>Edifício:</strong> Edifício <?= htmlspecialchars($equipamento['edificio']) ?></p>
-                        <p><strong>Piso:</strong> Piso <?= htmlspecialchars($equipamento['piso']) ?></p>
-                        <p><strong>Sala:</strong> Sala <?= htmlspecialchars($equipamento['sala']) ?></p>
-                        <p><strong>Serviço:</strong> <?= htmlspecialchars($equipamento['nome_servico']) ?></p>
-                        <p><strong>Responsável:</strong> <?= !empty($equipamento['responsavel']) ? htmlspecialchars($equipamento['responsavel']) : '—' ?></p>
-                        <p><strong>Contacto do/a responsável:</strong> <?= !empty($equipamento['contacto']) ? htmlspecialchars($equipamento['contacto']) : '—' ?></p>
+                        <p class="mt-3"><strong>Edifício:</strong> Edifício A</p>
+                        <p><strong>Piso:</strong> Piso 1</p>
+                        <p><strong>Sala:</strong> Sala 101</p>
+                        <p><strong>Serviço:</strong> UCI</p>
+                        <p><strong>Responsável:</strong> Enf. Ana Costa</p>
+                        <p><strong>Contacto do/a responsável:</strong> 912345678</p>
                         <hr>
                         <h5>Documentação da localização</h5>
                         <div class="table-responsive">
@@ -381,7 +417,34 @@ try {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Sem documentos associados a este registo.</td>
+                                        <td>Planta da Unidade de Cuidados Intensivos</td>
+                                        <td>planta_unidade_cuidados_intensivos.pdf</td>
+                                        <td>Planta</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/planta_unidade_cuidados_intensivos.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/planta_unidade_cuidados_intensivos.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relatório de Instalação do Monitor MP5 na UCI</td>
+                                        <td>relatorio_instalacao_monitor_mp5_uci.pdf</td>
+                                        <td>Instalação</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/relatorio_instalacao_monitor_mp5_uci.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="../../../assets/docs/relatorio_instalacao_monitor_mp5_uci.pdf"
+                                                download class="btn btn-sm btn-outline-success">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -527,7 +590,256 @@ try {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Sem documentos associados a este registo.</td>
+                                        <td>Manual de Operação Philips IntelliVue MP5</td>
+                                        <td>manual_operacao_philips_intellivue_mp5.pdf</td>
+                                        <td>Manual</td>
+                                        <td>Equipamento</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/manual_operacao_philips_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/manual_operacao_philips_intellivue_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ficha Técnica Philips IntelliVue MP5</td>
+                                        <td>ficha_tecnica_philips_intellivue_mp5.pdf</td>
+                                        <td>Ficha técnica</td>
+                                        <td>Equipamento</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/ficha_tecnica_philips_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/ficha_tecnica_philips_intellivue_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Certificado CE do Equipamento IntelliVue MP5</td>
+                                        <td>certificado_ce_intellivue_mp5.pdf</td>
+                                        <td>Certificação</td>
+                                        <td>Equipamento</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/certificado_ce_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/certificado_ce_intellivue_mp5.pdf" download
+                                                class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Manual do Sensor SpO₂ Philips M1191BL</td>
+                                        <td>manual_sensor_spo2_m1191bl.pdf</td>
+                                        <td>Manual</td>
+                                        <td>Componente</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/manual_sensor_spo2_m1191bl.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/manual_sensor_spo2_m1191bl.pdf" download
+                                                class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ficha Técnica do Cabo ECG Philips IntelliVue</td>
+                                        <td>ficha_tecnica_cabo_ecg_intellivue.pdf</td>
+                                        <td>Ficha técnica</td>
+                                        <td>Componente</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/ficha_tecnica_cabo_ecg_intellivue.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/ficha_tecnica_cabo_ecg_intellivue.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relatório de Teste da Bateria Interna Philips MP5 2026</td>
+                                        <td>relatorio_teste_bateria_mp5_2026.pdf</td>
+                                        <td>Relatório</td>
+                                        <td>Componente</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/relatorio_teste_bateria_mp5_2026.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/relatorio_teste_bateria_mp5_2026.pdf" download
+                                                class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fatura de Aquisição do Monitor Philips MP5</td>
+                                        <td>fatura_aquisicao_monitor_mp5_ft20234587.pdf</td>
+                                        <td>Fatura</td>
+                                        <td>Compra</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/fatura_aquisicao_monitor_mp5_ft20234587.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/fatura_aquisicao_monitor_mp5_ft20234587.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comprovativo de Pagamento da Aquisição do Monitor MP5</td>
+                                        <td>comprovativo_pagamento_monitor_mp5.pdf</td>
+                                        <td>Pagamento</td>
+                                        <td>Compra</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/comprovativo_pagamento_monitor_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/comprovativo_pagamento_monitor_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Certificado ISO 13485 Philips Healthcare</td>
+                                        <td>certificado_iso13485_philips_healthcare.pdf</td>
+                                        <td>Certificação</td>
+                                        <td>Fornecedor</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/certificado_iso13485_philips_healthcare.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Declaração de Distribuidor Autorizado Philips</td>
+                                        <td>declaracao_distribuidor_autorizado_philips.pdf</td>
+                                        <td>Declaração</td>
+                                        <td>Fornecedor</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/declaracao_distribuidor_autorizado_philips.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Planta da Unidade de Cuidados Intensivos</td>
+                                        <td>planta_unidade_cuidados_intensivos.pdf</td>
+                                        <td>Planta</td>
+                                        <td>Localização</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/planta_unidade_cuidados_intensivos.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/planta_unidade_cuidados_intensivos.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relatório de Instalação do Monitor MP5 na UCI</td>
+                                        <td>relatorio_instalacao_monitor_mp5_uci.pdf</td>
+                                        <td>Instalação</td>
+                                        <td>Localização</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/relatorio_instalacao_monitor_mp5_uci.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/relatorio_instalacao_monitor_mp5_uci.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Garantia Comercial Philips IntelliVue MP5</td>
+                                        <td>garantia_comercial_philips_mp5.pdf</td>
+                                        <td>Garantia</td>
+                                        <td>Garantias</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/garantia_comercial_philips_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/garantia_comercial_philips_mp5.pdf" download
+                                                class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Extensão de Garantia Premium Philips MP5 2026-2028</td>
+                                        <td>extensao_garantia_premium_mp5_2026_2028.pdf</td>
+                                        <td>Garantia</td>
+                                        <td>Garantias</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/extensao_garantia_premium_mp5_2026_2028.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/extensao_garantia_premium_mp5_2026_2028.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Contrato de Manutenção Preventiva do Monitor MP5</td>
+                                        <td>contrato_manutencao_preventiva_monitor_mp5.pdf</td>
+                                        <td>Contrato</td>
+                                        <td>Contratos</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/contrato_manutencao_preventiva_monitor_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/contrato_manutencao_preventiva_monitor_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Contrato de Calibração Anual do Philips IntelliVue MP5</td>
+                                        <td>contrato_calibracao_anual_philips_intellivue_mp5.pdf</td>
+                                        <td>Contrato</td>
+                                        <td>Contratos</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/contrato_calibracao_anual_philips_intellivue_mp5.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/contrato_calibracao_anual_philips_intellivue_mp5.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ficha de Dados de Segurança — Soro Fisiológico 500 ml</td>
+                                        <td>fds_soro_fisiologico_500ml.pdf</td>
+                                        <td>Ficha técnica</td>
+                                        <td>Consumível</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/fds_soro_fisiologico_500ml.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/fds_soro_fisiologico_500ml.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ficha Técnica do Sistema de Perfusão</td>
+                                        <td>ficha_tecnica_sistema_perfusao.pdf</td>
+                                        <td>Ficha técnica</td>
+                                        <td>Consumível</td>
+                                        <td class="text-center">
+                                            <a href="../../../assets/docs/ficha_tecnica_sistema_perfusao.pdf"
+                                                target="_blank" class="btn btn-sm btn-outline-primary"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a href="../../../assets/docs/ficha_tecnica_sistema_perfusao.pdf"
+                                                download class="btn btn-sm btn-outline-success"><i
+                                                    class="fa-solid fa-download"></i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../../includes/funcoes.php';
@@ -8,24 +7,22 @@ restringir_perfil(['Administrador']);
 
 $erros = [];
 $erro_sistema = "";
-$tipos_fornecedor = $database->query("SELECT id_tipo_fornecedor, tipo FROM tipos_fornecedor WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome_empresa = trim($_POST["nomeEmpresa"] ?? "");
-    $nif = trim($_POST["nif"] ?? "");
-    $tipo_fornecedor = trim($_POST["tipoFornecedor"] ?? "");
-    $telefone = trim($_POST["telefone"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $website = trim($_POST["website"] ?? "");
-    $pessoa_contacto = trim($_POST["pessoaContacto"] ?? "");
+    $nome_empresa      = trim($_POST["nomeEmpresa"]      ?? "");
+    $nif               = trim($_POST["nif"]              ?? "");
+    $telefone          = trim($_POST["telefone"]         ?? "");
+    $email             = trim($_POST["email"]            ?? "");
+    $website           = trim($_POST["website"]          ?? "");
+    $pessoa_contacto   = trim($_POST["pessoaContacto"]   ?? "");
     $telefone_contacto = trim($_POST["telefoneContacto"] ?? "");
-    $email_contacto = trim($_POST["emailContacto"] ?? "");
-    $morada = trim($_POST["morada"] ?? "");
-    $codigo_postal = trim($_POST["codigoPostal"] ?? "");
-    $cidade = trim($_POST["cidade"] ?? "");
-    $pais = trim($_POST["pais"] ?? "");
-    $observacoes = trim($_POST["observacoes"] ?? "");
+    $email_contacto    = trim($_POST["emailContacto"]    ?? "");
+    $morada            = trim($_POST["morada"]           ?? "");
+    $codigo_postal     = trim($_POST["codigoPostal"]     ?? "");
+    $cidade            = trim($_POST["cidade"]           ?? "");
+    $pais              = trim($_POST["pais"]             ?? "");
+    $observacoes       = trim($_POST["observacoes"]      ?? "");
 
     if (empty($nome_empresa)) {
         $erros[] = "O campo Nome da Empresa é obrigatório.";
@@ -36,9 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $erros[] = "O campo NIF é obrigatório.";
     } elseif (!preg_match('/^\d{9}$/', $nif)) {
         $erros[] = "NIF inválido (deve ter exatamente 9 dígitos).";
-    }
-    if (empty($tipo_fornecedor) || !ctype_digit($tipo_fornecedor)) {
-        $erros[] = "Selecione um tipo de fornecedor válido.";
     }
     if (!empty($telefone) && !preg_match('/^\d{9}$/', $telefone)) {
         $erros[] = "Telefone inválido (deve ter 9 dígitos).";
@@ -58,53 +52,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($codigo_postal) && !preg_match('/^\d{4}-\d{3}$/', $codigo_postal)) {
         $erros[] = "Código Postal inválido (ex: 4000-007).";
     }
+
     if (empty($erros)) {
-        $email = strtolower($email);
-        $email_contacto = $email_contacto !== "" ? strtolower($email_contacto) : "";
-        $cidade = $cidade !== "" ? ucfirst(strtolower($cidade)) : "";
-        $pais = $pais !== "" ? ucfirst(strtolower($pais)) : "";
-        $pessoa_contacto = $pessoa_contacto !== "" ? ucwords(strtolower($pessoa_contacto)) : "";
+        $email           = strtolower($email);
+        $email_contacto  = $email_contacto  !== "" ? strtolower($email_contacto)              : "";
+        $cidade          = $cidade          !== "" ? ucfirst(strtolower($cidade))              : "";
+        $pais            = $pais            !== "" ? ucfirst(strtolower($pais))                : "";
+        $pessoa_contacto = $pessoa_contacto !== "" ? ucwords(strtolower($pessoa_contacto))     : "";
     }
+
     if (empty($erros)) {
         try {
-            $sql = "INSERT INTO fornecedores (nome_empresa, nif, id_tipo_fornecedor, telefone, email, website, pessoa_contacto, telefone_contacto, email_contacto, morada, codigo_postal, cidade, pais, observacoes, ativo, created_at, updated_at) VALUES (:nome_empresa, :nif, :tipo_fornecedor, :telefone, :email, :website, :pessoa_contacto, :telefone_contacto, :email_contacto, :morada, :codigo_postal, :cidade, :pais, :observacoes, 1, NOW(), NOW())";
-            $query = $database->prepare($sql);
-            $query->execute([
-                ":nome_empresa" => $nome_empresa,
-                ":nif" => $nif,
-                ":tipo_fornecedor" => $tipo_fornecedor,
-                ":telefone" => $telefone !== "" ? $telefone : null,
-                ":email" => $email !== "" ? $email : null,
-                ":website" => $website !== "" ? $website : null,
-                ":pessoa_contacto" => $pessoa_contacto !== "" ? $pessoa_contacto : null,
+            $sql = "INSERT INTO fornecedores (nome_empresa, nif, telefone, email, website, pessoa_contacto, telefone_contacto, email_contacto, morada, codigo_postal, cidade, pais, observacoes, ativo, created_at, updated_at)
+                    VALUES (:nome_empresa, :nif, :telefone, :email, :website, :pessoa_contacto, :telefone_contacto, :email_contacto, :morada, :codigo_postal, :cidade, :pais, :observacoes, 1, NOW(), NOW())";
+            $database->prepare($sql)->execute([
+                ":nome_empresa"      => $nome_empresa,
+                ":nif"               => $nif,
+                ":telefone"          => $telefone          !== "" ? $telefone          : null,
+                ":email"             => $email             !== "" ? $email             : null,
+                ":website"           => $website           !== "" ? $website           : null,
+                ":pessoa_contacto"   => $pessoa_contacto   !== "" ? $pessoa_contacto   : null,
                 ":telefone_contacto" => $telefone_contacto !== "" ? $telefone_contacto : null,
-                ":email_contacto" => $email_contacto !== "" ? $email_contacto : null,
-                ":morada" => $morada !== "" ? $morada : null,
-                ":codigo_postal" => $codigo_postal !== "" ? $codigo_postal : null,
-                ":cidade" => $cidade !== "" ? $cidade : null,
-                ":pais" => $pais !== "" ? $pais : null,
-                ":observacoes" => $observacoes !== "" ? $observacoes : null
+                ":email_contacto"    => $email_contacto    !== "" ? $email_contacto    : null,
+                ":morada"            => $morada            !== "" ? $morada            : null,
+                ":codigo_postal"     => $codigo_postal     !== "" ? $codigo_postal     : null,
+                ":cidade"            => $cidade            !== "" ? $cidade            : null,
+                ":pais"              => $pais              !== "" ? $pais              : null,
+                ":observacoes"       => $observacoes       !== "" ? $observacoes       : null
             ]);
-
-            registar_historico(
-                $database,
-                'Fornecedores',
-                'Criação',
-                $nome_empresa,
-                'Fornecedor criado com sucesso.'
-            );
+            registar_historico($database, 'Fornecedores', 'Criação', $nome_empresa, 'Fornecedor criado com sucesso.');
             header("Location: lista.php?criado=1");
             exit();
         } catch (PDOException $err) {
-            if ($err->errorInfo[1] == 1062) {
-                $erro_sistema = "O NIF inserido já corresponde a um fornecedor.";
-            } else {
-                $erro_sistema = "Erro ao gravar os dados: " . $err->getMessage();
-            }
+            $erro_sistema = $err->errorInfo[1] == 1062
+                ? "O NIF inserido já corresponde a um fornecedor."
+                : "Erro ao gravar os dados: " . $err->getMessage();
         }
     }
 }
-
 ?>
 <?php include '../../includes/header.php'; ?>
 <?php include '../../includes/nav.php'; ?>
@@ -115,20 +100,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Novo Fornecedor</h2>
             <hr>
             <?php if (!empty($erros)): ?>
-                <div class="alert alert-danger">
-                    <strong>Foram encontrados os seguintes erros:</strong>
-                    <ul class="mb-0">
-                        <?php foreach ($erros as $erro): ?>
-                            <li><?= htmlspecialchars($erro) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                <div class="alert alert-danger"><strong>Foram encontrados os seguintes erros:</strong><ul class="mb-0"><?php foreach ($erros as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul></div>
             <?php endif; ?>
             <?php if (!empty($erro_sistema)): ?>
-                <div class="alert alert-danger">
-                    <strong>Erro:</strong>
-                    <p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p>
-                </div>
+                <div class="alert alert-danger"><strong>Erro:</strong><p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p></div>
             <?php endif; ?>
             <form action="#" method="post" novalidate>
                 <h4>Informação principal</h4>
@@ -139,15 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <label for="nif" class="form-label">NIF</label>
                     <input type="text" class="form-control" id="nif" name="nif" value="<?= htmlspecialchars($_POST['nif'] ?? '') ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="tipoFornecedor" class="form-label">Tipo de fornecedor</label>
-                    <select class="form-select" id="tipoFornecedor" name="tipoFornecedor" required>
-                        <option value="" disabled <?= empty($_POST['tipoFornecedor'] ?? '') ? 'selected' : '' ?>>Selecione o tipo de fornecedor</option>
-                        <?php foreach ($tipos_fornecedor as $tf): ?>
-                            <option value="<?= $tf['id_tipo_fornecedor'] ?>" <?= (($_POST['tipoFornecedor'] ?? '') == $tf['id_tipo_fornecedor']) ? 'selected' : '' ?>><?= htmlspecialchars($tf['tipo']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
                 </div>
                 <h4>Contactos</h4>
                 <div class="mb-3">
@@ -199,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <hr>
                 <h4><i class="fa-solid fa-file-lines me-2"></i>Documentos do Fornecedor</h4>
-                <p class="text-muted">Podes anexar documentos relacionados com este fornecedor (contratos, certificações, fichas técnicas, etc.).</p>
+                <p class="text-muted">Podes anexar documentos relacionados com este fornecedor.</p>
                 <div class="border rounded p-3 mb-3 bg-white">
                     <div class="row align-items-end">
                         <div class="col-md-4">
@@ -210,8 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label class="form-label">Tipo de documento</label>
                             <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
                                 <option value="" selected disabled>Selecionar tipo</option>
-                                <?php foreach ($tipos_documento as $tipoDoc): ?>
-                                    <option value="<?= $tipoDoc['id_tipo_documento'] ?>"><?= htmlspecialchars($tipoDoc['tipo']) ?></option>
+                                <?php foreach ($tipos_documento as $td): ?>
+                                    <option value="<?= $td['id_tipo_documento'] ?>"><?= htmlspecialchars($td['tipo']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
@@ -219,30 +185,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="col-md-3">
                             <label class="form-label">Ficheiro</label>
                             <input type="file" id="documentoFornecedor1" hidden>
-                            <label for="documentoFornecedor1" class="btn btn-outline-primary w-100">
-                                <i class="fa-solid fa-upload me-1"></i>
-                                Selecionar ficheiro
-                            </label>
+                            <label for="documentoFornecedor1" class="btn btn-outline-primary w-100"><i class="fa-solid fa-upload me-1"></i> Selecionar ficheiro</label>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-primary w-100">
-                                <i class="fa-solid fa-plus me-1"></i>
-                                Adicionar
-                            </button>
+                            <button type="button" class="btn btn-primary w-100"><i class="fa-solid fa-plus me-1"></i> Adicionar</button>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-primary mb-4">
-                    <i class="fa-solid fa-plus me-1"></i>
-                    Adicionar Documento
-                </button>
+                <button type="button" class="btn btn-outline-primary mb-4"><i class="fa-solid fa-plus me-1"></i> Adicionar Documento</button>
                 <div>
-                    <button type="submit" class="btn btn-success">
-                        Guardar
-                    </button>
-                    <a href="lista.php" class="btn btn-secondary">
-                        Cancelar
-                    </a>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="lista.php" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </main>
@@ -250,14 +203,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 <script>
     function mostrarOutroDocumento(select) {
-        const campoOutro = select.parentElement.querySelector(".campo-outro-documento");
-        const textoSelecionado = select.options[select.selectedIndex].text;
-        if (textoSelecionado === "Outro") {
-            campoOutro.classList.remove("d-none");
-        } else {
-            campoOutro.classList.add("d-none");
-            campoOutro.value = "";
-        }
+        const c = select.parentElement.querySelector(".campo-outro-documento");
+        c.classList.toggle("d-none", select.options[select.selectedIndex].text !== "Outro");
+        if (select.options[select.selectedIndex].text !== "Outro") c.value = "";
     }
 </script>
 <?php include '../../includes/footer.php'; ?>

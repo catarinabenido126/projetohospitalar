@@ -1,3 +1,32 @@
+<?php
+require_once __DIR__ . '/../private/includes/database.php';
+
+$conteudo = [];
+
+try {
+    $linhas = $database->query("
+        SELECT s.nome_seccao, c.campo, c.valor
+        FROM conteudos_publicos c
+        INNER JOIN secoes_publicas s ON c.id_seccao = s.id_seccao
+        WHERE c.ativo = 1 AND s.ativo = 1
+    ")->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($linhas as $linha) {
+        $conteudo[$linha['nome_seccao'] . '_' . $linha['campo']] = $linha['valor'];
+    }
+
+} catch (PDOException $e) {
+    $conteudo = [];
+}
+
+function c($conteudo, $chave)
+{
+    return htmlspecialchars($conteudo[$chave] ?? '');
+}
+
+$contacto_enviado = isset($_GET['contacto_enviado']);
+$erro_contacto = isset($_GET['erro_contacto']);
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -43,11 +72,10 @@
 <section class="container-texto-generico" id="inicio">
     <div class="inicio-content">
         <h1>
-            Sistema Digital de Apoio ao Inventário Hospitalar
+            <?= c($conteudo, 'inicio_titulo') ?>
         </h1>
         <p>
-            A MediSync é uma plataforma digital criada para apoiar instituições
-            de saúde na organização e consulta do inventário de equipamentos médicos.
+            <?= c($conteudo, 'inicio_texto') ?>
         </p>
         <img src="../assets/img/hospital.png" alt="Imagem Hospitalar">
     </div>
@@ -57,21 +85,9 @@
     <h2>Sobre Nós</h2>
     <div class="sobre-container">
         <div class="sobre-texto">
-            <p>
-                A MediSync foi criada em 2026, no âmbito da Licenciatura em Engenharia
-                Biomédica do ISEP, com o objetivo de desenvolver uma solução web aplicada
-                à gestão de informação hospitalar.
-            </p>
-            <p>
-                O projeto surgiu da necessidade de tornar mais simples a organização
-                de equipamentos médicos, documentação técnica, fornecedores e dados
-                associados ao funcionamento de um inventário hospitalar.
-            </p>
-            <p>
-                A plataforma procura contribuir para uma gestão mais centralizada,
-                clara e acessível, apoiando a consulta rápida da informação relevante
-                para os serviços hospitalares.
-            </p>
+            <?php foreach (explode("\n\n", $conteudo['sobre_texto'] ?? '') as $paragrafo): ?>
+                <p><?= nl2br(htmlspecialchars($paragrafo)) ?></p>
+            <?php endforeach; ?>
         </div>
         <div class="sobre-imagem">
             <img src="../assets/img/fundadores.png"
@@ -84,63 +100,44 @@
 <section id="servicos">
     <h2>Serviços</h2>
     <div class="servicos-container">
-        <div class="servico">
-            <i class="fa-solid fa-laptop-medical fa-3x"></i>
-            <h3>Inventário de Equipamentos</h3>
-            <p>
-                Registo e consulta de equipamentos médicos, incluindo identificação,
-                localização, categoria, estado e criticidade.
-            </p>
-        </div>
-        <div class="servico">
-            <i class="fa-solid fa-folder-open fa-3x"></i>
-            <h3>Gestão Documental</h3>
-            <p>
-                Organização de manuais, certificados, relatórios técnicos,
-                faturas e outros documentos associados.
-            </p>
-        </div>
-        <div class="servico">
-            <i class="fa-solid fa-truck-medical fa-3x"></i>
-            <h3>Fornecedores</h3>
-            <p>
-                Associação de equipamentos a fornecedores, fabricantes
-                e entidades responsáveis por assistência técnica.
-            </p>
-        </div>
-        <div class="servico">
-            <i class="fa-solid fa-file-contract fa-3x"></i>
-            <h3>Garantias e Contratos</h3>
-            <p>
-                Consulta de garantias e contratos de manutenção
-                relacionados com os equipamentos hospitalares.
-            </p>
-        </div>
-        <div class="servico">
-            <i class="fa-solid fa-magnifying-glass fa-3x"></i>
-            <h3>Pesquisa e Filtros</h3>
-            <p>
-                Pesquisa de equipamentos por serviço, localização,
-                categoria, estado ou criticidade.
-            </p>
-        </div>
-        <div class="servico">
-            <i class="fa-solid fa-chart-column fa-3x"></i>
-            <h3>Dashboard</h3>
-            <p>
-                Visualização resumida de indicadores úteis para
-                acompanhamento do inventário hospitalar.
-            </p>
-        </div>
+        <?php
+        $iconesServicos = [
+            1 => 'fa-laptop-medical',
+            2 => 'fa-folder-open',
+            3 => 'fa-truck-medical',
+            4 => 'fa-file-contract',
+            5 => 'fa-magnifying-glass',
+            6 => 'fa-chart-column'
+        ];
+        for ($i = 1; $i <= 6; $i++):
+        ?>
+            <div class="servico">
+                <i class="fa-solid <?= $iconesServicos[$i] ?> fa-3x"></i>
+                <h3><?= c($conteudo, "servico_{$i}_titulo") ?></h3>
+                <p>
+                    <?= c($conteudo, "servico_{$i}_descricao") ?>
+                </p>
+            </div>
+        <?php endfor; ?>
     </div>
 </section>
 <!-- Seção "Contactos" -->
 <section id="contacto">
-    <h2>Contacta-nos</h2>
+    <h2><?= c($conteudo, 'contacto_titulo') ?></h2>
     <p>
-        Para mais informações sobre a MediSync, fale connosco!
+        <?= c($conteudo, 'contacto_texto') ?>
     </p>
-    <form id="contactForm">
+    <?php if ($contacto_enviado): ?>
+        <div class="alert alert-success" style="max-width: 500px; margin: 0 auto 20px;">
+            Mensagem enviada com sucesso. Entraremos em contacto brevemente.
+        </div>
+    <?php endif; ?>
+    <?php if ($erro_contacto): ?>
+        <div class="alert alert-danger" style="max-width: 500px; margin: 0 auto 20px;">
+            Não foi possível enviar a mensagem. Verifique os dados e tente novamente.
+        </div>
+    <?php endif; ?>
+    <form id="contactForm" action="processa_contacto.php" method="post">
         <label for="nome">Nome:</label>
         <input type="text"
                id="nome"
@@ -150,6 +147,11 @@
         <input type="email"
                id="email"
                name="email"
+               required>
+        <label for="assunto">Assunto:</label>
+        <input type="text"
+               id="assunto"
+               name="assunto"
                required>
         <label for="mensagem">Mensagem:</label>
         <textarea id="mensagem"
@@ -165,24 +167,15 @@
 <footer class="footer-container">
     <div class="footer-section">
         <strong>LOCALIZAÇÃO</strong>
-        <p>
-            Instituto Superior de Engenharia do Porto
-            <br>
-            Rua Dr. António Bernardino de Almeida
-            <br>
-            Porto, Portugal
-        </p>
+        <p><?= nl2br(c($conteudo, 'rodape_localizacao')) ?></p>
     </div>
     <div class="footer-section">
         <strong>HORÁRIO</strong>
-        <p>2ª a 6ª Feira: 9h — 18h</p>
-        <p>Sábado: Encerrado</p>
-        <p>Domingo: Encerrado</p>
+        <p><?= nl2br(c($conteudo, 'rodape_horario')) ?></p>
     </div>
     <div class="footer-section">
         <strong>CONTACTOS</strong>
-        <p>Email: geral@medisync.pt</p>
-        <p>Telefone: +351 222 000 000</p>
+        <p><?= nl2br(c($conteudo, 'rodape_contactos')) ?></p>
     </div>
 </footer>
 <script src="../assets/bootstrap/bootstrap.bundle.min.js"></script>
