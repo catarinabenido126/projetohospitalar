@@ -423,7 +423,7 @@ Table "utilizadores" {
   "id_utilizador" int [pk, not null, increment]
   "email" varbinary(255) [not null]
   "password_hash" varchar(255) [not null]
-  "perfil" varchar(20) [not null]
+  "perfil" varchar(30) [not null]
   "remember_token" varchar(100)
   "ultimo_acesso" datetime
   "ativo" tinyint(1) [not null, default: '1']
