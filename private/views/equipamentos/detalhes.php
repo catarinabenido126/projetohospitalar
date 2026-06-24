@@ -191,6 +191,7 @@ function badgeGarantia(string $estado): string {
     return '<span class="badge ' . $classe . '">' . htmlspecialchars($estado) . '</span>';
 }
 function btnDoc(string $caminho, string $nome): string {
+    $caminho = BASE_URL . '/' . ltrim($caminho, '/');
     $c = htmlspecialchars($caminho);
     return '<a href="' . $c . '" target="_blank" class="btn btn-sm btn-outline-primary me-1" title="Ver"><i class="fa-solid fa-eye"></i></a>'
          . '<a href="' . $c . '" download class="btn btn-sm btn-outline-success" title="Descarregar"><i class="fa-solid fa-download"></i></a>';

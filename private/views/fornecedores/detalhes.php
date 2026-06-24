@@ -21,7 +21,6 @@ try {
     if (!$fornecedor) { header('Location: lista.php'); exit(); }
 } catch (PDOException $e) { header('Location: lista.php'); exit(); }
 
-// Equipamentos associados com papel
 $equipamentosAssociados = [];
 try {
     $s = $database->prepare("
@@ -37,7 +36,6 @@ try {
     $equipamentosAssociados = $s->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {}
 
-// Documentos do fornecedor
 $documentos = [];
 try {
     $s = $database->prepare("
@@ -61,7 +59,7 @@ try {
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <h2>Detalhes do Fornecedor</h2>
-                    <p class="text-muted mb-0"><?= htmlspecialchars($fornecedor['nome_empresa']) ?> • NIF <?= htmlspecialchars($fornecedor['nif']) ?></p>
+                    <p class="text-muted mb-0"><?= htmlspecialchars($fornecedor['nome_empresa']) ?> &bull; NIF <?= htmlspecialchars($fornecedor['nif']) ?></p>
                 </div>
                 <div>
                     <a href="lista.php" class="btn btn-secondary">Voltar</a>
@@ -103,7 +101,6 @@ try {
 
             <hr>
 
-            <!-- Equipamentos associados -->
             <h4><i class="fa-solid fa-stethoscope me-2"></i>Equipamentos associados</h4>
             <div class="table-responsive mb-4">
                 <table class="table table-bordered align-middle">
@@ -129,7 +126,6 @@ try {
                 </table>
             </div>
 
-            <!-- Documentos do fornecedor -->
             <h4><i class="fa-solid fa-file-lines me-2"></i>Documentos associados</h4>
             <div class="table-responsive">
                 <table class="table table-bordered align-middle">
@@ -138,18 +134,19 @@ try {
                         <?php if (empty($documentos)): ?>
                             <tr><td colspan="5" class="text-center text-muted">Sem documentos associados a este fornecedor.</td></tr>
                         <?php else: foreach ($documentos as $doc): ?>
+                            <?php $caminhoDoc = BASE_URL . '/' . ltrim($doc['caminho_ficheiro'], '/'); ?>
                             <tr>
                                 <td><?= htmlspecialchars($doc['nome_documento']) ?></td>
                                 <td><?= htmlspecialchars($doc['tipo_documento'] ?? '—') ?></td>
                                 <td><?= !empty($doc['data_documento']) ? date('d/m/Y', strtotime($doc['data_documento'])) : '—' ?></td>
                                 <td><?= !empty($doc['data_validade']) ? date('d/m/Y', strtotime($doc['data_validade'])) : '—' ?></td>
                                 <td class="text-center">
-                                    <a href="<?= htmlspecialchars($doc['caminho_ficheiro']) ?>" target="_blank"
+                                    <a href="<?= htmlspecialchars($caminhoDoc) ?>" target="_blank"
                                        class="btn btn-sm btn-outline-primary me-1"
                                        data-bs-toggle="tooltip" title="Ver documento">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <a href="<?= htmlspecialchars($doc['caminho_ficheiro']) ?>" download
+                                    <a href="<?= htmlspecialchars($caminhoDoc) ?>" download
                                        class="btn btn-sm btn-outline-success"
                                        data-bs-toggle="tooltip" title="Descarregar">
                                         <i class="fa-solid fa-download"></i>
