@@ -1,38 +1,468 @@
-db1241126password_resetsequipamentosSET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0;
 
-DELETE FROM documentos;
-DELETE FROM consumiveis;
-DELETE FROM componentes;
-DELETE FROM equipamento_fornecedor;
-DELETE FROM contratos;
-DELETE FROM garantias;
-DELETE FROM entradas_equipamento;
-DELETE FROM equipamentos;
-DELETE FROM fornecedores;
-DELETE FROM localizacoes;
-DELETE FROM conteudos_publicos;
-DELETE FROM secoes_publicas;
-DELETE FROM mensagens_contacto;
-DELETE FROM historico;
-DELETE FROM lembretes;
-DELETE FROM password_resets;
-DELETE FROM utilizadores;
-DELETE FROM servicos;
-DELETE FROM categorias;
-DELETE FROM estados_equipamento;
-DELETE FROM criticidades;
-DELETE FROM tipos_entrada;
-DELETE FROM tipos_fornecedor;
-DELETE FROM tipos_relacao_fornecedor;
-DELETE FROM estados_componentes;
-DELETE FROM tipos_documento;
-DELETE FROM estados_garantia;
+-- ============================================================================
+-- 1. ESTRUTURA DA BASE DE DADOS (DDL) - REMOÇÃO DE TABELAS EXISTENTES
+-- ============================================================================
+DROP TABLE IF EXISTS `documentos`;
+DROP TABLE IF EXISTS `consumiveis`;
+DROP TABLE IF EXISTS `componentes`;
+DROP TABLE IF EXISTS `equipamento_fornecedor`;
+DROP TABLE IF EXISTS `contratos`;
+DROP TABLE IF EXISTS `garantias`;
+DROP TABLE IF EXISTS `entradas_equipamento`;
+DROP TABLE IF EXISTS `equipamentos`;
+DROP TABLE IF EXISTS `fornecedores`;
+DROP TABLE IF EXISTS `localizacoes`;
+DROP TABLE IF EXISTS `conteudos_publicos`;
+DROP TABLE IF EXISTS `secoes_publicas`;
+DROP TABLE IF EXISTS `mensagens_contacto`;
+DROP TABLE IF EXISTS `historico`;
+DROP TABLE IF EXISTS `lembretes`;
+DROP TABLE IF EXISTS `password_resets`;
+DROP TABLE IF EXISTS `utilizadores`;
+DROP TABLE IF EXISTS `servicos`;
+DROP TABLE IF EXISTS `categorias`;
+DROP TABLE IF EXISTS `estados_equipamento`;
+DROP TABLE IF EXISTS `criticidades`;
+DROP TABLE IF EXISTS `tipos_entrada`;
+DROP TABLE IF EXISTS `tipos_fornecedor`;
+DROP TABLE IF EXISTS `tipos_relacao_fornecedor`;
+DROP TABLE IF EXISTS `estados_componentes`;
+DROP TABLE IF EXISTS `tipos_documento`;
+DROP TABLE IF EXISTS `estados_garantia`;
 
+-- ============================================================================
+-- 2. ESTRUTURA DA BASE DE DADOS (DDL) - CRIAÇÃO DE TABELAS
+-- ============================================================================
+
+CREATE TABLE `categorias` (
+  `id_categoria` int NOT NULL AUTO_INCREMENT,
+  `nome_categoria` varchar(80) NOT NULL,
+  `descricao` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_categoria`),
+  UNIQUE KEY `nome_categoria` (`nome_categoria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `estados_componentes` (
+  `id_estado_componente` int NOT NULL AUTO_INCREMENT,
+  `estado` varchar(50) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_estado_componente`),
+  UNIQUE KEY `estado` (`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `estados_equipamento` (
+  `id_estado` int NOT NULL AUTO_INCREMENT,
+  `nome_estado` varchar(50) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_estado`),
+  UNIQUE KEY `nome_estado` (`nome_estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `estados_garantia` (
+  `id_estado_garantia` int NOT NULL AUTO_INCREMENT,
+  `estado` varchar(50) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_estado_garantia`),
+  UNIQUE KEY `estado` (`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `criticidades` (
+  `id_criticidade` int NOT NULL AUTO_INCREMENT,
+  `nivel` varchar(50) NOT NULL,
+  `descricao` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_criticidade`),
+  UNIQUE KEY `nivel` (`nivel`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tipos_entrada` (
+  `id_tipo_entrada` int NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(50) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_tipo_entrada`),
+  UNIQUE KEY `tipo` (`tipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tipos_documento` (
+  `id_tipo_documento` int NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(100) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_tipo_documento`),
+  UNIQUE KEY `tipo` (`tipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tipos_fornecedor` (
+  `id_tipo_fornecedor` int NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(80) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_tipo_fornecedor`),
+  UNIQUE KEY `tipo` (`tipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tipos_relacao_fornecedor` (
+  `id_tipo_relacao` int NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(80) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_tipo_relacao`),
+  UNIQUE KEY `tipo` (`tipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `servicos` (
+  `id_servico` int NOT NULL AUTO_INCREMENT,
+  `nome_servico` varchar(100) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_servico`),
+  UNIQUE KEY `nome_servico` (`nome_servico`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `secoes_publicas` (
+  `id_seccao` int NOT NULL AUTO_INCREMENT,
+  `nome_seccao` varchar(100) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_seccao`),
+  UNIQUE KEY `nome_seccao` (`nome_seccao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `mensagens_contacto` (
+  `id_mensagem` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `assunto` varchar(150) DEFAULT NULL,
+  `mensagem` text NOT NULL,
+  `data_envio` datetime NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_mensagem`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `utilizadores` (
+  `id_utilizador` int NOT NULL AUTO_INCREMENT,
+  `email` varbinary(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `perfil` varchar(30) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `ultimo_acesso` datetime DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_utilizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `lembretes` (
+  `id_lembrete` int NOT NULL AUTO_INCREMENT,
+  `id_utilizador` int NOT NULL,
+  `descricao` varchar(255) NOT NULL,
+  `concluido` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id_lembrete`),
+  KEY `id_utilizador` (`id_utilizador`),
+  CONSTRAINT `lembretes_ibfk_1` FOREIGN KEY (`id_utilizador`) REFERENCES `utilizadores` (`id_utilizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `historico` (
+  `id_historico` int NOT NULL AUTO_INCREMENT,
+  `id_utilizador` int NOT NULL,
+  `modulo` varchar(80) NOT NULL,
+  `acao` varchar(80) NOT NULL,
+  `registo` varchar(150) DEFAULT NULL,
+  `detalhes` text,
+  `data_hora` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_historico`),
+  KEY `id_utilizador` (`id_utilizador`),
+  CONSTRAINT `historico_ibfk_1` FOREIGN KEY (`id_utilizador`) REFERENCES `utilizadores` (`id_utilizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `password_resets` (
+  `id_password_reset` int NOT NULL AUTO_INCREMENT,
+  `id_utilizador` int NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expira_em` datetime NOT NULL,
+  `usado` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id_password_reset`),
+  UNIQUE KEY `token` (`token`),
+  KEY `id_utilizador` (`id_utilizador`),
+  CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`id_utilizador`) REFERENCES `utilizadores` (`id_utilizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `conteudos_publicos` (
+  `id_conteudo` int NOT NULL AUTO_INCREMENT,
+  `id_seccao` int NOT NULL,
+  `campo` varchar(100) NOT NULL,
+  `valor` text NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_conteudo`),
+  KEY `id_seccao` (`id_seccao`),
+  CONSTRAINT `conteudos_publicos_ibfk_1` FOREIGN KEY (`id_seccao`) REFERENCES `secoes_publicas` (`id_seccao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `localizacoes` (
+  `id_localizacao` int NOT NULL AUTO_INCREMENT,
+  `edificio` varchar(100) NOT NULL,
+  `piso` varchar(50) NOT NULL,
+  `sala` varchar(50) NOT NULL,
+  `id_servico` int NOT NULL,
+  `responsavel` varchar(100) DEFAULT NULL,
+  `contacto` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_localizacao`),
+  UNIQUE KEY `uq_localizacao` (`edificio`,`piso`,`sala`),
+  KEY `id_servico` (`id_servico`),
+  CONSTRAINT `localizacoes_ibfk_1` FOREIGN KEY (`id_servico`) REFERENCES `servicos` (`id_servico`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `fornecedores` (
+  `id_fornecedor` int NOT NULL AUTO_INCREMENT,
+  `nome_empresa` varchar(150) NOT NULL,
+  `nif` varchar(9) NOT NULL,
+  `id_tipo_fornecedor` int DEFAULT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `website` varchar(150) DEFAULT NULL,
+  `pessoa_contacto` varchar(100) DEFAULT NULL,
+  `telefone_contacto` varchar(20) DEFAULT NULL,
+  `email_contacto` varchar(100) DEFAULT NULL,
+  `morada` varchar(200) DEFAULT NULL,
+  `codigo_postal` varchar(20) DEFAULT NULL,
+  `cidade` varchar(100) DEFAULT NULL,
+  `pais` varchar(100) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_fornecedor`),
+  UNIQUE KEY `nif` (`nif`),
+  KEY `id_tipo_fornecedor` (`id_tipo_fornecedor`),
+  CONSTRAINT `fornecedores_ibfk_1` FOREIGN KEY (`id_tipo_fornecedor`) REFERENCES `tipos_fornecedor` (`id_tipo_fornecedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `equipamentos` (
+  `id_equipamento` int NOT NULL AUTO_INCREMENT,
+  `codigo_interno` varchar(20) NOT NULL,
+  `designacao` varchar(150) NOT NULL,
+  `id_categoria` int NOT NULL,
+  `marca` varchar(80) NOT NULL,
+  `modelo` varchar(80) NOT NULL,
+  `fornecedor_original` varchar(150) DEFAULT NULL,
+  `numero_serie` varchar(100) NOT NULL,
+  `ano_fabrico` int DEFAULT NULL,
+  `id_estado` int NOT NULL,
+  `id_criticidade` int NOT NULL,
+  `id_localizacao` int NOT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_equipamento`),
+  UNIQUE KEY `codigo_interno` (`codigo_interno`),
+  UNIQUE KEY `numero_serie` (`numero_serie`),
+  KEY `id_categoria` (`id_categoria`),
+  KEY `id_estado` (`id_estado`),
+  KEY `id_criticidade` (`id_criticidade`),
+  KEY `id_localizacao` (`id_localizacao`),
+  CONSTRAINT `equipamentos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`),
+  CONSTRAINT `equipamentos_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `estados_equipamento` (`id_estado`),
+  CONSTRAINT `equipamentos_ibfk_3` FOREIGN KEY (`id_criticidade`) REFERENCES `criticidades` (`id_criticidade`),
+  CONSTRAINT `equipamentos_ibfk_4` FOREIGN KEY (`id_localizacao`) REFERENCES `localizacoes` (`id_localizacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `componentes` (
+  `id_componente` int NOT NULL AUTO_INCREMENT,
+  `id_equipamento` int NOT NULL,
+  `codigo_componente` varchar(30) NOT NULL,
+  `nome_componente` varchar(150) NOT NULL,
+  `id_estado_componente` int NOT NULL,
+  `notificacao` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_componente`),
+  UNIQUE KEY `codigo_componente` (`codigo_componente`),
+  KEY `id_equipamento` (`id_equipamento`),
+  KEY `id_estado_componente` (`id_estado_componente`),
+  CONSTRAINT `componentes_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `componentes_ibfk_2` FOREIGN KEY (`id_estado_componente`) REFERENCES `estados_componentes` (`id_estado_componente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `consumiveis` (
+  `id_consumivel` int NOT NULL AUTO_INCREMENT,
+  `id_equipamento` int NOT NULL,
+  `nome_consumivel` varchar(150) NOT NULL,
+  `stock_atual` int NOT NULL,
+  `stock_minimo` int NOT NULL,
+  `ultima_atualizacao` date DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_consumivel`),
+  KEY `id_equipamento` (`id_equipamento`),
+  CONSTRAINT `consumiveis_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `contratos` (
+  `id_contrato` int NOT NULL AUTO_INCREMENT,
+  `id_equipamento` int NOT NULL,
+  `id_fornecedor` int NOT NULL,
+  `nome_contrato` varchar(150) NOT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
+  `valor_anual` decimal(10,2) DEFAULT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_contrato`),
+  KEY `id_equipamento` (`id_equipamento`),
+  KEY `id_fornecedor` (`id_fornecedor`),
+  CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedores` (`id_fornecedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `garantias` (
+  `id_garantia` int NOT NULL AUTO_INCREMENT,
+  `id_equipamento` int NOT NULL,
+  `nome_garantia` varchar(150) NOT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
+  `id_estado_garantia` int NOT NULL,
+  `observacoes` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_garantia`),
+  KEY `id_equipamento` (`id_equipamento`),
+  KEY `id_estado_garantia` (`id_estado_garantia`),
+  CONSTRAINT `garantias_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `garantias_ibfk_2` FOREIGN KEY (`id_estado_garantia`) REFERENCES `estados_garantia` (`id_estado_garantia`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `entradas_equipamento` (
+  `id_entrada` int NOT NULL AUTO_INCREMENT,
+  `id_equipamento` int NOT NULL,
+  `id_tipo_entrada` int NOT NULL,
+  `data_entrada` date DEFAULT NULL,
+  `entidade_associada` varchar(150) DEFAULT NULL,
+  `custo_aquisicao` decimal(10,2) DEFAULT NULL,
+  `numero_fatura` varchar(80) DEFAULT NULL,
+  `metodo_pagamento` varchar(80) DEFAULT NULL,
+  `valor_mensal` decimal(10,2) DEFAULT NULL,
+  `data_fim_aluguer` date DEFAULT NULL,
+  `condicoes_aluguer` text,
+  `entidade_doadora` varchar(150) DEFAULT NULL,
+  `valor_estimado` decimal(10,2) DEFAULT NULL,
+  `condicoes_doacao` text,
+  `entidade_proprietaria` varchar(150) DEFAULT NULL,
+  `data_inicio_emprestimo` date DEFAULT NULL,
+  `data_prevista_devolucao` date DEFAULT NULL,
+  `condicoes_emprestimo` text,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_entrada`),
+  KEY `id_equipamento` (`id_equipamento`),
+  KEY `id_tipo_entrada` (`id_tipo_entrada`),
+  CONSTRAINT `entradas_equipamento_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `entradas_equipamento_ibfk_2` FOREIGN KEY (`id_tipo_entrada`) REFERENCES `tipos_entrada` (`id_tipo_entrada`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `equipamento_fornecedor` (
+  `id_equipamento` int NOT NULL,
+  `id_fornecedor` int NOT NULL,
+  `id_tipo_relacao` int NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_equipamento`,`id_fornecedor`,`id_tipo_relacao`),
+  KEY `id_fornecedor` (`id_fornecedor`),
+  KEY `id_tipo_relacao` (`id_tipo_relacao`),
+  CONSTRAINT `equipamento_fornecedor_ibfk_1` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `equipamento_fornecedor_ibfk_2` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedores` (`id_fornecedor`),
+  CONSTRAINT `equipamento_fornecedor_ibfk_3` FOREIGN KEY (`id_tipo_relacao`) REFERENCES `tipos_relacao_fornecedor` (`id_tipo_relacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `documentos` (
+  `id_documento` int NOT NULL AUTO_INCREMENT,
+  `nome_documento` varchar(150) NOT NULL,
+  `id_tipo_documento` int NOT NULL,
+  `nome_ficheiro` varchar(200) NOT NULL,
+  `caminho_ficheiro` varchar(255) NOT NULL,
+  `data_documento` date DEFAULT NULL,
+  `data_validade` date DEFAULT NULL,
+  `tamanho_ficheiro` varchar(30) DEFAULT NULL,
+  `formato_ficheiro` varchar(20) DEFAULT NULL,
+  `id_equipamento` int DEFAULT NULL,
+  `id_entrada` int DEFAULT NULL,
+  `id_fornecedor` int DEFAULT NULL,
+  `id_localizacao` int DEFAULT NULL,
+  `id_componente` int DEFAULT NULL,
+  `id_garantia` int DEFAULT NULL,
+  `id_contrato` int DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id_documento`),
+  KEY `id_tipo_documento` (`id_tipo_documento`),
+  KEY `id_equipamento` (`id_equipamento`),
+  KEY `id_entrada` (`id_entrada`),
+  KEY `id_fornecedor` (`id_fornecedor`),
+  KEY `id_localizacao` (`id_localizacao`),
+  KEY `id_componente` (`id_componente`),
+  KEY `id_garantia` (`id_garantia`),
+  KEY `id_contrato` (`id_contrato`),
+  CONSTRAINT `documentos_ibfk_1` FOREIGN KEY (`id_tipo_documento`) REFERENCES `tipos_documento` (`id_tipo_documento`),
+  CONSTRAINT `documentos_ibfk_2` FOREIGN KEY (`id_equipamento`) REFERENCES `equipamentos` (`id_equipamento`),
+  CONSTRAINT `documentos_ibfk_3` FOREIGN KEY (`id_entrada`) REFERENCES `entradas_equipamento` (`id_entrada`),
+  CONSTRAINT `documentos_ibfk_4` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedores` (`id_fornecedor`),
+  CONSTRAINT `documentos_ibfk_5` FOREIGN KEY (`id_localizacao`) REFERENCES `localizacoes` (`id_localizacao`),
+  CONSTRAINT `documentos_ibfk_6` FOREIGN KEY (`id_componente`) REFERENCES `componentes` (`id_componente`),
+  CONSTRAINT `documentos_ibfk_7` FOREIGN KEY (`id_garantia`) REFERENCES `garantias` (`id_garantia`),
+  CONSTRAINT `documentos_ibfk_8` FOREIGN KEY (`id_contrato`) REFERENCES `contratos` (`id_contrato`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Reativar temporariamente para os INSERTS correrem de forma segura
 SET FOREIGN_KEY_CHECKS = 1;
 
+
+-- ============================================================================
+-- 3. CARGA DE DADOS (DML) - POPOULAR AS TABELAS
+-- ============================================================================
 INSERT INTO utilizadores VALUES
-(1,'admin','$2y$10$exemploHashAdmin',NULL,NOW(),1,NOW(),NOW()),
-(2,'tecnico','$2y$10$exemploHashTecnico',NULL,NOW(),1,NOW(),NOW());
+(1, AES_ENCRYPT('admin@medisync.pt', 'medisync_chave_teste_2026'), '$2y$10$GH.E37RRLIekHHjMVS71x.Tw46dm4RS4cjiFIVv7EqpPpmJXx5qoG', 'Administrador', NULL, NOW(), 1, NOW(), NOW()),
+(2, AES_ENCRYPT('tecnico@medisync.pt', 'medisync_chave_teste_2026'), '$2y$10$jMHPPG4YGIUZCYXajMYTUOy5XH9eVKUvJN0meNDRHogUcV4nSCK1a', 'Tecnico', NULL, NOW(), 1, NOW(), NOW()),
+(3, AES_ENCRYPT('saude@medisync.pt', 'medisync_chave_teste_2026'), '$2y$10$cDgtSZ56OnbcDgSuoFHuy.uKNSNqA/eWubOCmhlxuGktFy4EmP2zu', 'Profissional de Saúde', NULL, NOW(), 1, NOW(), NOW());
 
 INSERT INTO servicos VALUES
 (1,'Urgência',1,NOW(),NOW()),
@@ -333,4 +763,4 @@ INSERT INTO lembretes VALUES
 (1,1,'Verificar garantias que terminam este ano.',0,NOW()),
 (2,1,'Confirmar manutenção preventiva do autoclave.',0,NOW());
 
-SELECT 'Dados inseridos com sucesso.' AS resultado;
+SELECT 'Base de dados recriada e populada com sucesso!' AS resultado;

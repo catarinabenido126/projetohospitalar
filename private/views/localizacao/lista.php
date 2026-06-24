@@ -82,7 +82,7 @@ if (($_GET['exportar'] ?? '') === 'json') {
                     <a href="lista.php?<?= http_build_query(array_merge($_GET, ['exportar' => 'excel'])) ?>" class="btn btn-outline-success"><i class="fa-solid fa-file-excel me-1"></i> Excel</a>
                     <a href="lista.php?<?= http_build_query(array_merge($_GET, ['exportar' => 'json'])) ?>" class="btn btn-outline-secondary"><i class="fa-solid fa-file-code me-1"></i> JSON</a>
                     <?php if ($perfilAtual === 'Administrador'): ?>
-                        <a href="/private/views/localizacao/novo.php" class="btn btn-success"><i class="fa-solid fa-plus me-1"></i> Nova localização</a>
+                        <a href="novo.php" class="btn btn-success"><i class="fa-solid fa-plus me-1"></i> Nova localização</a>
                     <?php endif; ?>
                 </div>
             </div>

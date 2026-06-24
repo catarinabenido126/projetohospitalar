@@ -4,7 +4,7 @@ define('APP_NAME', 'MediSync');
 define('APP_VERSION', '1.0.0');
 define('APP_COPYRIGHT', '© 2026 MediSync');
 
-define('BASE_URL', '');
+define('BASE_URL', '/sibdas/1241126/medisync');
 
 define('MYSQL_HOST', 'vsgate-s1.dei.isep.ipp.pt');
 define('MYSQL_PORT', '10464');

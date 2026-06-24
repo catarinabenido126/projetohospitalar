@@ -310,7 +310,7 @@ function tabelaModalEquipamentos(array $lista, string $colSpan = '5'): void {
             <td>' . htmlspecialchars($eq['nome_categoria']) . '</td>
             <td>' . htmlspecialchars($eq['nome_servico']) . '</td>
             <td class="text-center">
-                <a href="../equipamentos/detalhes.php?id=' . $eq['id_equipamento'] . '" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                <a href="' . BASE_URL . '/private/views/equipamentos/detalhes.php?id=' . aes_encrypt($eq['id_equipamento']) . '" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
             </td>
         </tr>';
     }
@@ -459,7 +459,7 @@ $dadosServico  = array_column($porServico, 'total');
                                             <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<?= htmlspecialchars($g['fornecedor']) ?>"><?= htmlspecialchars($g['fornecedor']) ?></td>
                                             <td class="text-nowrap"><?= date('d/m/Y', strtotime($g['data_fim'])) ?></td>
                                             <td class="text-center">
-                                                <a href="../equipamentos/detalhes.php?id=<?= $g['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                                <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($g['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -488,7 +488,7 @@ $dadosServico  = array_column($porServico, 'total');
                                             <td><span class="badge <?= classeCriticidade($eq['nivel']) ?>"><?= htmlspecialchars($eq['nivel']) ?></span></td>
                                             <td><span class="badge <?= classeEstado($eq['nome_estado']) ?>"><?= htmlspecialchars($eq['nome_estado']) ?></span></td>
                                             <td class="text-center">
-                                                <a href="../equipamentos/detalhes.php?id=<?= $eq['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                                <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($eq['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -521,7 +521,7 @@ $dadosServico  = array_column($porServico, 'total');
                                 <td><?= date('d/m/Y', strtotime($eq['created_at'])) ?></td>
                                 <td><span class="badge <?= classeEstado($eq['nome_estado']) ?>"><?= htmlspecialchars($eq['nome_estado']) ?></span></td>
                                 <td class="text-center">
-                                    <a href="../equipamentos/detalhes.php?id=<?= $eq['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($eq['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -566,7 +566,7 @@ $dadosServico  = array_column($porServico, 'total');
             </div>
 
             <!-- ── Gráficos JS ── -->
-            <script src="/assets/js/chart.umd.min.js"></script>
+            <script src="<?= BASE_URL ?>/assets/js/chart.umd.min.js"></script>
             <script>
                 const labelsCategoria = <?= json_encode($labelsCategoria) ?>;
                 const dadosCategoria  = <?= json_encode($dadosCategoria) ?>;
@@ -699,7 +699,7 @@ $dadosServico  = array_column($porServico, 'total');
                                 <td><?= htmlspecialchars($g['fornecedor']) ?></td>
                                 <td class="text-danger"><?= date('d/m/Y', strtotime($g['data_fim'])) ?></td>
                                 <td class="text-center">
-                                    <a href="../equipamentos/detalhes.php?id=<?= $g['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($g['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -737,7 +737,7 @@ $dadosServico  = array_column($porServico, 'total');
                                 <td><?= htmlspecialchars($g['fornecedor']) ?></td>
                                 <td><?= date('d/m/Y', strtotime($g['data_fim'])) ?></td>
                                 <td class="text-center">
-                                    <a href="../equipamentos/detalhes.php?id=<?= $g['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($g['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -851,7 +851,7 @@ $dadosServico  = array_column($porServico, 'total');
                                 <td class="text-center text-danger">−<?= $diferenca ?></td>
                                 <td class="text-center"><?= $nivel ?></td>
                                 <td class="text-center">
-                                    <a href="../equipamentos/detalhes.php?id=<?= $cons['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary">
+                                    <a href="<?= BASE_URL ?>/private/views/equipamentos/detalhes.php?id=<?= aes_encrypt($cons['id_equipamento']) ?>" class="btn btn-sm btn-outline-primary">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </td>

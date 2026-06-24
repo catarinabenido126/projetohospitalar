@@ -1,4 +1,4 @@
-<script src="/assets/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/bootstrap/bootstrap.bundle.min.js"></script>
 
 <!-- Toast container — canto superior direito, partilhado por todas as páginas -->
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">

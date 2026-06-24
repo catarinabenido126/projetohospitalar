@@ -96,7 +96,7 @@ function valorConteudo($conteudo, $chave) {
                     <p class="text-muted mb-0">Gestão dos conteúdos da página pública e das mensagens recebidas.</p>
                 </div>
                 <div class="d-flex gap-2 flex-nowrap">
-                    <a href="/public/index.php" target="_blank" class="btn btn-outline-primary"><i class="fa-solid fa-eye me-1"></i> Visualizar Página Pública</a>
+                    <a href="<?= BASE_URL ?>/public/index.php" target="_blank" class="btn btn-outline-primary"><i class="fa-solid fa-eye me-1"></i> Visualizar Página Pública</a>
                     <button type="submit" form="formGestaoConteudo" class="btn btn-success"><i class="fa-solid fa-floppy-disk me-1"></i> Guardar Alterações</button>
                 </div>
             </div>
@@ -128,7 +128,7 @@ function valorConteudo($conteudo, $chave) {
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Imagem Principal</label>
-                                    <img src="/assets/img/hospital.png" alt="Imagem principal" class="img-fluid rounded mb-3 imagem-gestao">
+                                    <img src="<?= BASE_URL ?>/assets/img/hospital.png" alt="Imagem principal" class="img-fluid rounded mb-3 imagem-gestao">
                                     <input type="file" id="imagemInicio" hidden>
                                     <label for="imagemInicio" class="btn btn-outline-primary"><i class="fa-solid fa-upload me-1"></i>Alterar imagem</label>
                                     <div class="form-text">A alteração de imagens ainda não está ligada à base de dados.</div>
@@ -144,7 +144,7 @@ function valorConteudo($conteudo, $chave) {
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Imagem da Secção</label>
-                                    <img src="/assets/img/fundadores.png" alt="Imagem sobre nós" class="img-fluid rounded mb-3 imagem-gestao">
+                                    <img src="<?= BASE_URL ?>/assets/img/fundadores.png" alt="Imagem sobre nós" class="img-fluid rounded mb-3 imagem-gestao">
                                     <input type="file" id="imagemSobre" hidden>
                                     <label for="imagemSobre" class="btn btn-outline-primary"><i class="fa-solid fa-upload me-1"></i>Alterar imagem</label>
                                     <div class="form-text">A alteração de imagens ainda não está ligada à base de dados.</div>

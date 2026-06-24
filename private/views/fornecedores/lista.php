@@ -6,7 +6,6 @@ redirect_if_not_logged();
 restringir_perfil(['Administrador', 'Tecnico']);
 $perfilAtual = $_SESSION['perfil'] ?? '';
 
-// Restaurar arquivado
 if (isset($_GET['restaurar']) && ctype_digit($_GET['restaurar']) && $perfilAtual === 'Administrador') {
     try {
         $database->prepare("UPDATE fornecedores SET ativo = 1, updated_at = NOW() WHERE id_fornecedor = :id")->execute([':id' => $_GET['restaurar']]);
@@ -41,7 +40,6 @@ try {
     $fornecedoresArquivados = $database->query("SELECT id_fornecedor, nome_empresa, nif, cidade FROM fornecedores WHERE ativo = 0 ORDER BY updated_at DESC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {}
 
-// Exportação CSV
 if (($_GET['exportar'] ?? '') === 'excel') {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="fornecedores_' . date('Y-m-d') . '.csv"');
@@ -52,7 +50,6 @@ if (($_GET['exportar'] ?? '') === 'excel') {
     fclose($out); exit();
 }
 
-// Exportação JSON
 if (($_GET['exportar'] ?? '') === 'json') {
     header('Content-Type: application/json; charset=utf-8');
     header('Content-Disposition: attachment; filename="fornecedores_' . date('Y-m-d') . '.json"');
@@ -60,7 +57,6 @@ if (($_GET['exportar'] ?? '') === 'json') {
     exit();
 }
 
-// Dados para jsPDF (injetados como JSON no HTML)
 $dadosPDF = array_map(fn($f) => [
     htmlspecialchars($f['nome_empresa']),
     htmlspecialchars($f['nif']),
@@ -96,7 +92,7 @@ $dadosPDF = array_map(fn($f) => [
                         <i class="fa-solid fa-file-code me-1"></i> JSON
                     </a>
                     <?php if ($perfilAtual === 'Administrador'): ?>
-                        <a href="/private/views/fornecedores/novo.php" class="btn btn-success">
+                        <a href="novo.php" class="btn btn-success">
                             <i class="fa-solid fa-plus me-1"></i> Novo fornecedor
                         </a>
                     <?php endif; ?>
@@ -206,28 +202,21 @@ $dadosPDF = array_map(fn($f) => [
     </div>
 </div>
 
-<!-- jsPDF via CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script>
-// ── Exportação PDF com jsPDF ──────────────────────────────────────────────────
 const dadosFornecedores = <?= json_encode($dadosPDF, JSON_UNESCAPED_UNICODE) ?>;
 
 document.getElementById('btnExportarPDF').addEventListener('click', function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-
-    // Cabeçalho
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('MediSync — Listagem de Fornecedores', 14, 16);
-
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
     doc.text('Gerado em: <?= date('d/m/Y H:i') ?>', 14, 23);
-
-    // Tabela
     doc.autoTable({
         startY: 28,
         head: [['Nome da Empresa', 'NIF', 'Telefone', 'Email', 'Cidade']],
@@ -237,25 +226,16 @@ document.getElementById('btnExportarPDF').addEventListener('click', function () 
         alternateRowStyles: { fillColor: [245, 247, 250] },
         margin: { left: 14, right: 14 },
     });
-
-    // Rodapé com número de página
     const totalPaginas = doc.internal.getNumberOfPages();
     for (let i = 1; i <= totalPaginas; i++) {
         doc.setPage(i);
         doc.setFontSize(8);
         doc.setTextColor(150);
-        doc.text(
-            'Página ' + i + ' de ' + totalPaginas,
-            doc.internal.pageSize.getWidth() / 2,
-            doc.internal.pageSize.getHeight() - 8,
-            { align: 'center' }
-        );
+        doc.text('Página ' + i + ' de ' + totalPaginas, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 8, { align: 'center' });
     }
-
     doc.save('fornecedores_<?= date('Y-m-d') ?>.pdf');
 });
 
-// ── Toasts e inicializações ───────────────────────────────────────────────────
 function mostrarToast(mensagem, tipo = 'success') {
     const el = document.getElementById('toastApp');
     document.getElementById('toastMensagem').textContent = mensagem;
