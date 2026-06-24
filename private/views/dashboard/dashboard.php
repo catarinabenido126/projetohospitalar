@@ -252,6 +252,7 @@ try {
                IFNULL(MAX(custo_aquisicao), 0)   AS maximo
         FROM entradas_equipamento
         WHERE custo_aquisicao IS NOT NULL
+          AND id_tipo_entrada = 1
     ")->fetch(PDO::FETCH_ASSOC);
 
     $investimentoTotal = (float)$rowFin['total'];
@@ -263,6 +264,7 @@ try {
         FROM entradas_equipamento
         WHERE YEAR(data_entrada) = YEAR(CURDATE())
           AND custo_aquisicao IS NOT NULL
+          AND id_tipo_entrada = 1
     ")->fetchColumn();
 } catch (PDOException $e) {}
 
@@ -380,10 +382,10 @@ $dadosServico  = array_column($porServico, 'total');
                 </div>
                 <!-- Consumíveis em falta -->
                 <div class="col-md-3 mb-3">
-                    <div class="card-dashboard <?= $totalConsumiveisCriticos > 0 ? 'border-info' : 'border-success' ?>" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#modalConsumiveisCriticos" title="Clique para ver a lista">
-                        <i class="fa-solid fa-boxes-stacked <?= $totalConsumiveisCriticos > 0 ? 'text-info' : 'text-success' ?>"></i>
+                    <div class="card-dashboard border-info" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#modalConsumiveisCriticos" title="Clique para ver a lista">
+                        <i class="fa-solid fa-boxes-stacked text-info"></i>
                         <h5>Consumíveis em falta</h5>
-                        <p class="<?= $totalConsumiveisCriticos > 0 ? 'text-info' : 'text-success' ?>"><?= $totalConsumiveisCriticos ?></p>
+                        <p class="text-info"><?= $totalConsumiveisCriticos ?></p>
                     </div>
                 </div>
                 <!-- Em calibração -->
@@ -439,23 +441,23 @@ $dadosServico  = array_column($porServico, 'total');
             <h4>Situações a acompanhar</h4>
             <div class="row mb-4">
                 <div class="col-md-6 mb-4">
-                    <div class="caixa-dashboard">
+                    <div class="caixa-dashboard h-100">
                         <h5>Garantias a expirar nos próximos 30 dias</h5>
-                        <p class="text-muted">Equipamentos com garantias próximas do fim.</p>
+                        <p class="text-muted small">Equipamentos com garantias próximas do fim.</p>
                         <div class="table-responsive">
-                            <table class="table table-bordered align-middle">
+                            <table class="table table-bordered table-sm align-middle mb-0">
                                 <thead>
-                                    <tr><th>Código</th><th>Fornecedor</th><th>Fim da garantia</th><th class="text-center">Ver</th></tr>
+                                    <tr><th>Código</th><th>Fornecedor</th><th>Fim</th><th class="text-center">Ver</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($listaGarantiasExpirando)) : ?>
-                                        <tr><td colspan="4" class="text-center text-muted">Sem garantias a expirar nos próximos 30 dias.</td></tr>
+                                        <tr><td colspan="4" class="text-center text-muted py-3">Sem garantias a expirar nos próximos 30 dias.</td></tr>
                                     <?php else : ?>
                                         <?php foreach ($listaGarantiasExpirando as $g) : ?>
                                         <tr>
-                                            <td><?= htmlspecialchars($g['codigo_interno']) ?></td>
-                                            <td><?= htmlspecialchars($g['fornecedor']) ?></td>
-                                            <td><?= date('d/m/Y', strtotime($g['data_fim'])) ?></td>
+                                            <td class="text-nowrap"><?= htmlspecialchars($g['codigo_interno']) ?></td>
+                                            <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<?= htmlspecialchars($g['fornecedor']) ?>"><?= htmlspecialchars($g['fornecedor']) ?></td>
+                                            <td class="text-nowrap"><?= date('d/m/Y', strtotime($g['data_fim'])) ?></td>
                                             <td class="text-center">
                                                 <a href="../equipamentos/detalhes.php?id=<?= $g['id_equipamento'] ?>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
                                             </td>
@@ -468,21 +470,21 @@ $dadosServico  = array_column($porServico, 'total');
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
-                    <div class="caixa-dashboard">
+                    <div class="caixa-dashboard h-100">
                         <h5>Equipamentos críticos não ativos</h5>
-                        <p class="text-muted">Equipamentos de criticidade Alta ou Suporte de Vida fora de serviço.</p>
+                        <p class="text-muted small">Criticidade Alta ou Suporte de Vida fora de serviço.</p>
                         <div class="table-responsive">
-                            <table class="table table-bordered align-middle">
+                            <table class="table table-bordered table-sm align-middle mb-0">
                                 <thead>
                                     <tr><th>Código</th><th>Criticidade</th><th>Estado</th><th class="text-center">Ver</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($listaCriticosNaoAtivos)) : ?>
-                                        <tr><td colspan="4" class="text-center text-muted">Sem equipamentos críticos fora de serviço.</td></tr>
+                                        <tr><td colspan="4" class="text-center text-muted py-3">Sem equipamentos críticos fora de serviço.</td></tr>
                                     <?php else : ?>
                                         <?php foreach ($listaCriticosNaoAtivos as $eq) : ?>
                                         <tr>
-                                            <td><?= htmlspecialchars($eq['codigo_interno']) ?></td>
+                                            <td class="text-nowrap"><?= htmlspecialchars($eq['codigo_interno']) ?></td>
                                             <td><span class="badge <?= classeCriticidade($eq['nivel']) ?>"><?= htmlspecialchars($eq['nivel']) ?></span></td>
                                             <td><span class="badge <?= classeEstado($eq['nome_estado']) ?>"><?= htmlspecialchars($eq['nome_estado']) ?></span></td>
                                             <td class="text-center">
@@ -798,7 +800,7 @@ $dadosServico  = array_column($porServico, 'total');
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    <i class="fa-solid fa-boxes-stacked <?= $totalConsumiveisCriticos > 0 ? 'text-warning' : 'text-success' ?> me-2"></i>
+                    <i class="fa-solid fa-boxes-stacked text-info me-2"></i>
                     Consumíveis abaixo do stock mínimo (<?= $totalConsumiveisCriticos ?>)
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

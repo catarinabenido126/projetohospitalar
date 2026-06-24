@@ -1,0 +1,189 @@
+4e183a5 - catarinabenido126 - 2026-06-23 02:43:15 +0100 - Reorganização das pastas do projeto
+2774465 - catarinabenido126 - 2026-06-23 02:10:12 +0100 - Uploud de documentos, dashboard melhorada, PDF export,login sem autofill, adição de toasts e tooltips, correções no editar e detalhes
+92b157b - catarinabenido126 - 2026-06-21 23:52:47 +0100 - Aplicação login real com AES_DECRYPT e password_verify() + perfis de acesso
+c3a7652 - catarinabenido126 - 2026-06-21 20:19:57 +0100 - Consulta, desativação em equipamentos, fornecedores e localização
+d0ecd31 - catarinabenido126 - 2026-06-21 15:31:53 +0100 - Detalhes.php e apagar.php ligados à BD
+c619221 - catarinabenido126 - 2026-06-20 19:09:28 +0100 - Modelo relacional completo e relações da base de dados
+5a463e4 - catarinabenido126 - 2026-06-20 10:12:58 +0100 - Normalização de dados e placeholders em localização
+290c0cb - catarinabenido126 - 2026-06-18 00:04:56 +0100 - Ligação fornecedores e localizações à BD com filtros e DataTables
+58ad80c - catarinabenido126 - 2026-06-13 16:12:32 +0100 - Implementação de listagem dinâmica de equipamentos com filtros e DataTables
+92cdd56 - catarinabenido126 - 2026-06-13 15:40:48 +0100 - Ligação à BD, filtros, ordenação e listagem dinâmica de equipamentos
+9557bea - catarinabenido126 - 2026-06-13 12:44:37 +0100 - Implementação completa do sistema de login e gestão de sessões
+cf8fa50 - catarinabenido126 - 2026-06-13 12:20:05 +0100 - Implementação do sistema de login, sessões, logout e proteção de páginas privadas
+5784449 - catarinabenido126 - 2026-06-13 12:08:56 +0100 - Adição da página aberta quando se esquece da password durante o login
+314edb8 - catarinabenido126 - 2026-06-13 11:35:58 +0100 - Pequenas alterações de alinhamento e correções das ligações
+e911891 - catarinabenido126 - 2026-06-13 10:59:18 +0100 - Alteração das páginas para php e o seu respectivo código. Criação de header, nav, sidebar, footer.php
+4355055 - catarinabenido126 - 2026-06-13 03:00:52 +0100 - criação dos códigos sql e adição a database
+fdf73a3 - catarinabenido126 - 2026-06-11 20:18:41 +0100 - criei um módulo para alterar a password de acesso ao private
+66952ef - catarinabenido126 - 2026-06-11 19:34:38 +0100 - adicionei a visualização e resposta às mensagens recebidas na public
+bd24b75 - catarinabenido126 - 2026-06-11 16:35:59 +0100 - adicionei opção de extrair as listagens
+f9c91d1 - catarinabenido126 - 2026-06-11 15:54:14 +0100 - terminei a página de histórico e adicionei a ligação nas restantes páginas
+b20627f - catarinabenido126 - 2026-06-11 10:16:20 +0100 - criei uma página de histórico de alterações e fiz a sua base
+71b301e - catarinabenido126 - 2026-06-11 10:09:44 +0100 - fiz melhorias na dashboard adicionando novas categorias para análise
+4a81547 - catarinabenido126 - 2026-06-10 15:30:43 +0100 - fiz correção de ligações, ajustes para a consistência entre todas as páginas
+dcc7996 - catarinabenido126 - 2026-06-10 01:24:48 +0100 - alteração no botaõ de adicionar documento
+251d7b5 - catarinabenido126 - 2026-06-10 01:03:09 +0100 - adicionei secção de consumiveis
+e87f434 - catarinabenido126 - 2026-06-09 22:47:23 +0100 - corrigi as ligações de saída da página private
+c5c5def - catarinabenido126 - 2026-06-09 22:42:28 +0100 - criei a página de gestão da págin apública e apaguei a página documentação
+93b000c - catarinabenido126 - 2026-06-09 19:39:38 +0100 - criei a base de uma pagina de gestao da parte public
+9f4986d - catarinabenido126 - 2026-06-09 19:36:47 +0100 - ajustei a pagina do login
+32ef48e - catarinabenido126 - 2026-06-09 19:19:49 +0100 - adicionei mensagem de sucesso para equipamentos criados
+40ab202 - catarinabenido126 - 2026-06-09 10:35:44 +0100 - ajustei a página novo equipamento
+9acffb3 - catarinabenido126 - 2026-06-09 09:54:02 +0100 - adicionei uma mensagem de sucesso quando um equipamento é guardado
+815c520 - catarinabenido126 - 2026-06-09 09:37:13 +0100 - alterei o conceito de compra para aquisição
+1fc39fd - catarinabenido126 - 2026-06-09 09:26:36 +0100 - ajustei o editar equipamentos de acordo com o detelhes
+2968fe9 - catarinabenido126 - 2026-06-08 16:30:48 +0100 - adicionei ligação a editar documentação e localização
+9bc58d0 - catarinabenido126 - 2026-06-08 16:13:38 +0100 - adicionei css para detalhes equipamentos
+3829da2 - catarinabenido126 - 2026-06-08 15:49:33 +0100 - fiz ajustes no nome dos links
+a729e01 - catarinabenido126 - 2026-06-08 15:23:03 +0100 - criei dentro de equipamentos janelas para as outras paginas
+4f20376 - catarinabenido126 - 2026-05-29 02:32:25 +0100 - ajustei o ecrã para varias medidas com os media e tirei vh-100
+987e256 - catarinabenido126 - 2026-05-29 02:02:09 +0100 - eliminei a associção a equipamentos da pag. fornecedores
+f02ee30 - catarinabenido126 - 2026-05-29 02:00:17 +0100 - fiz ajustes nas ligações de associação entre paginas
+43db073 - catarinabenido126 - 2026-05-29 00:27:58 +0100 - adicionei as associações no editar equipamentos
+5967725 - catarinabenido126 - 2026-05-28 20:45:54 +0100 - editei as associações no detalhes equipamentos
+e74238b - catarinabenido126 - 2026-05-27 21:20:34 +0100 - alterei o index private- a pagina inicial
+f4eec13 - catarinabenido126 - 2026-05-22 14:39:49 +0100 - ajuetes nas ligações equipamento-fornecedor
+c3a468a - catarinabenido126 - 2026-05-22 12:15:36 +0100 - nas paginas dos equipamentos adicionei a ligação fornecedores
+a229403 - catarinabenido126 - 2026-05-22 11:29:50 +0100 - adicionei data de validade/término às documentações
+951149e - catarinabenido126 - 2026-05-22 01:03:22 +0100 - terminei a dashboard com graficos java script
+bfad4df - catarinabenido126 - 2026-05-21 23:18:42 +0100 - fiz cards na dashboard e ajustei o respetivo css
+81dc16f - catarinabenido126 - 2026-05-21 22:12:01 +0100 - fiz a base da dashboard (barra superior, lateral e ligações)
+901ce72 - catarinabenido126 - 2026-05-21 21:55:15 +0100 - adicionei a opção "garantia" em documentação
+1940b04 - catarinabenido126 - 2026-05-21 21:47:24 +0100 - criei a parte dos componentes associados aos equipamentos
+7fa628d - catarinabenido126 - 2026-05-21 20:25:17 +0100 - criei uma pagina para relacionar localizações a equipamentos
+630c9ca - catarinabenido126 - 2026-05-21 19:59:57 +0100 - alterei as opções de serviços e categorias
+6eea201 - catarinabenido126 - 2026-05-21 19:21:51 +0100 - Fiz ajustes nas ciaxas de texto de pesquisa de filtros e adicionei opções de serviços de equipamentos
+0b4359b - catarinabenido126 - 2026-05-21 19:08:00 +0100 - adicionei badges aos estados da tabela lista documentos
+b5c5f3d - catarinabenido126 - 2026-05-21 19:01:09 +0100 - mudei a cor da barra superior das tabelas listar
+29efe71 - catarinabenido126 - 2026-05-21 18:56:04 +0100 - adicionei icones na tabela da lista de fornecedores
+1ca9bf6 - catarinabenido126 - 2026-05-21 15:48:52 +0100 - retirei a caixa branca da tabela da lista equipamentos
+5bef8f4 - catarinabenido126 - 2026-05-21 15:34:41 +0100 - adicionei ícones nos botões de filtrar, limpar, ordenar e novo fornecedor, documento e localização e a paginação
+2de94e9 - catarinabenido126 - 2026-05-21 15:17:10 +0100 - retirei a caixa branca que tinha em filtros e ordenar
+a28e744 - catarinabenido126 - 2026-05-21 15:13:06 +0100 - adicionei ícones nos botões de filtrar, limpar e ordenar. fiz paginação
+cea1f5a - catarinabenido126 - 2026-05-21 14:57:26 +0100 - adicionei  badges para estado e criticidade de lista equipamentos
+c0c69f8 - catarinabenido126 - 2026-05-21 14:31:16 +0100 - subsititui "ver", "editar" e "apagar" das listas por icones
+f7e257c - catarinabenido126 - 2026-05-21 14:16:42 +0100 - coloquei icones no menu lateral e ajustei o css
+aacfe31 - catarinabenido126 - 2026-05-21 13:52:20 +0100 - corrigi as ligações de todas as paginas para todas as paginas
+c469b99 - catarinabenido126 - 2026-05-21 13:36:24 +0100 - fiz apagar documentação
+bdd042b - catarinabenido126 - 2026-05-21 13:27:58 +0100 - adicionei o script bootstrap ao detalhes documentação
+e2fe588 - catarinabenido126 - 2026-05-21 13:19:13 +0100 - fiz detalhes docuemntação
+884a5ff - catarinabenido126 - 2026-05-21 10:50:54 +0100 - corrigi algumas ligações e fiz editar documentos
+27008d3 - catarinabenido126 - 2026-05-21 10:32:03 +0100 - fiz o novo documentos baseado no novo equipamento
+0dbaa99 - catarinabenido126 - 2026-05-21 10:19:59 +0100 - fiz lista documentos e ajustei o css para as tabelas e titulos
+7d1aa7e - catarinabenido126 - 2026-05-21 09:32:23 +0100 - criei as paginas da documentação e fiz a base (barra lateral, superior e ligações) das mesmas
+8db22f7 - catarinabenido126 - 2026-05-21 00:57:35 +0100 - fiz novo apagar localizações baseado no apagar equipamentos
+a6c3a7f - catarinabenido126 - 2026-05-21 00:48:57 +0100 - alteração do id do campo de contacto para evitar conflito com a secção #contacto do frontend público
+e2499ee - catarinabenido126 - 2026-05-21 00:31:25 +0100 - retirei observações do novo localizações
+d9bd776 - catarinabenido126 - 2026-05-21 00:30:51 +0100 - ajustei o editar e retirei observações
+aa8ba49 - catarinabenido126 - 2026-05-21 00:20:12 +0100 - fiz editar localizações baseado no editar equipamentos
+9c4d0b1 - catarinabenido126 - 2026-05-20 23:47:59 +0100 - fiz novo localizações baseado no novo equipamentos
+0ecd543 - catarinabenido126 - 2026-05-20 23:33:36 +0100 - correção no index para localizações o menu lateral
+fe5e9f5 - catarinabenido126 - 2026-05-20 23:33:01 +0100 - ajuste nos filtros e na tabela das localizações
+438487e - catarinabenido126 - 2026-05-20 23:30:13 +0100 - criei as paginas de localizações e fiz lista localizações com base no lista equipamentos
+bd8dff3 - catarinabenido126 - 2026-05-20 23:00:04 +0100 - fiz o apagar fornecedores, baseado no apagar equipamentos
+e3141c3 - catarinabenido126 - 2026-05-20 22:48:55 +0100 - fiz o detalhes fornecedores, baseado no detalhes equipamentos
+b94ccee - catarinabenido126 - 2026-05-20 22:39:16 +0100 - fiz o editar fornecedores baseado na editar equipamentos
+a4a5c11 - catarinabenido126 - 2026-05-20 22:23:30 +0100 - adicionei campos da morada ao novo fornecedor
+17c1978 - catarinabenido126 - 2026-05-20 22:10:26 +0100 - fiz a pagina novo forneceodor, baseado na novo equipamento
+1ceb743 - catarinabenido126 - 2026-05-20 22:01:20 +0100 - fiz a pagina lista de fornecedores, debruçada na lista de equipamentos
+1ecd718 - catarinabenido126 - 2026-05-20 21:32:21 +0100 - correção pois tinha "<h2" duplicado
+4a591a5 - catarinabenido126 - 2026-05-20 21:29:16 +0100 - tirei o negrito do titulo de listagem de equipamentos
+8477230 - catarinabenido126 - 2026-05-20 21:27:29 +0100 - troquei o link dos estilos css para o fim em todas as paginas e ajustei os estilos css para os conteudos das paginas
+45e2f28 - catarinabenido126 - 2026-05-20 20:15:27 +0100 - critérios de ordenação por código interno e designação e correção da estrutura do formulário para manter alinhamento com a tabela
+bb5b823 - catarinabenido126 - 2026-05-20 12:46:18 +0100 - implementação da pesquisa com filtros na listagem de equipamentos
+9123aee - catarinabenido126 - 2026-05-20 12:11:46 +0100 - correção da cor dos labels no formulário de novo equipamento, isolamento do estilo .form-label do login e melhoria do espaçamento dos campos a preencher
+ca08b33 - catarinabenido126 - 2026-05-20 11:59:52 +0100 - reorganização dos botões Voltar e Editar na página de detalhes
+df15446 - catarinabenido126 - 2026-05-20 11:55:37 +0100 - correção de uma gralha em detalhes.html que surgiu no último commit
+a1f893c - catarinabenido126 - 2026-05-20 11:52:13 +0100 - correção do alinhamento do header através da reposição do p-2 na coluna do logotipo
+1f4a7ad - catarinabenido126 - 2026-05-20 02:19:34 +0100 - aplicação da classe barra-superior no css do index privado
+e9ed0db - catarinabenido126 - 2026-05-20 02:16:55 +0100 - uniformizaçãdo header nas paginas de quipamentos (ajuste do logotipo e utilizador)
+de107e1 - catarinabenido126 - 2026-05-20 02:06:45 +0100 - substituição de div por main na área de conteúdo de todas as paginas de quipamentos
+e0c0a29 - catarinabenido126 - 2026-05-20 02:00:37 +0100 - retirei p-3 e o tamanho do logo de modo a todas as páginas estarem iguais ao index
+40d1da2 - catarinabenido126 - 2026-05-20 01:56:04 +0100 - coloquei a barra superior igual ao index em todas as paginas de quipamentos
+0bff523 - catarinabenido126 - 2026-05-20 01:49:54 +0100 - mudança da imagem, do nome da classe de modo que a imagem fique apenas na pagina principal
+ff218af - catarinabenido126 - 2026-05-20 01:42:35 +0100 - alterei a imagem de fundo e a disposição da mesma
+5ba7dd2 - catarinabenido126 - 2026-05-20 01:19:23 +0100 - adicionei uma imagem de fundo na pagina inicial do index privado
+053e458 - catarinabenido126 - 2026-05-20 01:09:37 +0100 - alteração da letra do texto da pagina inicial do index privado
+140a100 - catarinabenido126 - 2026-05-20 01:00:01 +0100 - alterei as cores das barras superior e lateral do index privado
+fdf5c4d - catarinabenido126 - 2026-05-20 00:50:08 +0100 - mudei o nome da classe para barra-superior e mudei a cor da barra superior
+859bdb3 - catarinabenido126 - 2026-05-20 00:38:59 +0100 - correção do botão utilizador da barra superior do index privado
+48288ec - catarinabenido126 - 2026-05-20 00:33:50 +0100 - correção do alinhamento dos elementos da barra superior da pag. inicial
+afe0978 - catarinabenido126 - 2026-05-20 00:14:01 +0100 - ajustes na estrutura da pagina inicial privada, como a barra superior e a lateral
+b7499f7 - catarinabenido126 - 2026-05-20 00:04:49 +0100 - tirei o tamanho predefenido do logotipo para permitir css controlar o layout da barra
+f2acc97 - catarinabenido126 - 2026-05-20 00:03:56 +0100 - retirei "menu" na barra lateral porque tinha 2 vezes
+9658165 - catarinabenido126 - 2026-05-20 00:01:23 +0100 - adição de estilos css para o menu lateral e área de conteúdo principal
+ca00ec6 - catarinabenido126 - 2026-05-19 20:04:26 +0100 - criei a classe area-conteudo para facilitar o css do conteudo principal de cada página
+f5b89c1 - catarinabenido126 - 2026-05-19 19:56:32 +0100 - style: substituição de bootstrap por uma classe personalizada (menu-lateral ) para facilitar css
+9f295b2 - catarinabenido126 - 2026-05-19 19:36:37 +0100 - atualizei a ligação no index do publin para a pagina login da área interna
+990a373 - catarinabenido126 - 2026-05-19 19:35:34 +0100 - corrigi a ligação do botão voltar para a pagina principal
+8908f7a - catarinabenido126 - 2026-05-19 19:32:21 +0100 - ajustei a posição do botão voltar no css para ficar mais afastado da borda
+02d8ed8 - catarinabenido126 - 2026-05-19 19:26:51 +0100 - ajuste da posição do botão voltar na página de login para ficar no canto sup. esq.
+ece8d83 - catarinabenido126 - 2026-05-19 19:22:11 +0100 - tirei o botão "retroceder "da caixa do login e mudei para "voltar"
+1862437 - catarinabenido126 - 2026-05-19 19:17:41 +0100 - adicionei um botão para retroceder à pag.principal e a ligação ao entrar corretamente em login.html
+c1b744a - catarinabenido126 - 2026-05-19 19:11:31 +0100 - remoção do tamanho do logo no login.html e ajuste do tamanho (aumentei) através do CSS
+5150f1c - catarinabenido126 - 2026-05-19 19:04:06 +0100 - mudança nas cores do tema do login, de modo a ser visivem o logo e as letras
+841df57 - catarinabenido126 - 2026-05-19 17:08:27 +0100 - adição de estilos css |à pagina do login
+6ea6bed - catarinabenido126 - 2026-05-19 16:52:17 +0100 - ajuste das ligações a assets a partir do login pois estavam incorretas
+8e7a658 - catarinabenido126 - 2026-05-19 16:31:46 +0100 - colocação das ligaçoes às outras paginas e criação do conteudo principal de apagar.html
+b07aba0 - catarinabenido126 - 2026-05-19 16:19:03 +0100 - reutilização /cópia da estrutura base inicial para apagar.html
+f1f6dd3 - catarinabenido126 - 2026-05-19 16:15:59 +0100 - corrigi o nome de uma secção de dados no novo.html para "dados técnicos"
+98dc40e - catarinabenido126 - 2026-05-19 16:14:51 +0100 - eidtei os campos de preenchimento de acordo com o EQ0001
+a197c70 - catarinabenido126 - 2026-05-19 16:05:39 +0100 - copiei o código de novo.html para editar.html para proceder aos ajustes
+9fe1caf - catarinabenido126 - 2026-05-19 12:15:05 +0100 - adição do script bootstrap e remoção de elementos duplicados no incio do codigo detalhes.html
+7d6be5d - catarinabenido126 - 2026-05-19 12:09:01 +0100 - fiz as ligações às paginas editar e lista para sair da pagina detalhes.html
+f82a8b4 - catarinabenido126 - 2026-05-19 10:53:47 +0100 - criação da pagina principal (meramenteexemplar) de detalhes.hmtl
+d8c5ed2 - catarinabenido126 - 2026-05-19 10:23:46 +0100 - melhoria e colocação de mais detalhes sobre os equipamentos na pagina principal de novo.html
+bbc1696 - catarinabenido126 - 2026-05-19 09:58:11 +0100 - fiz as ligações às outras paginas a partir da pagina novo.html
+1809290 - catarinabenido126 - 2026-05-19 09:54:24 +0100 - criação do cabeçalho da área privada da pagina novo
+5179842 - catarinabenido126 - 2026-05-19 09:40:38 +0100 - inicio da criação de detalhes
+1e4e5d1 - catarinabenido126 - 2026-05-19 09:38:01 +0100 - correção do novo para "pt"
+c5de744 - catarinabenido126 - 2026-05-19 09:29:47 +0100 - correção das tags no final
+d375ae4 - catarinabenido126 - 2026-05-19 09:28:00 +0100 - melhoria do conteudo de novo
+8511911 - catarinabenido126 - 2026-05-18 20:05:58 +0100 - criei a pagina principal do novo
+d66cb0a - catarinabenido126 - 2026-05-18 19:53:26 +0100 - fiz as ligações na pagina novo.html
+34ae1f4 - catarinabenido126 - 2026-05-18 19:48:10 +0100 - base do novo.html
+1708e02 - catarinabenido126 - 2026-05-18 19:39:48 +0100 - lista.html
+10b7b85 - catarinabenido126 - 2026-05-18 17:21:04 +0100 - adicionei links à pagina inicial
+1a726c3 - catarinabenido126 - 2026-05-18 16:49:27 +0100 - tirei a dashboard do index
+9acd506 - catarinabenido126 - 2026-05-18 16:23:55 +0100 - correção nas ligações
+a6c4325 - catarinabenido126 - 2026-05-18 14:35:58 +0100 - ajuste da dashboard
+1aee2c1 - catarinabenido126 - 2026-05-18 14:33:49 +0100 - continuação do index do private
+dc67fdb - catarinabenido126 - 2026-05-18 14:09:54 +0100 - criei o index da private
+2d264ee - catarinabenido126 - 2026-05-18 14:01:21 +0100 - eliminei a assets do public
+f0afc81 - catarinabenido126 - 2026-05-18 14:00:36 +0100 - adicionei pastas ao assets, corrigi a ligação no index, fiz o login
+2252fb1 - catarinabenido126 - 2026-05-18 13:34:36 +0100 - adicionei a ligação ao bootstrap css
+7b9b6a0 - catarinabenido126 - 2026-05-18 13:32:29 +0100 - adicionei a script no fim do index
+05da7b6 - catarinabenido126 - 2026-05-18 13:32:01 +0100 - adicionei os docs bootstrap
+4e07b41 - catarinabenido126 - 2026-05-16 13:06:27 +0100 - alterei de novo
+e0e0da3 - catarinabenido126 - 2026-05-16 13:05:36 +0100 - alterei o titulo da pagina inicial
+6b3b3d2 - catarinabenido126 - 2026-05-16 13:01:25 +0100 - centrei verticalmente a parte sobre nós
+05abae0 - catarinabenido126 - 2026-05-16 12:59:06 +0100 - mudei o nome da secção para "inicio"
+581563b - catarinabenido126 - 2026-05-16 12:38:54 +0100 - corrigi alinhamento da parte contacta-nos
+19163d7 - catarinabenido126 - 2026-05-16 12:29:37 +0100 - adicionei um icone de cadeado
+b9110ac - catarinabenido126 - 2026-05-16 12:18:05 +0100 - mudança no css de serviços
+3a321c0 - catarinabenido126 - 2026-05-16 02:12:54 +0100 - icones concluidos
+1e5783c - catarinabenido126 - 2026-05-16 02:05:59 +0100 - corrigi ligação no index
+2c3e08f - catarinabenido126 - 2026-05-16 02:05:15 +0100 - corrigi a pasta do all.min
+9c32ed9 - catarinabenido126 - 2026-05-16 02:03:06 +0100 - all.min.css colado
+e1623e9 - catarinabenido126 - 2026-05-16 01:58:56 +0100 - corrigi o conteudo do webfonts
+37631ef - catarinabenido126 - 2026-05-16 01:53:05 +0100 - adicionei os icones na pasta web
+18f6621 - catarinabenido126 - 2026-05-16 01:41:52 +0100 - mudei css p causa dos icones
+f1761c9 - catarinabenido126 - 2026-05-16 01:39:26 +0100 - criei all.min.css e corrigi index
+ed44c98 - catarinabenido126 - 2026-05-15 22:40:23 +0100 - css do rodape
+9ab3325 - catarinabenido126 - 2026-05-15 22:28:22 +0100 - rodapé
+c243ea9 - catarinabenido126 - 2026-05-15 22:21:54 +0100 - ajuste css
+f7ae412 - catarinabenido126 - 2026-05-15 22:21:26 +0100 - ajuste da secção sobre nós
+d62fd5a - catarinabenido126 - 2026-05-15 22:16:55 +0100 - css das secçoes
+22a9181 - catarinabenido126 - 2026-05-15 21:19:43 +0100 - adicionei imagem
+ddce999 - catarinabenido126 - 2026-05-15 21:14:52 +0100 - fiz a estrutura das secçoes
+d934b14 - catarinabenido126 - 2026-05-15 20:49:52 +0100 - layout ajeitado
+8ca163a - catarinabenido126 - 2026-05-15 20:37:58 +0100 - alterei o logo e o tamanho
+dfe06c5 - catarinabenido126 - 2026-05-15 20:33:29 +0100 - aumentei o tamanho do logo
+d8c81ec - catarinabenido126 - 2026-05-15 20:32:28 +0100 - mudeu a ligação do css
+e3149fa - catarinabenido126 - 2026-05-15 20:31:22 +0100 - mudei nome das paginas dos ficheiros
+d1cdbc6 - catarinabenido126 - 2026-05-15 20:18:48 +0100 - fiz estilos
+6567bd2 - catarinabenido126 - 2026-05-15 20:10:06 +0100 - alteração num dos topicos
+e111efd - catarinabenido126 - 2026-05-15 20:08:41 +0100 - fiz a base do index
+5d25728 - catarinabenido126 - 2026-05-15 20:05:47 +0100 - iniciei o body do index
+5ffcd4e - catarinabenido126 - 2026-05-15 20:03:36 +0100 - adicionei ficheiros, a imagem e fiz o inicio do frontend
+e8c0ddc - catarinabenido126 - 2026-05-15 19:52:08 +0100 - ficheiros do frontend criados

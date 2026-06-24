@@ -22,6 +22,17 @@ if (!$idFornecedor || !is_numeric($idFornecedor)) {
 $erros = [];
 $erro_sistema = "";
 
+// ── Remover documento (soft delete via GET) ───────────────────────────────────
+if (isset($_GET['remover_doc']) && ctype_digit($_GET['remover_doc'])) {
+    try {
+        $database->prepare("UPDATE documentos SET ativo = 0, updated_at = NOW() WHERE id_documento = :id")
+                 ->execute([':id' => (int)$_GET['remover_doc']]);
+        registar_historico($database, 'Fornecedores', 'Remoção de documento', null, 'Documento do fornecedor removido (id: ' . (int)$_GET['remover_doc'] . ').');
+    } catch (PDOException $e) {}
+    header('Location: editar.php?id=' . urlencode($idFornecedorEncriptado));
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_empresa      = trim($_POST["nomeEmpresa"]      ?? "");
     $nif               = trim($_POST["nif"]              ?? "");
@@ -104,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// ── Carregar dados do fornecedor ─────────────────────────────────────────────
 try {
     $stmt = $database->prepare("SELECT * FROM fornecedores WHERE id_fornecedor = :id AND ativo = 1");
     $stmt->bindParam(':id', $idFornecedor, PDO::PARAM_INT);
@@ -114,6 +126,25 @@ try {
     $erro_sistema = "Erro ao obter os dados do fornecedor: " . $err->getMessage();
     $fornecedor = null;
 }
+
+// ── Documentos existentes do fornecedor ──────────────────────────────────────
+$documentos = [];
+try {
+    $stmtDocs = $database->prepare("
+        SELECT d.*, td.tipo AS tipo_documento
+        FROM documentos d
+        INNER JOIN tipos_documento td ON d.id_tipo_documento = td.id_tipo_documento
+        WHERE d.id_fornecedor = :id AND d.ativo = 1
+          AND d.id_equipamento IS NULL
+          AND d.id_garantia IS NULL
+          AND d.id_contrato IS NULL
+          AND d.id_entrada IS NULL
+          AND d.id_componente IS NULL
+        ORDER BY d.nome_documento
+    ");
+    $stmtDocs->execute([':id' => $idFornecedor]);
+    $documentos = $stmtDocs->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {}
 
 $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_documento WHERE ativo = 1 ORDER BY tipo")->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -126,11 +157,15 @@ $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_d
             <h2>Editar Fornecedor</h2>
             <hr>
             <?php if (!empty($erros)): ?>
-                <div class="alert alert-danger"><strong>Foram encontrados os seguintes erros:</strong><ul class="mb-0"><?php foreach ($erros as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul></div>
+                <div class="alert alert-danger">
+                    <strong>Foram encontrados os seguintes erros:</strong>
+                    <ul class="mb-0"><?php foreach ($erros as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul>
+                </div>
             <?php endif; ?>
             <?php if (!empty($erro_sistema)): ?>
                 <div class="alert alert-danger"><strong>Erro:</strong><p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p></div>
             <?php endif; ?>
+
             <form action="editar.php?id=<?= $idFornecedorEncriptado ?>" method="post" novalidate>
                 <h4>Informação principal</h4>
                 <div class="mb-3">
@@ -141,6 +176,7 @@ $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_d
                     <label for="nif" class="form-label">NIF</label>
                     <input type="text" class="form-control" id="nif" name="nif" value="<?= htmlspecialchars($fornecedor['nif'] ?? '') ?>" required>
                 </div>
+
                 <h4>Contactos</h4>
                 <div class="mb-3">
                     <label for="telefone" class="form-label">Telefone</label>
@@ -154,6 +190,7 @@ $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_d
                     <label for="website" class="form-label">Website</label>
                     <input type="url" class="form-control" id="website" name="website" value="<?= htmlspecialchars($fornecedor['website'] ?? '') ?>">
                 </div>
+
                 <h4>Pessoa de contacto</h4>
                 <div class="mb-3">
                     <label for="pessoaContacto" class="form-label">Nome da pessoa de contacto</label>
@@ -167,6 +204,7 @@ $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_d
                     <label for="emailContacto" class="form-label">Email da pessoa de contacto</label>
                     <input type="email" class="form-control" id="emailContacto" name="emailContacto" value="<?= htmlspecialchars($fornecedor['email_contacto'] ?? '') ?>">
                 </div>
+
                 <h4>Morada</h4>
                 <div class="mb-3">
                     <label for="morada" class="form-label">Morada</label>
@@ -184,46 +222,95 @@ $tipos_documento = $database->query("SELECT id_tipo_documento, tipo FROM tipos_d
                     <label for="pais" class="form-label">País</label>
                     <input type="text" class="form-control" id="pais" name="pais" value="<?= htmlspecialchars($fornecedor['pais'] ?? '') ?>">
                 </div>
+
                 <h4>Observações</h4>
                 <div class="mb-3">
                     <label for="observacoes" class="form-label">Observações</label>
                     <textarea class="form-control" id="observacoes" name="observacoes" rows="4"><?= htmlspecialchars($fornecedor['observacoes'] ?? '') ?></textarea>
                 </div>
-                <hr>
-                <h4><i class="fa-solid fa-file-lines me-2"></i>Documentos do Fornecedor</h4>
-                <p class="text-muted">Adiciona documentos relacionados com este fornecedor.</p>
-                <div class="border rounded p-3 mb-3 bg-white">
-                    <div class="row align-items-end">
-                        <div class="col-md-4">
-                            <label class="form-label">Nome do documento</label>
-                            <input type="text" class="form-control" placeholder="Ex: Contrato-quadro de fornecimento">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Tipo de documento</label>
-                            <select class="form-select tipo-documento" onchange="mostrarOutroDocumento(this)">
-                                <option value="" selected disabled>Selecionar tipo</option>
-                                <?php foreach ($tipos_documento as $td): ?>
-                                    <option value="<?= $td['id_tipo_documento'] ?>"><?= htmlspecialchars($td['tipo']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Ficheiro</label>
-                            <input type="file" id="documentoFornecedor1" hidden>
-                            <label for="documentoFornecedor1" class="btn btn-outline-primary w-100"><i class="fa-solid fa-upload me-1"></i> Selecionar ficheiro</label>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-primary w-100"><i class="fa-solid fa-plus me-1"></i> Adicionar</button>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-outline-primary mb-4"><i class="fa-solid fa-plus me-1"></i> Adicionar Documento</button>
-                <div>
-                    <button type="submit" class="btn btn-success">Guardar Alterações</button>
-                    <a href="lista.php" class="btn btn-secondary">Cancelar</a>
+
+                <div class="mt-4 mb-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Guardar Alterações
+                    </button>
+                    <a href="lista.php" class="btn btn-secondary ms-2">Cancelar</a>
                 </div>
             </form>
+
+            <hr>
+
+            <!-- ── Documentos existentes ── -->
+            <h4><i class="fa-solid fa-file-lines me-2"></i>Documentos do Fornecedor</h4>
+            <p class="text-muted">Documentos associados a este fornecedor.</p>
+
+            <?php if (empty($documentos)): ?>
+                <div class="alert alert-info mb-4">
+                    <i class="fa-solid fa-circle-info me-2"></i>
+                    Este fornecedor não tem documentos associados.
+                </div>
+            <?php else: ?>
+                <?php foreach ($documentos as $d): ?>
+                <div class="border rounded p-3 mb-3 bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>
+                            <i class="fa-regular fa-file-pdf me-2 text-danger"></i>
+                            <strong><?= htmlspecialchars($d['nome_documento']) ?></strong>
+                            <span class="badge bg-light text-primary border ms-2"><?= htmlspecialchars($d['tipo_documento']) ?></span>
+                        </span>
+                        <a href="editar.php?id=<?= urlencode($idFornecedorEncriptado) ?>&remover_doc=<?= $d['id_documento'] ?>"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Remover este documento?')">
+                            <i class="fa-solid fa-trash me-1"></i> Remover
+                        </a>
+                    </div>
+                    <p class="text-muted small mb-2">
+                        <i class="fa-regular fa-file-lines me-1"></i>
+                        <?= htmlspecialchars($d['nome_ficheiro']) ?>
+                        <?php if (!empty($d['data_documento'])): ?>
+                            &nbsp;·&nbsp; <?= date('d/m/Y', strtotime($d['data_documento'])) ?>
+                        <?php endif; ?>
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="form-label mb-0 text-muted small">Substituir ficheiro:</label>
+                        <input type="file" name="substituir_doc[<?= $d['id_documento'] ?>]" class="form-control form-control-sm" style="max-width:300px">
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <!-- ── Adicionar novo documento ── -->
+            <div class="border rounded p-3 mb-4 bg-light">
+                <h6><i class="fa-solid fa-plus me-2"></i>Adicionar documento</h6>
+                <div class="row align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Nome do documento</label>
+                        <input type="text" class="form-control" name="novo_doc_nome" placeholder="Ex: Contrato-quadro de fornecimento">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Tipo de documento</label>
+                        <select class="form-select tipo-documento" name="novo_doc_tipo" onchange="mostrarOutroDocumento(this)">
+                            <option value="" selected disabled>Selecionar tipo</option>
+                            <?php foreach ($tipos_documento as $td): ?>
+                                <option value="<?= $td['id_tipo_documento'] ?>"><?= htmlspecialchars($td['tipo']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input type="text" class="form-control mt-2 campo-outro-documento d-none" placeholder="Escreve o tipo de documento">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Ficheiro</label>
+                        <input type="file" id="documentoFornecedor1" hidden name="novo_doc_ficheiro">
+                        <label for="documentoFornecedor1" class="btn btn-outline-primary w-100">
+                            <i class="fa-solid fa-upload me-1"></i> Selecionar ficheiro
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary w-100">
+                            <i class="fa-solid fa-plus me-1"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 </div>

@@ -41,7 +41,7 @@ if (!$eq) {
 // ── Entrada / Aquisição ──────────────────────────────────────────────────────
 try {
     $stmtEnt = $database->prepare("
-        SELECT en.*, te.tipo_entrada
+        SELECT en.*, te.tipo AS tipo_entrada
         FROM entradas_equipamento en
         INNER JOIN tipos_entrada te ON en.id_tipo_entrada = te.id_tipo_entrada
         WHERE en.id_equipamento = :id AND en.ativo = 1
@@ -51,24 +51,25 @@ try {
     $entrada = $stmtEnt->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) { $entrada = null; }
 
-// ── Fornecedor associado ─────────────────────────────────────────────────────
+// ── Fornecedores associados (todos) ──────────────────────────────────────────
 try {
     $stmtForn = $database->prepare("
-        SELECT f.*, tf.tipo AS tipo_fornecedor
+        SELECT f.*, tr.tipo AS tipo_relacao
         FROM equipamento_fornecedor ef
-        INNER JOIN fornecedores f       ON ef.id_fornecedor       = f.id_fornecedor
-        LEFT  JOIN tipos_fornecedor tf  ON f.id_tipo_fornecedor   = tf.id_tipo_fornecedor
+        INNER JOIN fornecedores f ON ef.id_fornecedor = f.id_fornecedor
+        INNER JOIN tipos_relacao_fornecedor tr ON ef.id_tipo_relacao = tr.id_tipo_relacao
         WHERE ef.id_equipamento = :id AND ef.ativo = 1
-        LIMIT 1
+        ORDER BY tr.id_tipo_relacao
     ");
     $stmtForn->execute([':id' => $id]);
-    $fornecedor = $stmtForn->fetch(PDO::FETCH_ASSOC);
-} catch (PDOException $e) { $fornecedor = null; }
+    $fornecedores = $stmtForn->fetchAll(PDO::FETCH_ASSOC);
+    $fornecedor = $fornecedores[0] ?? null; // compatibilidade com código existente
+} catch (PDOException $e) { $fornecedores = []; $fornecedor = null; }
 
 // ── Garantias ────────────────────────────────────────────────────────────────
 try {
     $stmtGar = $database->prepare("
-        SELECT g.*, eg.nome_estado AS estado_garantia
+        SELECT g.*, eg.estado AS estado_garantia
         FROM garantias g
         INNER JOIN estados_garantia eg ON g.id_estado_garantia = eg.id_estado_garantia
         WHERE g.id_equipamento = :id AND g.ativo = 1
@@ -393,30 +394,69 @@ function stockBadge(int $atual, int $minimo): string {
                         </div>
                     <?php else: ?>
                     <div class="row mt-3">
-                        <div class="col-md-6">
-                            <p><strong>Tipo de entrada:</strong> <?= htmlspecialchars($entrada['tipo_entrada']) ?></p>
-                            <p><strong>Data de entrada:</strong> <?= $entrada['data_entrada'] ? date('d/m/Y', strtotime($entrada['data_entrada'])) : '—' ?></p>
-                            <p><strong>Entidade associada:</strong> <?= htmlspecialchars($entrada['entidade_associada'] ?? '—') ?></p>
-                        </div>
-                        <div class="col-md-6">
-                            <?php if (!empty($entrada['custo_aquisicao'])): ?>
-                                <p><strong>Custo de aquisição:</strong> <?= number_format((float)$entrada['custo_aquisicao'], 2, ',', ' ') ?> €</p>
-                            <?php endif; ?>
-                            <?php if (!empty($entrada['numero_fatura'])): ?>
-                                <p><strong>Número da fatura:</strong> <?= htmlspecialchars($entrada['numero_fatura']) ?></p>
-                            <?php endif; ?>
-                            <?php if (!empty($entrada['metodo_pagamento'])): ?>
-                                <p><strong>Método de pagamento:</strong> <?= htmlspecialchars($entrada['metodo_pagamento']) ?></p>
-                            <?php endif; ?>
-                            <?php if (!empty($entrada['valor_mensal'])): ?>
-                                <p><strong>Valor mensal:</strong> <?= number_format((float)$entrada['valor_mensal'], 2, ',', ' ') ?> €</p>
-                            <?php endif; ?>
-                            <?php if (!empty($entrada['data_fim_aluguer'])): ?>
-                                <p><strong>Fim do aluguer:</strong> <?= date('d/m/Y', strtotime($entrada['data_fim_aluguer'])) ?></p>
-                            <?php endif; ?>
+                        <div class="col-md-12 mb-3">
+                            <p><strong>Tipo de entrada:</strong>
+                                <span class="badge bg-primary ms-1"><?= htmlspecialchars($entrada['tipo_entrada']) ?></span>
+                            </p>
                         </div>
                     </div>
+
+                    <?php if ($entrada['tipo_entrada'] === 'Compra'): ?>
+                    <!-- ── Compra ── -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Data de entrada:</strong> <?= $entrada['data_entrada'] ? date('d/m/Y', strtotime($entrada['data_entrada'])) : '—' ?></p>
+                            <p><strong>Número da fatura:</strong> <?= htmlspecialchars($entrada['numero_fatura'] ?? '—') ?></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Custo de aquisição:</strong> <?= $entrada['custo_aquisicao'] ? number_format((float)$entrada['custo_aquisicao'], 2, ',', ' ') . ' €' : '—' ?></p>
+                            <p><strong>Método de pagamento:</strong> <?= htmlspecialchars($entrada['metodo_pagamento'] ?? '—') ?></p>
+                        </div>
+                    </div>
+
+                    <?php elseif ($entrada['tipo_entrada'] === 'Aluguer'): ?>
+                    <!-- ── Aluguer ── -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Data de início:</strong> <?= $entrada['data_entrada'] ? date('d/m/Y', strtotime($entrada['data_entrada'])) : '—' ?></p>
+                            <p><strong>Valor mensal:</strong> <?= $entrada['valor_mensal'] ? number_format((float)$entrada['valor_mensal'], 2, ',', ' ') . ' €/mês' : '—' ?></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Data de fim do aluguer:</strong> <?= $entrada['data_fim_aluguer'] ? date('d/m/Y', strtotime($entrada['data_fim_aluguer'])) : '—' ?></p>
+                        </div>
+                    </div>
+                    <?php if (!empty($entrada['condicoes_aluguer'])): ?>
+                    <p><strong>Condições do aluguer:</strong><br><?= nl2br(htmlspecialchars($entrada['condicoes_aluguer'])) ?></p>
                     <?php endif; ?>
+
+                    <?php elseif ($entrada['tipo_entrada'] === 'Doação'): ?>
+                    <!-- ── Doação ── -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Data de entrada:</strong> <?= $entrada['data_entrada'] ? date('d/m/Y', strtotime($entrada['data_entrada'])) : '—' ?></p>
+                        </div>
+                    </div>
+                    <?php if (!empty($entrada['condicoes_doacao'])): ?>
+                    <p><strong>Condições da doação:</strong><br><?= nl2br(htmlspecialchars($entrada['condicoes_doacao'])) ?></p>
+                    <?php endif; ?>
+
+                    <?php elseif ($entrada['tipo_entrada'] === 'Empréstimo'): ?>
+                    <!-- ── Empréstimo ── -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Entidade proprietária:</strong> <?= htmlspecialchars($entrada['entidade_proprietaria'] ?? '—') ?></p>
+                            <p><strong>Data de início:</strong> <?= $entrada['data_inicio_emprestimo'] ? date('d/m/Y', strtotime($entrada['data_inicio_emprestimo'])) : '—' ?></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Data prevista de devolução:</strong> <?= $entrada['data_prevista_devolucao'] ? date('d/m/Y', strtotime($entrada['data_prevista_devolucao'])) : '—' ?></p>
+                        </div>
+                    </div>
+                    <?php if (!empty($entrada['condicoes_emprestimo'])): ?>
+                    <p><strong>Condições do empréstimo:</strong><br><?= nl2br(htmlspecialchars($entrada['condicoes_emprestimo'])) ?></p>
+                    <?php endif; ?>
+
+                    <?php endif; ?>
+
                     <?php
                     $docsAquisicao = array_filter($documentos, fn($d) => $d['associado_a'] === 'Aquisição');
                     if (!empty($docsAquisicao)):
@@ -439,53 +479,52 @@ function stockBadge(int $atual, int $minimo): string {
                         </table>
                     </div>
                     <?php endif; ?>
+                    <?php endif; ?>
                 </div>
 
                 <!-- ══ TAB: FORNECEDOR ══ -->
                 <div class="tab-pane fade" id="fornecedor">
-                    <h4><i class="fa-solid fa-truck me-2"></i>Fornecedor</h4>
-                    <?php if (!$fornecedor): ?>
+                    <h4><i class="fa-solid fa-truck me-2"></i>Fornecedores Associados</h4>
+                    <?php if (empty($fornecedores)): ?>
                         <div class="alert alert-info mt-3">
                             <i class="fa-solid fa-circle-info me-2"></i>
-                            Sem fornecedor associado.
+                            Sem fornecedores associados.
                         </div>
                     <?php else: ?>
-                    <h5 class="mt-3">Informação principal</h5>
-                    <p><strong>Nome da empresa:</strong> <?= htmlspecialchars($fornecedor['nome_empresa']) ?></p>
-                    <p><strong>NIF:</strong> <?= htmlspecialchars($fornecedor['nif']) ?></p>
-                    <p><strong>Tipo de fornecedor:</strong> <?= htmlspecialchars($fornecedor['tipo_fornecedor'] ?? '—') ?></p>
-                    <hr>
-                    <h5>Contactos</h5>
-                    <p><strong>Telefone:</strong> <?= htmlspecialchars($fornecedor['telefone'] ?? '—') ?></p>
-                    <p><strong>Email:</strong> <?= htmlspecialchars($fornecedor['email'] ?? '—') ?></p>
-                    <?php if (!empty($fornecedor['website'])): ?>
-                        <p><strong>Website:</strong> <a href="<?= htmlspecialchars($fornecedor['website']) ?>" target="_blank"><?= htmlspecialchars($fornecedor['website']) ?></a></p>
-                    <?php endif; ?>
-                    <?php if (!empty($fornecedor['pessoa_contacto'])): ?>
-                    <hr>
-                    <h5>Pessoa de contacto</h5>
-                    <p><strong>Nome:</strong> <?= htmlspecialchars($fornecedor['pessoa_contacto']) ?></p>
-                    <?php if (!empty($fornecedor['telefone_contacto'])): ?>
-                        <p><strong>Telefone:</strong> <?= htmlspecialchars($fornecedor['telefone_contacto']) ?></p>
-                    <?php endif; ?>
-                    <?php if (!empty($fornecedor['email_contacto'])): ?>
-                        <p><strong>Email:</strong> <?= htmlspecialchars($fornecedor['email_contacto']) ?></p>
-                    <?php endif; ?>
-                    <?php endif; ?>
-                    <?php if (!empty($fornecedor['morada'])): ?>
-                    <hr>
-                    <h5>Morada</h5>
-                    <p><strong>Morada:</strong> <?= htmlspecialchars($fornecedor['morada']) ?></p>
-                    <?php if (!empty($fornecedor['codigo_postal'])): ?>
-                        <p><strong>Código postal:</strong> <?= htmlspecialchars($fornecedor['codigo_postal']) ?></p>
-                    <?php endif; ?>
-                    <p><strong>Cidade:</strong> <?= htmlspecialchars($fornecedor['cidade'] ?? '—') ?></p>
-                    <?php endif; ?>
-                    <div class="text-end mt-3">
-                        <a href="../fornecedores/detalhes.php?id=<?= aes_encrypt($fornecedor['id_fornecedor']) ?>" class="btn btn-outline-primary">
-                            <i class="fa-solid fa-eye me-1"></i> Ver ficha do fornecedor
-                        </a>
-                    </div>
+                        <?php foreach ($fornecedores as $forn): ?>
+                        <div class="border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="mb-0"><?= htmlspecialchars($forn['nome_empresa']) ?></h5>
+                                <span class="badge bg-secondary"><?= htmlspecialchars($forn['tipo_relacao']) ?></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>NIF:</strong> <?= htmlspecialchars($forn['nif']) ?></p>
+                                    <p class="mb-1"><strong>Telefone:</strong> <?= htmlspecialchars($forn['telefone'] ?? '—') ?></p>
+                                    <p class="mb-1"><strong>Email:</strong> <?= htmlspecialchars($forn['email'] ?? '—') ?></p>
+                                    <?php if (!empty($forn['website'])): ?>
+                                    <p class="mb-1"><strong>Website:</strong> <a href="<?= htmlspecialchars($forn['website']) ?>" target="_blank"><?= htmlspecialchars($forn['website']) ?></a></p>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php if (!empty($forn['pessoa_contacto'])): ?>
+                                    <p class="mb-1"><strong>Pessoa de contacto:</strong> <?= htmlspecialchars($forn['pessoa_contacto']) ?></p>
+                                    <?php endif; ?>
+                                    <?php if (!empty($forn['telefone_contacto'])): ?>
+                                    <p class="mb-1"><strong>Tel. contacto:</strong> <?= htmlspecialchars($forn['telefone_contacto']) ?></p>
+                                    <?php endif; ?>
+                                    <?php if (!empty($forn['cidade'])): ?>
+                                    <p class="mb-1"><strong>Cidade:</strong> <?= htmlspecialchars($forn['cidade']) ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="text-end mt-2">
+                                <a href="../fornecedores/detalhes.php?id=<?= aes_encrypt($forn['id_fornecedor']) ?>" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa-solid fa-eye me-1"></i> Ver ficha do fornecedor
+                                </a>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
@@ -503,6 +542,11 @@ function stockBadge(int $atual, int $minimo): string {
                             <p><strong>Responsável:</strong> <?= htmlspecialchars($eq['responsavel'] ?? '—') ?></p>
                             <p><strong>Contacto:</strong> <?= htmlspecialchars($eq['loc_contacto'] ?? '—') ?></p>
                         </div>
+                    </div>
+                    <div class="text-end mt-2">
+                        <a href="../localizacao/equipamentos.php?id=<?= aes_encrypt($eq['id_localizacao']) ?>" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-eye me-1"></i> Ver ficha da localização
+                        </a>
                     </div>
                 </div>
 
